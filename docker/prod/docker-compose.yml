@@ -1,0 +1,45 @@
+configserver:
+  image: gohelpfund/ghf-confsvr:gohelpfund
+  mem_limit: 203741824
+  ports:
+  - "8888:8888"
+  environment:
+    PROFILE: "prod"
+    SERVER_PORT: "8888"
+    ENCRYPT_KEY: "IMSYMMETRIC"
+database:
+  image: postgres:9.5
+  mem_limit: 103741824
+  ports:
+  - "5432:5432"
+  environment:
+    PROFILE: "prod"
+    POSTGRES_USER: "postgres_prod"
+    POSTGRES_PASSWORD:  "p0stgr@s_prod"
+    POSTGRES_DB: "gohelpfund_prod"
+campaignservice:
+  image: gohelpfund/ghf-campaign-service:gohelpfund
+  mem_limit: 253741824
+  links:
+  - "configserver:configserver"
+  - "database:database"
+  ports:
+  - "5555:5555"
+  environment:
+    PROFILE: "prod"
+    SERVER_PORT: "5555"
+    CONFIGSERVER_URI: "http://configserver:8888"
+    CONFIGSERVER_PORT:   "8888"
+    DATABASESERVER_PORT: "5432"
+    ENCRYPT_KEY: "IMSYMMETRIC"
+#  categoryservice:
+#    image: gohelpfund/ghf-category-service:gohelpfund
+#    ports:
+#    - "8085:8085"
+#    environment:
+#      PROFILE: "default"
+#      SERVER_PORT: "8085"
+#      CONFIGSERVER_URI: "http://configserver:8888"
+#      CONFIGSERVER_PORT:   "8888"
+#      DATABASESERVER_PORT: "5432"
+#      ENCRYPT_KEY: "IMSYMMETRIC"

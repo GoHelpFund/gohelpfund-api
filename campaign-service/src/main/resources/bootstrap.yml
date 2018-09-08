@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: campaignservice
+  profiles:
+    active:
+      default
+  cloud:
+    config:
+      enabled: true
