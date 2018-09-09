@@ -7,8 +7,8 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Config Server</name>
-  <description>Config Server GoHelpFund</description>
+  <name>GoHelpFund Config Server</name>
+  <description>Spring Cloud Config Server using a Git repository</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -45,7 +45,7 @@
     <start-class>com.gohelpfund.api.v1.confsvr.ConfigServerApplication</start-class>
     <java.version>1.8</java.version>
     <docker.image.name>gohelpfund/ghf-confsvr</docker.image.name>
-    <docker.image.tag>gohelpfund</docker.image.tag>
+    <docker.image.tag>latest</docker.image.tag>
   </properties>
 
   <build>
