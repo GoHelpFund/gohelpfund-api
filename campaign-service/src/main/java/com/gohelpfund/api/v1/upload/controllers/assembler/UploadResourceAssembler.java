@@ -1,8 +1,5 @@
 package com.gohelpfund.api.v1.upload.controllers.assembler;
 
-import com.gohelpfund.api.v1.categories.controllers.CategoryController;
-import com.gohelpfund.api.v1.categories.model.Category;
-import com.gohelpfund.api.v1.categories.model.CategoryStatus;
 import com.gohelpfund.api.v1.upload.controllers.UploadController;
 import com.gohelpfund.api.v1.upload.model.Upload;
 import org.springframework.hateoas.Resource;

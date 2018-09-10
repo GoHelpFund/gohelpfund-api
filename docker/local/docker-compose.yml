@@ -1,7 +1,7 @@
 version: '2'
 services:
   configserver:
-    image: gohelpfund/ghf-confsvr:gohelpfund
+    image: gohelpfund/ghf-confsvr:latest
     ports:
     - "8888:8888"
     environment:
@@ -16,7 +16,7 @@ services:
       POSTGRES_PASSWORD: "p0stgr@s"
       POSTGRES_DB:       "gohelpfund_local"
   campaignservice:
-    image: gohelpfund/ghf-campaign-service:gohelpfund
+    image: gohelpfund/ghf-campaign-service:latest
     ports:
     - "5555:5555"
     environment:

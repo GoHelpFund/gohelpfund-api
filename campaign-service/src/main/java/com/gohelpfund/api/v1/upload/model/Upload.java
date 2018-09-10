@@ -3,7 +3,7 @@ package com.gohelpfund.api.v1.upload.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"accessKeyId", "secretAccessKey", "endpointUrl", "bucketName", "bucketRegion"})
+@JsonPropertyOrder({"accessKeyId", "secretAccessKey", "endpointUrl", "bucketName", "bucketRegion", "signature", "policy"})
 public class Upload {
     @JsonProperty("access_key_id")
     private String accessKeyId;
@@ -19,6 +19,12 @@ public class Upload {
 
     @JsonProperty("bucket_region")
     private String bucketRegion;
+
+    @JsonProperty("policy")
+    private String policy;
+
+    @JsonProperty("signature")
+    private String signature;
 
     public String getAccessKeyId() {
         return accessKeyId;
@@ -60,6 +66,22 @@ public class Upload {
         this.bucketRegion = bucketRegion;
     }
 
+    public String getPolicy() {
+        return policy;
+    }
+
+    public void setPolicy(String policy) {
+        this.policy = policy;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
     public Upload withAccessKeyId(String accessKeyId){
         this.setAccessKeyId(accessKeyId);
         return this;
@@ -83,6 +105,16 @@ public class Upload {
 
     public Upload withBucketRegion(String bucketRegion){
         this.setBucketRegion(bucketRegion);
+        return this;
+    }
+
+    public Upload withPolicy(String policy){
+        this.setPolicy(policy);
+        return this;
+    }
+
+    public Upload withSignature(String signature){
+        this.setSignature(signature);
         return this;
     }
 }
