@@ -21,6 +21,9 @@ public class ServiceConfig{
   @Value("${aws.s3.client.region}")
   private String s3BucketRegion;
 
+  @Value("${platform.env}")
+  private String platformEnv;
+
   public String getS3AccessKeyId() {
     return s3AccessKeyId;
   }
@@ -39,5 +42,9 @@ public class ServiceConfig{
 
   public String getS3EndpointUrl() {
     return s3EndpointUrl;
+  }
+
+  public String getPlatformEnv() {
+    return platformEnv;
   }
 }

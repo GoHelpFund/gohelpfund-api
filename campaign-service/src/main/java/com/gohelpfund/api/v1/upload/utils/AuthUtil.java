@@ -37,9 +37,23 @@ public class AuthUtil extends AWS4Signer {
         }
     }
 
-    public String getPolicy() throws IOException {
-        String policy = StreamUtils.copyToString((new ClassPathResource("policy.txt")).getInputStream(), UTF_8);
-        return Base64.getEncoder().encodeToString(policy.getBytes("UTF8"));
+    public String getPolicy(String env) throws IOException {
+        String fileName;
+        switch (env) {
+            case "local":
+                fileName = "local-policy.txt";
+                break;
+            case "dev":
+                fileName = "dev-policy.txt";
+                break;
+            case "prod":
+                fileName = "prod-policy.txt";
+                break;
+            default:
+                fileName = "local-policy.txt";
+        }
+        String policy = StreamUtils.copyToString((new ClassPathResource(fileName)).getInputStream(), UTF_8);
+        return Base64.getEncoder().encodeToString(policy.getBytes(UTF_8));
     }
 
     private byte[] hmacSha256(byte[] key, String data) throws Exception {

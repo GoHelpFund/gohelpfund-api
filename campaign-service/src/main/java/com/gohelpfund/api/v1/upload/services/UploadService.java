@@ -27,7 +27,7 @@ public class UploadService {
         String policy = null;
 
         try {
-            policy = auth.getPolicy();
+            policy = auth.getPolicy(config.getPlatformEnv());
         } catch (IOException e) {
             e.printStackTrace();
         }
