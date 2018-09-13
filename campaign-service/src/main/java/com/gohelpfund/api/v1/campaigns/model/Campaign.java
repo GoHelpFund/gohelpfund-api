@@ -2,14 +2,13 @@ package com.gohelpfund.api.v1.campaigns.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.gohelpfund.api.v1.campaigns.model.fundraiser.Fundraiser;
 import com.gohelpfund.api.v1.categories.model.Category;
-import com.gohelpfund.api.v1.fundraisers.model.Fundraiser;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +22,10 @@ public class Campaign {
     @JsonProperty("id")
     @Column(name = "campaign_id", nullable = false)
     private String campaignId;
+
+    @JsonIgnore
+    @Column(name ="fundraiser_id", nullable = false)
+    private String fundraiserId;
 
     @JsonProperty("title")
     @Column(name = "campaign_title", nullable = false)
@@ -64,8 +67,7 @@ public class Campaign {
     @JoinColumn(name = "status_id")
     private CampaignStatus status;
 
-    @ManyToOne
-    @JoinColumn(name = "fundraiser_id")
+    @Transient
     private Fundraiser fundraiser;
 
     @ManyToOne
@@ -87,6 +89,14 @@ public class Campaign {
 
     public void setCampaignId(String campaignId) {
         this.campaignId = campaignId;
+    }
+
+    public String getFundraiserId() {
+        return fundraiserId;
+    }
+
+    public void setFundraiserId(String fundraiserId) {
+        this.fundraiserId = fundraiserId;
     }
 
     public Fundraiser getFundraiser() {

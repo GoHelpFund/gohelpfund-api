@@ -52,82 +52,6 @@ INSERT INTO campaign_media_resources (resource_id,  campaign_id, name, url, type
 VALUES ('f3831f8c-c338-4ebe-a82a-e2fc1d1ff78a', '3f0bb16e-4a25-cdf3-b60a-275b6224225a', 'Video 1', 'https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/5959707A-C6C8-4490-92DE-9759195B6322.jpg', 'image', 'jpg', 'CREATED');
 
 
-DROP TABLE IF EXISTS fundraiser_social;
-
-CREATE TABLE fundraiser_social (
-  social_id           VARCHAR(100) PRIMARY KEY NOT NULL,
-  fundraiser_id       VARCHAR(100) NOT NULL,
-
-  facebook            TEXT NOT NULL,
-  twitter             TEXT NOT NULL,
-  linkedin            TEXT NOT NULL,
-  website             TEXT NOT NULL,
-  other               TEXT NOT NULL
-  );
-
-INSERT INTO fundraiser_social (social_id,  fundraiser_id, facebook, twitter, linkedin, website, other)
-VALUES ('z28250bb-f7eb-4adc-925c-90f315cc4a27', 'bc8250bb-f7eb-4adc-925c-2af315cc4a55', 'https://www.facebook.com/john/', 'https://twitter.com/john', 'https://www.linkedin.com/in/john/', 'https://www.john.com', 'https://www.example.com');
-INSERT INTO fundraiser_social (social_id,  fundraiser_id, facebook, twitter, linkedin, website, other)
-VALUES ('g29250bb-efec-2adc-925c-aff315cc4a27', '200393bc-8aaa-45a8-9093-80c4792348cd', 'https://www.facebook.com/mike/', 'https://twitter.com/mike', 'https://www.linkedin.com/in/mike/', 'https://www.mike.com', 'https://www.example.com');
-
-
-DROP TABLE IF EXISTS fundraiser_professional;
-
-CREATE TABLE fundraiser_professional (
-  professional_id     VARCHAR(100) PRIMARY KEY NOT NULL,
-  fundraiser_id       VARCHAR(100) NOT NULL,
-
-  job_title           TEXT NOT NULL,
-  job_description     TEXT NOT NULL,
-  company_name        TEXT NOT NULL,
-  company_url         TEXT NOT NULL
-  );
-
-INSERT INTO fundraiser_professional (professional_id,  fundraiser_id, job_title, job_description, company_name, company_url)
-VALUES ('a38250bb-f7eb-4adc-925c-90f315cc4a27', 'bc8250bb-f7eb-4adc-925c-2af315cc4a55', 'House Designer', 'Designing houses 24/7', 'iDesign', 'https://www.apple.com');
-INSERT INTO fundraiser_professional (professional_id,  fundraiser_id, job_title, job_description, company_name, company_url)
-VALUES ('b49250bb-efec-2adc-925c-aff315cc4a27', '200393bc-8aaa-45a8-9093-80c4792348cd', 'Engineer', 'Engineering solutions 24/7', 'iEngineer', 'https://www.apple.com');
-
-
-DROP TABLE IF EXISTS fundraiser_statuses;
-
-CREATE TABLE fundraiser_statuses (
-  status_id                          VARCHAR(100) PRIMARY KEY NOT NULL,
-  fundraiser_id                      VARCHAR(100) NOT NULL,
-
-  type                               VARCHAR(100),
-  type_description                   TEXT,
-  sub_type                           VARCHAR(100),
-  sub_type_description               TEXT
-
-  );
-
-INSERT INTO fundraiser_statuses (status_id, fundraiser_id,  type, type_description, sub_type, sub_type_description)
-VALUES ('208250bb-f7eb-4adc-925c-2af315cc4a55', 'bc8250bb-f7eb-4adc-925c-2af315cc4a55', 'PENDING', 'User is a guest', 'REGISTRATION_REQUIRED', 'User needs to register an account');
-INSERT INTO fundraiser_statuses (status_id, fundraiser_id,  type, type_description, sub_type, sub_type_description)
-VALUES ('218250bb-f7eb-4adc-925c-2af315cc4a55', '200393bc-8aaa-45a8-9093-80c4792348cd', 'PENDING', 'User is a guest', 'REGISTRATION_REQUIRED', 'User needs to register an account');
-
-
-
-DROP TABLE IF EXISTS fundraisers;
-
-CREATE TABLE fundraisers (
-  fundraiser_id         VARCHAR(100) PRIMARY KEY NOT NULL,
-  social_id             VARCHAR(100) NOT NULL,
-  professional_id       VARCHAR(100) NOT NULL,
-  status_id             VARCHAR(100) NOT NULL,
-
-  name                  TEXT,
-  age                   INT,
-  profile_image_url     TEXT
-  );
-
-INSERT INTO fundraisers (fundraiser_id, social_id, professional_id, status_id,  name, age, profile_image_url)
-VALUES ('bc8250bb-f7eb-4adc-925c-2af315cc4a55', 'z28250bb-f7eb-4adc-925c-90f315cc4a27', 'a38250bb-f7eb-4adc-925c-90f315cc4a27', '208250bb-f7eb-4adc-925c-2af315cc4a55', 'John', 28, 'https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/categories/charity.png');
-INSERT INTO fundraisers (fundraiser_id, social_id, professional_id, status_id, name, age, profile_image_url)
-VALUES ('200393bc-8aaa-45a8-9093-80c4792348cd', 'g29250bb-efec-2adc-925c-aff315cc4a27', 'b49250bb-efec-2adc-925c-aff315cc4a27', '218250bb-f7eb-4adc-925c-2af315cc4a55', 'Mike', 38, 'https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/categories/charity.png');
-
-
 DROP TABLE IF EXISTS campaign_statuses;
 
 CREATE TABLE campaign_statuses (
@@ -188,6 +112,6 @@ VALUES ('1c225a3a-2c70-4d95-b87f-f086cbd20366', '9e4de779-d6a0-44bc-a531-20cdb97
 INSERT INTO campaigns (campaign_id, category_id, fundraiser_id, status_id, campaign_title, campaign_description, amount_goal, amount_raised, expenses_description, location, start_date, end_date, backers)
 VALUES ('9f0bb16e-fc25-47f3-b60a-635b6224225a', '66a45c1b-19af-4ab5-8747-1b0e2d79339d', '200393bc-8aaa-45a8-9093-80c4792348cd', '138250bb-f7eb-4adc-925c-2af315cc4a55', 'Operation Smile for kids with genetic defects', 'The last month campaign was a success and we want to fundraise for another 3 wonderful childs that are in need of a surgery.', 15000, 0, 'Overall surgery costs', 'UK, London', '2018-09-11T10:30:00Z', '2018-10-11T12:30:00Z', 0);
 INSERT INTO campaigns (campaign_id, category_id, fundraiser_id, status_id, campaign_title, campaign_description, amount_goal, amount_raised, expenses_description, location, start_date, end_date, backers)
-VALUES ('8f0bb16e-3225-zef3-b60a-ab5b6224225a', '29a45c1b-13af-4ab5-8747-3b0e2d72339f', '200393bc-8aaa-45a8-9093-80c4792348cd', '148250bb-f7eb-4adc-925c-2af315cc4a55', 'Abandoned horse horse found', 'A mistreated and subnutrited horse arrived at our shelter and we need to take care of him and bring him in a better condition', 50000, 0, 'Overall food and medical treatment costs', 'UK, London', '2018-09-11T10:30:00Z', '2018-09-29T12:30:00Z', 0);
+VALUES ('8f0bb16e-3225-zef3-b60a-ab5b6224225a', '29a45c1b-13af-4ab5-8747-3b0e2d72339f', '200393bc-8aaa-45a8-9093-80c4792348cd', '148250bb-f7eb-4adc-925c-2af315cc4a55', 'Abandoned horse found', 'A mistreated and subnutrited horse arrived at our shelter and we need to take care of him and bring him in a better condition', 50000, 0, 'Overall food and medical treatment costs', 'UK, London', '2018-09-11T10:30:00Z', '2018-09-29T12:30:00Z', 0);
 INSERT INTO campaigns (campaign_id, category_id, fundraiser_id, status_id, campaign_title, campaign_description, amount_goal, amount_raised, expenses_description, location, start_date, end_date, backers)
 VALUES ('3f0bb16e-4a25-cdf3-b60a-275b6224225a', 'a5a45c1b-19af-zcb5-8747-3e0e2d79330f', '200393bc-8aaa-45a8-9093-80c4792348cd', '158250bb-f7eb-4adc-925c-2af315cc4a55', 'Local community cleanup', 'We have started an initiative to cleanup our parks and benches from bus stations', 2000, 0, 'Materials and cleaning items', 'UK, London', '2018-09-10T10:30:00Z', '2018-09-16T12:30:00Z', 0);

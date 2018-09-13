@@ -24,9 +24,9 @@ echo "*******  Configuration Server has started"
 
 
 echo "********************************************************"
-echo "Starting Campaign Server with Configuration Service via Eureka :  $EUREKASERVER_URI" ON PORT: $SERVER_PORT;
+echo "Starting Fundraiser Server with Configuration Service via Eureka :  $EUREKASERVER_URI" ON PORT: $SERVER_PORT;
 echo "********************************************************"
 java -Djava.security.egd=file:/dev/./urandom -Dserver.port=$SERVER_PORT   \
      -Deureka.client.serviceUrl.defaultZone=$EUREKASERVER_URI             \
      -Dspring.cloud.config.uri=$CONFIGSERVER_URI                          \
-     -Dspring.profiles.active=$PROFILE -jar /usr/local/campaignservice/@project.build.finalName@.jar
+     -Dspring.profiles.active=$PROFILE -jar /usr/local/fundraiserservice/@project.build.finalName@.jar

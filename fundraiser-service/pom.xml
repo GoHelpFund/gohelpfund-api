@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.gohelpfund</groupId>
-    <artifactId>campaign-service</artifactId>
+    <artifactId>fundraiser-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>GoHelpFund Campaign Service</name>
-    <description>Campaign Service</description>
+    <name>GoHelpFund Fundraiser Service</name>
+    <description>Fundraiser Service</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -69,22 +69,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-core</artifactId>
-            <version>1.11.213</version>
-        </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-kms</artifactId>
-            <version>1.11.213</version>
-        </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.11.213</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka</artifactId>
         </dependency>
@@ -99,7 +83,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>com.gohelpfund.api.v1.Application</start-class>
-        <docker.image.name>gohelpfund/ghf-campaign-service</docker.image.name>
+        <docker.image.name>gohelpfund/ghf-fundraiser-service</docker.image.name>
         <docker.image.tag>latest</docker.image.tag>
     </properties>
 
