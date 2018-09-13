@@ -3,25 +3,21 @@ package com.gohelpfund.api.v1.campaigns.model.fundraiser;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.gohelpfund.api.v1.campaigns.model.fundraiser.status.FundraiserStatus;
 
 import javax.persistence.*;
 
-@Entity
-@JsonPropertyOrder({"fundraiserId", "name", "age", "profileImageUrl", "status", "social", "professional"})
-public class Fundraiser {
-    @Id
-    @JsonProperty("id")
-    @Column(name = "fundraiser_id", nullable = false)
-    private String fundraiserId;
 
-    @Column(name = "name")
+@JsonPropertyOrder({"id", "name", "age", "profile_image_url", "status", "social", "professional"})
+public class Fundraiser {
+
+    private String id;
+
     private String name;
 
-    @Column(name = "age")
     private int age;
 
     @JsonProperty("profile_image_url")
-    @Column(name = "profile_image_url")
     private String profileImageUrl;
 
     @Transient
@@ -30,22 +26,21 @@ public class Fundraiser {
     @Transient
     private FundraiserProfessional professional;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id")
+    @Transient
     private FundraiserStatus status;
 
     public Fundraiser(){
         this.name = "Zach";
         this.age = 29;
-        this.profileImageUrl = "https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/categories/charity.png";
+        this.profileImageUrl = "https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/com.gohelpfund.api.v1.categories/charity.png";
     }
 
-    public String getFundraiserId() {
-        return fundraiserId;
+    public String getId() {
+        return id;
     }
 
-    public void setFundraiserId(String fundraiserId) {
-        this.fundraiserId = fundraiserId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -97,7 +92,7 @@ public class Fundraiser {
     }
 
     public Fundraiser withId(String fundraiserId){
-        this.setFundraiserId(fundraiserId);
+        this.setId(fundraiserId);
         return this;
     }
 

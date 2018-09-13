@@ -18,5 +18,5 @@ Run the following maven command.  This command will execute the [Spotify docker 
 
 Now we are going to use docker-compose to start the actual image.  To start the docker image, issue the following docker-compose command:
 
-   **docker-compose -f docker/local/docker-compose.yml up**
+   **docker-compose -f docker/local-api/docker-compose.yml up**
 

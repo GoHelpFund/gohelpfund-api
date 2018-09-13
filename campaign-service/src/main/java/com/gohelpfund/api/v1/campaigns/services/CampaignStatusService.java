@@ -1,6 +1,6 @@
 package com.gohelpfund.api.v1.campaigns.services;
 
-import com.gohelpfund.api.v1.campaigns.model.CampaignStatus;
+import com.gohelpfund.api.v1.campaigns.model.status.CampaignStatus;
 import com.gohelpfund.api.v1.campaigns.repository.CampaignStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

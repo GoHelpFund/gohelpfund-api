@@ -1,17 +1,17 @@
 version: '2'
 services:
-  eurekaserver:
-    image:   gohelpfund/ghf-eurekasvr:latest
+  eureka-server:
+    image:   gohelpfund/ghf-eureka-server:latest
     ports:
     - "8761:8761"
-  configserver:
-    image: gohelpfund/ghf-confsvr:latest
+  config-server:
+    image: gohelpfund/ghf-config-server:latest
     ports:
     - "8888:8888"
     environment:
       PROFILE: "local-api"
       SERVER_PORT: "8888"
-      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
       EUREKASERVER_PORT: "8761"
       ENCRYPT_KEY:       "IMSYMMETRIC"
   database:
@@ -23,29 +23,42 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: p0stgr@s
       POSTGRES_DB: gohelpfund_local
-  campaignservice:
+  campaign-service:
     image: gohelpfund/ghf-campaign-service:latest
     ports:
     - "5555:5555"
     environment:
       PROFILE: "local-api"
       SERVER_PORT: "5555"
-      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
       EUREKASERVER_PORT:   "8761"
-      CONFIGSERVER_URI: "http://configserver:8888"
+      CONFIGSERVER_URI: "http://config-server:8888"
       CONFIGSERVER_PORT:   "8888"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"
-  fundraiserservice:
+  fundraiser-service:
     image: gohelpfund/ghf-fundraiser-service:latest
     ports:
     - "5556:5556"
     environment:
       PROFILE: "local-api"
       SERVER_PORT: "5556"
-      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
       EUREKASERVER_PORT:   "8761"
-      CONFIGSERVER_URI: "http://configserver:8888"
+      CONFIGSERVER_URI: "http://config-server:8888"
+      CONFIGSERVER_PORT:   "8888"
+      DATABASESERVER_PORT: "5432"
+      ENCRYPT_KEY:       "IMSYMMETRIC"
+  category-service:
+    image: gohelpfund/ghf-category-service:latest
+    ports:
+    - "5557:5557"
+    environment:
+      PROFILE: "local-api"
+      SERVER_PORT: "5557"
+      EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
+      EUREKASERVER_PORT:   "8761"
+      CONFIGSERVER_URI: "http://config-server:8888"
       CONFIGSERVER_PORT:   "8888"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"

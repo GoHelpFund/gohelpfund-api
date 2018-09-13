@@ -1,6 +1,6 @@
 package com.gohelpfund.api.v1.campaigns.services;
 
-import com.gohelpfund.api.v1.campaigns.model.CampaignMediaResource;
+import com.gohelpfund.api.v1.campaigns.model.mediaresource.CampaignMediaResource;
 import com.gohelpfund.api.v1.campaigns.repository.CampaignMediaResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,5 +1,5 @@
-configserver:
-  image: gohelpfund/ghf-confsvr:latest
+config-server:
+  image: gohelpfund/ghf-config-server:latest
   mem_limit: 203741824
   ports:
   - "8888:8888"
@@ -21,14 +21,14 @@ campaignservice:
   image: gohelpfund/ghf-campaign-service:latest
   mem_limit: 253741824
   links:
-  - "configserver:configserver"
+  - "config:config"
   - "database:database"
   ports:
   - "5555:5555"
   environment:
     PROFILE: "prod-api"
     SERVER_PORT: "5555"
-    CONFIGSERVER_URI: "http://configserver:8888"
+    CONFIGSERVER_URI: "http://config:8888"
     CONFIGSERVER_PORT:   "8888"
     DATABASESERVER_PORT: "5432"
     ENCRYPT_KEY: "IMSYMMETRIC"

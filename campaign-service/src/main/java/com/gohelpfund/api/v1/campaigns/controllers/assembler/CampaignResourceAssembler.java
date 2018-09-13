@@ -2,7 +2,7 @@ package com.gohelpfund.api.v1.campaigns.controllers.assembler;
 
 import com.gohelpfund.api.v1.campaigns.controllers.CampaignController;
 import com.gohelpfund.api.v1.campaigns.model.Campaign;
-import com.gohelpfund.api.v1.campaigns.model.CampaignStatusType;
+import com.gohelpfund.api.v1.campaigns.model.status.CampaignStatusType;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.stereotype.Component;

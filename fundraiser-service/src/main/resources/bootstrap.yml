@@ -1,6 +1,6 @@
 spring:
   application:
-    name: fundraiserservice
+    name: fundraiser-service
   profiles:
     active:
       local-api

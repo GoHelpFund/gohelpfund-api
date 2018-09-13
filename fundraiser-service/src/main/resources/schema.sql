@@ -69,6 +69,6 @@ CREATE TABLE fundraisers (
   );
 
 INSERT INTO fundraisers (fundraiser_id, social_id, professional_id, status_id,  name, age, profile_image_url)
-VALUES ('bc8250bb-f7eb-4adc-925c-2af315cc4a55', 'z28250bb-f7eb-4adc-925c-90f315cc4a27', 'a38250bb-f7eb-4adc-925c-90f315cc4a27', '208250bb-f7eb-4adc-925c-2af315cc4a55', 'John', 28, 'https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/categories/charity.png');
+VALUES ('bc8250bb-f7eb-4adc-925c-2af315cc4a55', 'z28250bb-f7eb-4adc-925c-90f315cc4a27', 'a38250bb-f7eb-4adc-925c-90f315cc4a27', '208250bb-f7eb-4adc-925c-2af315cc4a55', 'John', 28, 'https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/com.gohelpfund.api.v1.categories/charity.png');
 INSERT INTO fundraisers (fundraiser_id, social_id, professional_id, status_id, name, age, profile_image_url)
-VALUES ('200393bc-8aaa-45a8-9093-80c4792348cd', 'g29250bb-efec-2adc-925c-aff315cc4a27', 'b49250bb-efec-2adc-925c-aff315cc4a27', '218250bb-f7eb-4adc-925c-2af315cc4a55', 'Mike', 38, 'https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/categories/charity.png');
+VALUES ('200393bc-8aaa-45a8-9093-80c4792348cd', 'g29250bb-efec-2adc-925c-aff315cc4a27', 'b49250bb-efec-2adc-925c-aff315cc4a27', '218250bb-f7eb-4adc-925c-2af315cc4a55', 'Mike', 38, 'https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/com.gohelpfund.api.v1.categories/charity.png');

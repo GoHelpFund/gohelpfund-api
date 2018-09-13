@@ -1,6 +1,6 @@
 package com.gohelpfund.api.v1.campaigns.repository;
 
-import com.gohelpfund.api.v1.campaigns.model.CampaignStatus;
+import com.gohelpfund.api.v1.campaigns.model.status.CampaignStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

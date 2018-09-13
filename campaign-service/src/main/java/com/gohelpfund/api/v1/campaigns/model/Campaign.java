@@ -5,8 +5,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.gohelpfund.api.v1.campaigns.model.category.Category;
 import com.gohelpfund.api.v1.campaigns.model.fundraiser.Fundraiser;
-import com.gohelpfund.api.v1.categories.model.Category;
+import com.gohelpfund.api.v1.campaigns.model.mediaresource.CampaignMediaResource;
+import com.gohelpfund.api.v1.campaigns.model.status.CampaignStatus;
+
 
 import javax.persistence.*;
 import java.util.Date;
@@ -26,6 +29,10 @@ public class Campaign {
     @JsonIgnore
     @Column(name ="fundraiser_id", nullable = false)
     private String fundraiserId;
+
+    @JsonIgnore
+    @Column(name ="category_id", nullable = false)
+    private String categoryId;
 
     @JsonProperty("title")
     @Column(name = "campaign_title", nullable = false)
@@ -70,8 +77,7 @@ public class Campaign {
     @Transient
     private Fundraiser fundraiser;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
+    @Transient
     private Category category;
 
     @JsonProperty("media_resources")
@@ -97,6 +103,14 @@ public class Campaign {
 
     public void setFundraiserId(String fundraiserId) {
         this.fundraiserId = fundraiserId;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Fundraiser getFundraiser() {
@@ -222,6 +236,11 @@ public class Campaign {
 
     public Campaign withFundraiser(Fundraiser fundraiser){
         this.setFundraiser(fundraiser);
+        return this;
+    }
+
+    public Campaign withCategory(Category category){
+        this.setCategory(category);
         return this;
     }
 

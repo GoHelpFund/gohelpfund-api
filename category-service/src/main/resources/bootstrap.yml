@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: category-service
+  profiles:
+    active:
+      local-api
+  cloud:
+    config:
+      enabled: true

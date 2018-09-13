@@ -1,6 +1,6 @@
 package com.gohelpfund.api.v1.campaigns.repository;
 
-import com.gohelpfund.api.v1.campaigns.model.CampaignMediaResource;
+import com.gohelpfund.api.v1.campaigns.model.mediaresource.CampaignMediaResource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

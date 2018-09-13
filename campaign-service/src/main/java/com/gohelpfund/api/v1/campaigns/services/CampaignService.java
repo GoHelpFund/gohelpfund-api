@@ -1,7 +1,9 @@
 package com.gohelpfund.api.v1.campaigns.services;
 
+import com.gohelpfund.api.v1.campaigns.clients.CategoryFeignClient;
 import com.gohelpfund.api.v1.campaigns.clients.FundraiserFeignClient;
 import com.gohelpfund.api.v1.campaigns.model.Campaign;
+import com.gohelpfund.api.v1.campaigns.model.category.Category;
 import com.gohelpfund.api.v1.campaigns.model.fundraiser.Fundraiser;
 import com.gohelpfund.api.v1.campaigns.repository.CampaignRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,10 @@ public class CampaignService {
     private CampaignRepository repository;
 
     @Autowired
-    FundraiserFeignClient fundraiserFeignClient;
+    FundraiserFeignClient fundraiserClient;
+
+    @Autowired
+    CategoryFeignClient categoryClient;
 
     @Autowired
     private CampaignMediaResourceService resources;
@@ -27,19 +32,30 @@ public class CampaignService {
     @Autowired
     private CampaignStatusService status;
 
-    private Resource<Fundraiser> retrieveFundraiser(String fundraiserId, String clientType) {
+    private Fundraiser getFundraiser(String id, String clientType) {
         Resource<Fundraiser> fundraiser;
 
         switch (clientType) {
             case "feign":
-                fundraiser = fundraiserFeignClient.getFundraiser(fundraiserId);
+                fundraiser = fundraiserClient.getFundraiser(id);
                 break;
             default:
-                fundraiser = fundraiserFeignClient.getFundraiser(fundraiserId);
+                fundraiser = fundraiserClient.getFundraiser(id);
         }
-        return fundraiser;
+        return fundraiser.getContent();
     }
+    private Category getCategory(String id, String clientType) {
+        Resource<Category> category;
 
+        switch (clientType) {
+            case "feign":
+                category = categoryClient.getCategory(id);
+                break;
+            default:
+                category = categoryClient.getCategory(id);
+        }
+        return category.getContent();
+    }
 
     public List<Campaign> getCampaigns() {
         List<Campaign> campaigns = repository.findAll();
@@ -50,8 +66,10 @@ public class CampaignService {
 
     public Optional<Campaign> getCampaignById(String campaignId) {
         Optional<Campaign> campaign = repository.findByCampaignId(campaignId);
-        Fundraiser fundraiser = retrieveFundraiser(campaign.get().getFundraiserId(), "feign").getContent();
+        Fundraiser fundraiser = getFundraiser(campaign.get().getFundraiserId(), "feign").withId(campaign.get().getFundraiserId());
+        Category category = getCategory(campaign.get().getCategoryId(), "feign").withId(campaign.get().getCategoryId());
         campaign.get()
+                .withCategory(category)
                 .withMediaResources(resources.getAll(campaign.get().getCampaignId()))
                 .withFundraiser(fundraiser);
         return campaign;

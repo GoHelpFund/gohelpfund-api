@@ -3,8 +3,7 @@ package com.gohelpfund.api.v1.campaigns.controllers;
 import com.gohelpfund.api.v1.campaigns.controllers.assembler.CampaignResourceAssembler;
 import com.gohelpfund.api.v1.campaigns.controllers.exceptions.CampaignNotFoundException;
 import com.gohelpfund.api.v1.campaigns.model.Campaign;
-import com.gohelpfund.api.v1.campaigns.model.CampaignStatus;
-import com.gohelpfund.api.v1.campaigns.model.CampaignStatusType;
+import com.gohelpfund.api.v1.campaigns.model.status.CampaignStatusType;
 import com.gohelpfund.api.v1.campaigns.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 

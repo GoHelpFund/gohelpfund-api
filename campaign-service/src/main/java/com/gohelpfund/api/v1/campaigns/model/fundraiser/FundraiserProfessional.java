@@ -2,6 +2,7 @@ package com.gohelpfund.api.v1.campaigns.model.fundraiser;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.persistence.Column;
@@ -9,29 +10,27 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
+
 @JsonPropertyOrder({"job_title", "job_description", "company_name", "company_url"})
 public class FundraiserProfessional {
 
     @Id
     @JsonIgnore
-    @Column(name = "professional_id", nullable = false)
     private String professionalId;
 
     @JsonIgnore
-    @Column(name = "fundraiser_id", nullable = false)
     private String fundraiserId;
 
-    @Column(name = "job_title")
+    @JsonProperty("job_title")
     private String jobTitle;
 
-    @Column(name = "job_description")
+    @JsonProperty("job_description")
     private String jobDescription;
 
-    @Column(name = "company_name")
+    @JsonProperty("company_name")
     private String companyName;
 
-    @Column(name = "company_url")
+    @JsonProperty("company_url")
     private String companyUrl;
 
     public FundraiserProfessional(){

@@ -13,10 +13,11 @@
     <version>1.4.4.RELEASE</version>
   </parent>
   <modules>
-    <module>confsvr</module>
+    <module>eureka-server</module>
+    <module>config-server</module>
     <module>campaign-service</module>
     <module>fundraiser-service</module>
-    <module>eurekasvr</module>
+    <module>category-service</module>
   </modules>
   <build>
     <plugins>

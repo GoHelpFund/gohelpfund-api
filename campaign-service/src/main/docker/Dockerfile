@@ -1,7 +1,7 @@
 FROM openjdk:8-jdk-alpine
 RUN apk update && apk upgrade && apk add netcat-openbsd
-RUN mkdir -p /usr/local/campaignservice
-ADD @project.build.finalName@.jar /usr/local/campaignservice/
+RUN mkdir -p /usr/local/campaign-service
+ADD @project.build.finalName@.jar /usr/local/campaign-service/
 ADD run.sh run.sh
 RUN chmod +x run.sh
 CMD ./run.sh

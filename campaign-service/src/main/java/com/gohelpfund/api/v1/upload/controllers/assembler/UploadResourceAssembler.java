@@ -17,13 +17,13 @@ public class UploadResourceAssembler implements ResourceAssembler<Upload, Resour
 
         // Unconditional links to single-item resource and aggregate root
 
-        Resource<Upload> categoryResource = new Resource<>(upload,
+        Resource<Upload> uploadResource = new Resource<>(upload,
                 linkTo(methodOn(UploadController.class).one()).withRel("upload")
         );
 
         /// Conditional links based on state of the upload
 
 
-        return categoryResource;
+        return uploadResource;
     }
 }

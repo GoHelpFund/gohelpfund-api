@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "fundraisers")
-@JsonPropertyOrder({"fundraiserId", "name", "age", "profileImageUrl", "status", "social", "professional"})
+@JsonPropertyOrder({"id", "name", "age", "profile_image_url", "status", "social", "professional"})
 public class Fundraiser {
     @Id
     @JsonProperty("id")
