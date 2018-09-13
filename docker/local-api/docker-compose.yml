@@ -7,10 +7,10 @@ services:
   config-server:
     image: gohelpfund/ghf-config-server:latest
     ports:
-    - "8888:8888"
+    - "9000:9000"
     environment:
       PROFILE: "local-api"
-      SERVER_PORT: "8888"
+      SERVER_PORT: "9000"
       EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
       EUREKASERVER_PORT: "8761"
       ENCRYPT_KEY:       "IMSYMMETRIC"
@@ -26,39 +26,52 @@ services:
   campaign-service:
     image: gohelpfund/ghf-campaign-service:latest
     ports:
-    - "5555:5555"
+    - "9100:9100"
     environment:
       PROFILE: "local-api"
-      SERVER_PORT: "5555"
+      SERVER_PORT: "9100"
       EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
       EUREKASERVER_PORT:   "8761"
-      CONFIGSERVER_URI: "http://config-server:8888"
-      CONFIGSERVER_PORT:   "8888"
+      CONFIGSERVER_URI: "http://config-server:9000"
+      CONFIGSERVER_PORT:   "9000"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"
   fundraiser-service:
     image: gohelpfund/ghf-fundraiser-service:latest
     ports:
-    - "5556:5556"
+    - "9200:9200"
     environment:
       PROFILE: "local-api"
-      SERVER_PORT: "5556"
+      SERVER_PORT: "9200"
       EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
       EUREKASERVER_PORT:   "8761"
-      CONFIGSERVER_URI: "http://config-server:8888"
-      CONFIGSERVER_PORT:   "8888"
+      CONFIGSERVER_URI: "http://config-server:9000"
+      CONFIGSERVER_PORT:   "9000"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"
   category-service:
     image: gohelpfund/ghf-category-service:latest
     ports:
-    - "5557:5557"
+    - "9101:9101"
     environment:
       PROFILE: "local-api"
-      SERVER_PORT: "5557"
+      SERVER_PORT: "9101"
       EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
       EUREKASERVER_PORT:   "8761"
-      CONFIGSERVER_URI: "http://config-server:8888"
-      CONFIGSERVER_PORT:   "8888"
+      CONFIGSERVER_URI: "http://config-server:9000"
+      CONFIGSERVER_PORT:   "9000"
+      DATABASESERVER_PORT: "5432"
+      ENCRYPT_KEY:       "IMSYMMETRIC"
+  upload-service:
+    image: gohelpfund/ghf-upload-service:latest
+    ports:
+    - "9001:9001"
+    environment:
+      PROFILE: "local-api"
+      SERVER_PORT: "9001"
+      EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
+      EUREKASERVER_PORT:   "8761"
+      CONFIGSERVER_URI: "http://config-server:9000"
+      CONFIGSERVER_PORT:   "9000"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"

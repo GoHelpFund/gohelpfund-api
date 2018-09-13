@@ -19,7 +19,7 @@ public class FundraiserResourceAssembler implements ResourceAssembler<Fundraiser
 
         Resource<Fundraiser> fundraiserResource = new Resource<>(fundraiser,
                 linkTo(methodOn(FundraiserController.class).one(fundraiser.getFundraiserId())).withSelfRel(),
-                linkTo(methodOn(FundraiserController.class).all()).withRel("categories")
+                linkTo(methodOn(FundraiserController.class).all()).withRel("fundraisers")
         );
 
         /// Conditional links based on state of the fundraiser

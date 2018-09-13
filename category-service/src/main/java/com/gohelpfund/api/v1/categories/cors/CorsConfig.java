@@ -1,4 +1,4 @@
-package com.gohelpfund.api.v1.cors;
+package com.gohelpfund.api.v1.categories.cors;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

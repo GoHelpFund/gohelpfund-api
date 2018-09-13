@@ -19,7 +19,6 @@ public class UploadController {
     @Autowired
     private UploadResourceAssembler assembler;
 
-
     @GetMapping()
     public Resource<Upload> one() {
 

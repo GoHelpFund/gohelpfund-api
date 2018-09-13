@@ -20,7 +20,7 @@ public class CategoryResourceAssembler implements ResourceAssembler<Category, Re
 
         Resource<Category> categoryResource = new Resource<>(category,
                 linkTo(methodOn(CategoryController.class).one(category.getCategoryId())).withSelfRel(),
-                linkTo(methodOn(CategoryController.class).all()).withRel("com/gohelpfund/api/v1/categories")
+                linkTo(methodOn(CategoryController.class).all()).withRel("categories")
         );
 
         /// Conditional links based on state of the category

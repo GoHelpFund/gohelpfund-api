@@ -18,6 +18,7 @@
     <module>campaign-service</module>
     <module>fundraiser-service</module>
     <module>category-service</module>
+    <module>upload-service</module>
   </modules>
   <build>
     <plugins>
