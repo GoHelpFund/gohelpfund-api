@@ -2,10 +2,12 @@ version: '2'
 services:
   eureka-server:
     image:   gohelpfund/ghf-eureka-server:latest
+    mem_limit: 753741824
     ports:
     - "8761:8761"
   config-server:
     image: gohelpfund/ghf-config-server:latest
+    mem_limit: 753741824
     ports:
     - "9000:9000"
     environment:
@@ -16,6 +18,7 @@ services:
       ENCRYPT_KEY:       "IMSYMMETRIC"
   database:
     image: postgres:9.5
+    mem_limit: 253741824
     ports:
     - "5432:5432"
     environment:
@@ -25,6 +28,7 @@ services:
       POSTGRES_DB: gohelpfund_local
   campaign-service:
     image: gohelpfund/ghf-campaign-service:latest
+    mem_limit: 553741824
     ports:
     - "9100:9100"
     environment:
@@ -38,6 +42,7 @@ services:
       ENCRYPT_KEY:       "IMSYMMETRIC"
   fundraiser-service:
     image: gohelpfund/ghf-fundraiser-service:latest
+    mem_limit: 553741824
     ports:
     - "9200:9200"
     environment:
@@ -51,6 +56,7 @@ services:
       ENCRYPT_KEY:       "IMSYMMETRIC"
   category-service:
     image: gohelpfund/ghf-category-service:latest
+    mem_limit: 553741824
     ports:
     - "9101:9101"
     environment:
@@ -64,6 +70,7 @@ services:
       ENCRYPT_KEY:       "IMSYMMETRIC"
   upload-service:
     image: gohelpfund/ghf-upload-service:latest
+    mem_limit: 553741824
     ports:
     - "9001:9001"
     environment:
