@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: zuul-server
+  profiles:
+    active:
+      local-api
+  cloud:
+    config:
+      enabled: true

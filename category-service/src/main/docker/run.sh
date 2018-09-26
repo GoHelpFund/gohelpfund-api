@@ -22,6 +22,17 @@ echo "********************************************************"
 while ! `nc -z config-server $CONFIGSERVER_PORT`; do sleep 3; done
 echo "*******  Configuration Server has started"
 
+echo "********************************************************"
+echo "Waiting for the zuul server to start on port $ZUULSERVER_PORT"
+echo "********************************************************"
+while ! `nc -z zuul-server $ZUULSERVER_PORT`; do sleep 3; done
+echo "*******  Configuration Server has started"
+
+echo "********************************************************"
+echo "Waiting for the fundraiser service to start on port $FUNDRAISERSERVICE_PORT"
+echo "********************************************************"
+while ! `nc -z fundraiser-service $FUNDRAISERSERVICE_PORT`; do sleep 3; done
+echo "*******  Configuration Server has started"
 
 echo "********************************************************"
 echo "Starting Category Server with Configuration Service via Eureka :  $EUREKASERVER_URI" ON PORT: $SERVER_PORT;

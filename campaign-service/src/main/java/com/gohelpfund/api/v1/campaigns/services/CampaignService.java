@@ -1,13 +1,14 @@
 package com.gohelpfund.api.v1.campaigns.services;
 
-import com.gohelpfund.api.v1.campaigns.clients.CategoryFeignClient;
-import com.gohelpfund.api.v1.campaigns.clients.FundraiserFeignClient;
+import com.gohelpfund.api.v1.campaigns.clients.CategoryRestTemplateClient;
+import com.gohelpfund.api.v1.campaigns.clients.FundraiserRestTemplateClient;
 import com.gohelpfund.api.v1.campaigns.model.Campaign;
 import com.gohelpfund.api.v1.campaigns.model.category.Category;
 import com.gohelpfund.api.v1.campaigns.model.fundraiser.Fundraiser;
 import com.gohelpfund.api.v1.campaigns.repository.CampaignRepository;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,10 +22,10 @@ public class CampaignService {
     private CampaignRepository repository;
 
     @Autowired
-    FundraiserFeignClient fundraiserClient;
+    FundraiserRestTemplateClient fundraiserClient;
 
     @Autowired
-    CategoryFeignClient categoryClient;
+    CategoryRestTemplateClient categoryClient;
 
     @Autowired
     private CampaignMediaResourceService resources;
@@ -32,42 +33,61 @@ public class CampaignService {
     @Autowired
     private CampaignStatusService status;
 
-    private Fundraiser getFundraiser(String id, String clientType) {
-        Resource<Fundraiser> fundraiser;
-
-        switch (clientType) {
-            case "feign":
-                fundraiser = fundraiserClient.getFundraiser(id);
-                break;
-            default:
-                fundraiser = fundraiserClient.getFundraiser(id);
-        }
-        return fundraiser.getContent();
+    @HystrixCommand(fallbackMethod = "buildFallbackFundraiser",
+            threadPoolKey = "fundraiserByIdThreadPool",
+            threadPoolProperties =
+                    {@HystrixProperty(name = "coreSize", value = "30"),
+                            @HystrixProperty(name = "maxQueueSize", value = "10")},
+            commandProperties = {
+                    @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+                    @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "75"),
+                    @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "7000"),
+                    @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "15000"),
+                    @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "5")}
+    )
+    private Fundraiser getFundraiser(String id) {
+        return fundraiserClient.getFundraiser(id);
     }
-    private Category getCategory(String id, String clientType) {
-        Resource<Category> category;
 
-        switch (clientType) {
-            case "feign":
-                category = categoryClient.getCategory(id);
-                break;
-            default:
-                category = categoryClient.getCategory(id);
-        }
-        return category.getContent();
+    private Fundraiser buildFallbackFundraiser(String id) {
+        return new Fundraiser();
+    }
+
+    @HystrixCommand(fallbackMethod = "buildFallbackCategory",
+            threadPoolKey = "categoryByIdThreadPool",
+            threadPoolProperties =
+                    {@HystrixProperty(name = "coreSize", value = "30"),
+                            @HystrixProperty(name = "maxQueueSize", value = "10")},
+            commandProperties = {
+                    @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+                    @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "75"),
+                    @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "7000"),
+                    @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "15000"),
+                    @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "5")}
+    )
+    private Category getCategory(String id) {
+        return categoryClient.getCategory(id);
+    }
+
+    private Category buildFallbackCategory(String id) {
+        return new Category();
     }
 
     public List<Campaign> getCampaigns() {
         List<Campaign> campaigns = repository.findAll();
-        campaigns.forEach(campaign -> campaign.withMediaResources(resources.getAll(campaign.getCampaignId())));
-
+        campaigns.forEach(campaign -> {
+                    campaign.withMediaResources(resources.getAll(campaign.getCampaignId()));
+                    campaign.withFundraiser(getFundraiser(campaign.getFundraiserId()));
+                    campaign.withCategory(getCategory(campaign.getCategoryId()));
+                }
+        );
         return campaigns;
     }
 
     public Optional<Campaign> getCampaignById(String campaignId) {
         Optional<Campaign> campaign = repository.findByCampaignId(campaignId);
-        Fundraiser fundraiser = getFundraiser(campaign.get().getFundraiserId(), "feign").withId(campaign.get().getFundraiserId());
-        Category category = getCategory(campaign.get().getCategoryId(), "feign").withId(campaign.get().getCategoryId());
+        Fundraiser fundraiser = getFundraiser(campaign.get().getFundraiserId()).withId(campaign.get().getFundraiserId());
+        Category category = getCategory(campaign.get().getCategoryId()).withId(campaign.get().getCategoryId());
         campaign.get()
                 .withCategory(category)
                 .withMediaResources(resources.getAll(campaign.get().getCampaignId()))

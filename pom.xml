@@ -13,12 +13,15 @@
     <version>1.4.4.RELEASE</version>
   </parent>
   <modules>
+    <module>zuul-server</module>
     <module>eureka-server</module>
     <module>config-server</module>
+    <!--<module>specialroutes-service</module>-->
     <module>campaign-service</module>
     <module>fundraiser-service</module>
-    <module>category-service</module>
-    <module>upload-service</module>
+    <!--<module>category-service</module>-->
+    <!--<module>category-service-new</module>-->
+    <!--<module>upload-service</module>-->
   </modules>
   <build>
     <plugins>
