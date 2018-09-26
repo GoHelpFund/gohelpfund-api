@@ -5,6 +5,9 @@ import com.gohelpfund.api.v1.campaigns.controllers.exceptions.CampaignNotFoundEx
 import com.gohelpfund.api.v1.campaigns.model.Campaign;
 import com.gohelpfund.api.v1.campaigns.model.status.CampaignStatusType;
 import com.gohelpfund.api.v1.campaigns.services.CampaignService;
+import com.gohelpfund.api.v1.utils.UserContextHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
@@ -21,8 +24,9 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(value = "v1/campaigns")
+@RequestMapping(value = "api/v1/campaigns")
 public class CampaignController {
+    private static final Logger logger = LoggerFactory.getLogger(CampaignController.class);
 
     private final CampaignService service;
     private final CampaignResourceAssembler assembler;
@@ -47,7 +51,7 @@ public class CampaignController {
 
     @GetMapping("/{id}")
     public Resource<Campaign> one(@PathVariable("id") String campaignId) {
-
+        logger.debug("CampaignController Correlation id: {}", UserContextHolder.getContext().getCorrelationId());
         return assembler.toResource(
                 service.getCampaignById(campaignId)
                         .orElseThrow(() -> new CampaignNotFoundException(campaignId)));

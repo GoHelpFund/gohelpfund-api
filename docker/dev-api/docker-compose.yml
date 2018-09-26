@@ -1,12 +1,45 @@
-config-server:
-  image: gohelpfund/ghf-config-server:latest
-  mem_limit: 203741824
+eureka-server:
+  image:   gohelpfund/ghf-eureka-server:latest
+  mem_limit: 353741824
   ports:
-  - "8888:8888"
+  - "8761:8761"
   environment:
     PROFILE: "dev-api"
-    SERVER_PORT: "8888"
+
+config-server:
+  image: gohelpfund/ghf-config-server:latest
+  mem_limit: 303741824
+  ports:
+  - "8762:8762"
+  links:
+  - "eureka-server:eureka-server"
+  environment:
+    PROFILE: "dev-api"
+    SERVER_PORT: "8762"
+    EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
+    EUREKASERVER_PORT: "8761"
     ENCRYPT_KEY: "IMSYMMETRIC"
+
+zuul-server:
+  image: gohelpfund/ghf-zuul-server:latest
+  mem_limit: 353741824
+  ports:
+  - "80:8763"
+  links:
+  - "eureka-server:eureka-server"
+  - "config-server:config-server"
+  - "fundraiser-service:fundraiser-service"
+  - "campaign-service:campaign-service"
+  environment:
+    PROFILE: "dev-api"
+    SERVER_PORT: "8763"
+    EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
+    CONFIGSERVER_URI: "http://config-server:8762"
+    EUREKASERVER_PORT:        "8761"
+    DATABASESERVER_PORT:      "5432"
+    CONFIGSERVER_PORT:        "8762"
+    CATEGORYSERVERNEW_PORT:   "9102"
+
 database:
   image: postgres:9.5
   mem_limit: 103741824
@@ -17,18 +50,43 @@ database:
     POSTGRES_USER: "postgres_dev"
     POSTGRES_PASSWORD:  "p0stgr@s_dev"
     POSTGRES_DB: "gohelpfund_dev"
-campaignservice:
+
+campaign-service:
   image: gohelpfund/ghf-campaign-service:latest
-  mem_limit: 253741824
-  links:
-  - "config:config"
-  - "database:database"
+  mem_limit: 353741824
   ports:
-  - "5555:5555"
+  - "9100:9100"
+  links:
+  - "config-server:config-server"
+  - "database:database"
+  - "eureka-server:eureka-server"
   environment:
     PROFILE: "dev-api"
-    SERVER_PORT: "5555"
-    CONFIGSERVER_URI: "http://config:8888"
-    CONFIGSERVER_PORT:   "8888"
-    DATABASESERVER_PORT: "5432"
-    ENCRYPT_KEY: "IMSYMMETRIC"
+    EUREKASERVER_URI:   "http://eureka-server:8761/eureka/"
+    CONFIGSERVER_URI:   "http://config-server:8762"
+    SERVER_PORT:                   "9100"
+    EUREKASERVER_PORT:             "8761"
+    CONFIGSERVER_PORT:             "8762"
+    ZUULSERVER_PORT:               "8763"
+    DATABASESERVER_PORT:           "5432"
+    ENCRYPT_KEY:            "IMSYMMETRIC"
+
+fundraiser-service:
+  image: gohelpfund/ghf-fundraiser-service:latest
+  mem_limit: 353741824
+  ports:
+  - "9200:9200"
+  links:
+  - "config-server:config-server"
+  - "database:database"
+  - "eureka-server:eureka-server"
+  environment:
+    PROFILE: "dev-api"
+    EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
+    CONFIGSERVER_URI: "http://config-server:8762"
+    SERVER_PORT:              "9200"
+    EUREKASERVER_PORT:        "8761"
+    CONFIGSERVER_PORT:        "8762"
+    ZUULSERVER_PORT:          "8763"
+    DATABASESERVER_PORT:      "5432"
+    ENCRYPT_KEY:       "IMSYMMETRIC"    

@@ -22,7 +22,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 
 @RestController
-@RequestMapping("v1/categories")
+@RequestMapping("/")
 public class CategoryController {
 
     @Autowired

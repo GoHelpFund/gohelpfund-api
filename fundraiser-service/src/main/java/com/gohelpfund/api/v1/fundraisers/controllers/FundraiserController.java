@@ -20,7 +20,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 
 @RestController
-@RequestMapping("v1/fundraisers")
+@RequestMapping("api/v1/fundraisers")
 public class FundraiserController {
 
     @Autowired
