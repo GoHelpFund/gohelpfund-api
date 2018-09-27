@@ -9,10 +9,9 @@ import com.gohelpfund.api.v1.campaigns.model.category.status.CategoryStatus;
 import javax.persistence.*;
 
 
-@JsonPropertyOrder({"name", "description", "image_url", "status"})
+@JsonPropertyOrder({"id", "name", "description", "image_url", "status"})
 public class Category {
 
-    @JsonIgnore
     private String id;
     private String name;
     private String description;
