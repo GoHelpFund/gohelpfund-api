@@ -222,6 +222,16 @@ public class Campaign {
         return this;
     }
 
+    public Campaign withCategoryId(String categoryId) {
+        this.setCategoryId(categoryId);
+        return this;
+    }
+
+    public Campaign withFundraiserId(String fundraiserId) {
+        this.setFundraiserId(fundraiserId);
+        return this;
+    }
+
     public Campaign withStatus(CampaignStatus status){
         this.setStatus(status);
         return this;

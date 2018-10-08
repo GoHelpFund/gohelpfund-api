@@ -51,8 +51,12 @@ public class FundraiserController {
 
     @PostMapping()
     public ResponseEntity<Resource<Fundraiser>> newCategory(@RequestBody Fundraiser fundraiser) {
-        Fundraiser newFundraiser = service.save(fundraiser);
-
+        Fundraiser newFundraiser;
+        if (fundraiser.getFundraiserId() == null) {
+            newFundraiser = service.save();
+        } else {
+            newFundraiser = service.save(fundraiser);
+        }
         return ResponseEntity
                 .created(linkTo(methodOn(FundraiserController.class).one(newFundraiser.getFundraiserId())).toUri())
                 .body(assembler.toResource(newFundraiser));
