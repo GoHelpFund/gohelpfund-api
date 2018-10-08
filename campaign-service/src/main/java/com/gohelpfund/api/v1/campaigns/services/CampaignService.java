@@ -49,6 +49,10 @@ public class CampaignService {
         return fundraiserClient.getFundraiser(id);
     }
 
+    private Fundraiser generateFundraiser() {
+        return fundraiserClient.generateFundraiser();
+    }
+
     private Fundraiser buildFallbackFundraiser(String id) {
         return new Fundraiser();
     }
@@ -86,8 +90,10 @@ public class CampaignService {
 
     public Optional<Campaign> getCampaignById(String campaignId) {
         Optional<Campaign> campaign = repository.findByCampaignId(campaignId);
-        Fundraiser fundraiser = getFundraiser(campaign.get().getFundraiserId()).withId(campaign.get().getFundraiserId());
-        Category category = getCategory(campaign.get().getCategoryId()).withId(campaign.get().getCategoryId());
+        Fundraiser fundraiser = getFundraiser(campaign.get().getFundraiserId())
+                .withId(campaign.get().getFundraiserId());
+        Category category = getCategory(campaign.get().getCategoryId())
+                .withId(campaign.get().getCategoryId());
         campaign.get()
                 .withCategory(category)
                 .withMediaResources(resources.getAll(campaign.get().getCampaignId()))
@@ -102,12 +108,23 @@ public class CampaignService {
          * TODO
          * add create new fundraiser logic
          */
+
+        Fundraiser fundraiser = generateFundraiser();
+
+        String categoryId = campaign.getCategory().getId();
+        Category category = getCategory(categoryId)
+                .withId(categoryId);
+
         campaign.withId(id)
                 .withStatus(status.save(id))
                 .withMediaResources(resources.saveAll(campaign.getResources(), id))
-                .withFundraiser(new Fundraiser());
+                .withCategoryId(categoryId)
+                .withFundraiserId(fundraiser.getId());
 
-        return repository.save(campaign);
+        return repository
+                .save(campaign)
+                .withCategory(category)
+                .withFundraiser(fundraiser);
     }
 
     public Campaign updateCampaign(Campaign campaign) {

@@ -40,7 +40,7 @@ public class Fundraiser {
     public Fundraiser(){
         this.name = "Zach";
         this.age = 29;
-        this.profileImageUrl = "https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/categories/charity.png";
+        this.profileImageUrl = "https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/generic-user.jpg";
     }
 
     public String getFundraiserId() {
