@@ -67,7 +67,7 @@ Now we are going to use docker-compose to start the actual image.  To start the 
 
 # Components
 
-Kelp includes an assortment of strategies, price feeds, and plugins you can use to customize your bot. Kelp also enables you to create your own trading strategies.
+To be added
 
 ## Technologies
 
