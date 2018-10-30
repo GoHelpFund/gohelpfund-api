@@ -51,10 +51,12 @@ services:
       PROFILE: "local-api"
       EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
       CONFIGSERVER_URI: "http://config-server:8762"
+      AUTHSERVER_URI:   "http://authentication-service:8764/auth/user"
       SERVER_PORT:              "9200"
       EUREKASERVER_PORT:        "8761"
       CONFIGSERVER_PORT:        "8762"
       ZUULSERVER_PORT:          "8763"
+      AUTHSERVER_PORT:          "8764"
       DATABASESERVER_PORT:      "5432"
       ENCRYPT_KEY:       "IMSYMMETRIC"
   campaign-service:
@@ -66,7 +68,24 @@ services:
       PROFILE: "local-api"
       EUREKASERVER_URI:   "http://eureka-server:8761/eureka/"
       CONFIGSERVER_URI:   "http://config-server:8762"
+      AUTHSERVER_URI:   "http://authentication-service:8764/auth/user"
       SERVER_PORT:                   "9100"
+      EUREKASERVER_PORT:             "8761"
+      CONFIGSERVER_PORT:             "8762"
+      ZUULSERVER_PORT:               "8763"
+      AUTHSERVER_PORT:               "8764"
+      DATABASESERVER_PORT:           "5432"
+      ENCRYPT_KEY:            "IMSYMMETRIC"
+  authentication-service:
+    image: gohelpfund/ghf-authentication-service:latest
+    mem_limit: 553741824
+    ports:
+    - "8764:8764"
+    environment:
+      PROFILE: "local-api"
+      EUREKASERVER_URI:   "http://eureka-server:8761/eureka/"
+      CONFIGSERVER_URI:   "http://config-server:8762"
+      SERVER_PORT:                   "8764"
       EUREKASERVER_PORT:             "8761"
       CONFIGSERVER_PORT:             "8762"
       ZUULSERVER_PORT:               "8763"

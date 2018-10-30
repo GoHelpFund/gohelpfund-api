@@ -7,8 +7,8 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>GoHelpFund Config Server</name>
-  <description>Spring Cloud Config Server using a Git repository</description>
+  <name>config-server</name>
+  <description>GoHelpFund Spring Cloud Config Server</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>

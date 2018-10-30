@@ -4,6 +4,8 @@ logging:
       com.netflix: WARN
       org.springframework.web: WARN
       com.gohelpfund.api.v1: DEBUG
+zuul:
+  sensitiveHeaders: Cookie,Set-Cookie
 
 eureka:
   instance:

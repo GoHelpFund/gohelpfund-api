@@ -1,3 +1,8 @@
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://localhost:8764/auth/user
+
 spring:
   hateoas:
     use-hal-as-default-json-media-type: false

@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.gohelpfund</groupId>
-  <artifactId>eureka-server</artifactId>
+  <artifactId>authentication-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>eureka-server</name>
-  <description>GoHelpFund Eureka Server</description>
+  <name>authentication-service</name>
+  <description>GoHelpFund Authentication Service</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -29,17 +29,76 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-eureka-server</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-config</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-eureka</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-config-client</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-hystrix</artifactId>
+    </dependency>
+      <dependency>
+          <groupId>org.springframework.cloud</groupId>
+          <artifactId>spring-cloud-security</artifactId>
+      </dependency>
+
+      <dependency>
+          <groupId>org.springframework.security.oauth</groupId>
+          <artifactId>spring-security-oauth2</artifactId>
+      </dependency>
+
+
+      <dependency>
+          <groupId>org.springframework.security</groupId>
+          <artifactId>spring-security-jwt</artifactId>
+      </dependency>
+
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>9.1-901.jdbc4</version>
+    </dependency>
+
+      <dependency>
+          <groupId>org.springframework.security</groupId>
+          <artifactId>spring-security-rsa</artifactId>
+      </dependency>
   </dependencies>
 
-  <!--Docker build Config-->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <start-class>com.gohelpfund.api.v1.eureka.EurekaServerApplication</start-class>
     <java.version>1.8</java.version>
-    <docker.image.name>gohelpfund/ghf-eureka-server</docker.image.name>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <start-class>com.gohelpfund.api.v1.authentication.Application</start-class>
+    <docker.image.name>gohelpfund/ghf-authentication-service</docker.image.name>
     <docker.image.tag>latest</docker.image.tag>
   </properties>
 
@@ -73,6 +132,15 @@
              <groupId>com.spotify</groupId>
              <artifactId>docker-maven-plugin</artifactId>
              <version>0.4.10</version>
+
+             <dependencies>
+                 <dependency>
+                     <groupId>javax.activation</groupId>
+                     <artifactId>activation</artifactId>
+                     <version>1.1.1</version>
+                 </dependency>
+             </dependencies>
+
              <configuration>
                  <imageName>${docker.image.name}:${docker.image.tag}</imageName>
                  <dockerDirectory>${basedir}/target/dockerfile</dockerDirectory>
@@ -84,14 +152,6 @@
                      </resource>
                  </resources>
              </configuration>
-
-             <dependencies>
-                 <dependency>
-                     <groupId>javax.activation</groupId>
-                     <artifactId>activation</artifactId>
-                     <version>1.1.1</version>
-                 </dependency>
-             </dependencies>
          </plugin>
          <plugin>
              <groupId>org.springframework.boot</groupId>
@@ -99,5 +159,4 @@
          </plugin>
      </plugins>
  </build>
-
 </project>

@@ -2,16 +2,18 @@ package com.gohelpfund.api.v1.campaigns.clients;
 
 import com.gohelpfund.api.v1.campaigns.model.fundraiser.Fundraiser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
 public class FundraiserRestTemplateClient {
     @Autowired
-    RestTemplate restTemplate;
+    OAuth2RestTemplate restTemplate;
 
     public Fundraiser getFundraiser(String id){
         ResponseEntity<Fundraiser> restExchange =

@@ -7,8 +7,8 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Zuul Proxy Server</name>
-  <description>Zuul Proxy Server</description>
+  <name>zuul-server</name>
+  <description>GoHelpFund Zuul Proxy Server</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
