@@ -15,4 +15,4 @@ eureka:
         defaultZone: http://localhost:8761/eureka/
 
 server:
-  contextPath:   /auth
+  contextPath:   /api/v1/auth

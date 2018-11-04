@@ -1,7 +1,7 @@
 security:
   oauth2:
     resource:
-      userInfoUri: http://localhost:8764/auth/user
+      userInfoUri: http://localhost:8764/api/v1/auth/user
 
 spring:
   hateoas:
