@@ -49,8 +49,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-                .antMatchers(HttpMethod.POST, "/signup");
+//        web.ignoring()
+//                .antMatchers(HttpMethod.POST, "/signup");
     }
 
     @Override
@@ -68,6 +68,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/signup").authenticated()
                 .antMatchers(HttpMethod.POST,"/auth/oauth/token").authenticated()
                 .antMatchers(HttpMethod.GET,"/auth/user").authenticated();
     }
