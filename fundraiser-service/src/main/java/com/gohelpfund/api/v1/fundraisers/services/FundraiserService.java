@@ -1,5 +1,6 @@
 package com.gohelpfund.api.v1.fundraisers.services;
 
+import com.gohelpfund.api.v1.fundraisers.events.source.SimpleSourceBean;
 import com.gohelpfund.api.v1.fundraisers.model.Fundraiser;
 import com.gohelpfund.api.v1.fundraisers.repository.FundraiserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class FundraiserService {
 
     @Autowired
     private FundraiserStatusService status;
+
+    @Autowired
+    SimpleSourceBean simpleSourceBean;
 
     public List<Fundraiser> getAll() {
         List<Fundraiser> fundraisers = repository.findAll();
@@ -51,7 +55,11 @@ public class FundraiserService {
                 .withSocial(social.saveSocial(fundraiser.getSocial().withFundraiserId(id)))
                 .withProfessional(professional.saveProfessional(fundraiser.getProfessional().withFundraiserId(id)));
 
-        return repository.save(fundraiser);
+        Fundraiser newFundraiser =  repository.save(fundraiser);
+
+        simpleSourceBean.publishOrgChange("SAVE", newFundraiser.getFundraiserId());
+
+        return newFundraiser;
     }
 
     public Fundraiser save() {
@@ -62,19 +70,32 @@ public class FundraiserService {
                 .withSocial(social.saveSocial(id))
                 .withProfessional(professional.saveProfessional(id));
 
-        return repository.save(newFundraiser);
+        Fundraiser savedFundraiser =  repository.save(newFundraiser);
+
+        simpleSourceBean.publishOrgChange("SAVE", savedFundraiser.getFundraiserId());
+
+        return savedFundraiser;
     }
 
     public Fundraiser update(Fundraiser fundraiser) {
-        return repository.save(fundraiser);
+        Fundraiser newFundraiser =  repository.save(fundraiser);
+
+        simpleSourceBean.publishOrgChange("UPDATE", newFundraiser.getFundraiserId());
+
+        return newFundraiser;
     }
 
     public void delete(String id) {
         repository.delete(id);
+
+        simpleSourceBean.publishOrgChange("DELETE", id);
     }
 
     public void delete(Fundraiser fundraiser) {
+
         repository.delete(fundraiser.getFundraiserId());
+
+        simpleSourceBean.publishOrgChange("DELETE", fundraiser.getFundraiserId());
     }
 
 }

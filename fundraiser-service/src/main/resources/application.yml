@@ -6,6 +6,16 @@ security:
 spring:
   hateoas:
     use-hal-as-default-json-media-type: false
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination:  fundraiserChangeTopic
+          content-type: application/json
+        kafka:
+          binder:
+            zkNodes: localhost
+            brokers: localhost
 eureka:
   instance:
     preferIpAddress: true

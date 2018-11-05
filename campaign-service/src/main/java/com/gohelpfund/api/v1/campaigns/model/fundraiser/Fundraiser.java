@@ -6,10 +6,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.gohelpfund.api.v1.campaigns.model.fundraiser.status.FundraiserStatus;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @JsonPropertyOrder({"id", "name", "age", "profile_image_url", "status", "social", "professional"})
-public class Fundraiser {
+public class Fundraiser implements Serializable {
 
     private String id;
 

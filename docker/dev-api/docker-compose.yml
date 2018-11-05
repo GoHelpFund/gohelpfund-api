@@ -110,4 +110,10 @@ fundraiser-service:
     CONFIGSERVER_PORT:        "8762"
     ZUULSERVER_PORT:          "8763"
     DATABASESERVER_PORT:      "5432"
-    ENCRYPT_KEY:       "IMSYMMETRIC"    
+    ENCRYPT_KEY:       "IMSYMMETRIC"
+kafka-server:
+  image: spotify/kafka
+  mem_limit: 353741824
+  ports:
+  - 2181:2181
+  - 9092:9092

@@ -1,7 +1,7 @@
 package com.gohelpfund.api.v1.upload.services;
 
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.gohelpfund.api.v1.upload.config.ServiceConfig;
+import com.gohelpfund.api.v1.config.ServiceConfig;
 import com.gohelpfund.api.v1.upload.model.Upload;
 import com.gohelpfund.api.v1.upload.utils.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;

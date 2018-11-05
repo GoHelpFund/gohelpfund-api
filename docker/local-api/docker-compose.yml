@@ -51,13 +51,18 @@ services:
       PROFILE: "local-api"
       EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
       CONFIGSERVER_URI: "http://config-server:8762"
+      KAFKASERVER_URI:  "kafka-server"
+      ZKSERVER_URI:     "kafka-server"
       AUTHSERVER_URI:   "http://authentication-service:8764/api/v1/auth/user"
       SERVER_PORT:              "9200"
       EUREKASERVER_PORT:        "8761"
       CONFIGSERVER_PORT:        "8762"
       ZUULSERVER_PORT:          "8763"
       AUTHSERVER_PORT:          "8764"
+      REDIS_PORT:               "6379"
       DATABASESERVER_PORT:      "5432"
+      KAFKASERVER_PORT:         "9092"
+      ZKSERVER_PORT:            "2181"
       ENCRYPT_KEY:       "IMSYMMETRIC"
   campaign-service:
     image: gohelpfund/ghf-campaign-service:latest
@@ -68,13 +73,18 @@ services:
       PROFILE: "local-api"
       EUREKASERVER_URI:   "http://eureka-server:8761/eureka/"
       CONFIGSERVER_URI:   "http://config-server:8762"
-      AUTHSERVER_URI:   "http://authentication-service:8764/api/v1/auth/user"
+      KAFKASERVER_URI:    "kafka-server"
+      ZKSERVER_URI:       "kafka-server"
+      AUTHSERVER_URI:     "http://authentication-service:8764/api/v1/auth/user"
       SERVER_PORT:                   "9100"
       EUREKASERVER_PORT:             "8761"
       CONFIGSERVER_PORT:             "8762"
       ZUULSERVER_PORT:               "8763"
       AUTHSERVER_PORT:               "8764"
+      REDIS_PORT:                    "6379"
       DATABASESERVER_PORT:           "5432"
+      KAFKASERVER_PORT:              "9092"
+      ZKSERVER_PORT:                 "2181"
       ENCRYPT_KEY:            "IMSYMMETRIC"
   authentication-service:
     image: gohelpfund/ghf-authentication-service:latest
@@ -91,6 +101,17 @@ services:
       ZUULSERVER_PORT:               "8763"
       DATABASESERVER_PORT:           "5432"
       ENCRYPT_KEY:            "IMSYMMETRIC"
+  kafka-server:
+    image: spotify/kafka
+    mem_limit: 353741824
+    ports:
+    - "2181:2181"
+    - "9092:9092"
+  redis:
+    image: "redis:alpine"
+    mem_limit: 353741824
+    ports:
+    - "6379:6379"
 #  category-service:
 #    image: gohelpfund/ghf-category-service:latest
 #    mem_limit: 353741824
@@ -107,8 +128,8 @@ services:
 #      DATABASESERVER_PORT: "5432"
 #      FUNDRAISERSERVICE_PORT: "9200"
 #      ENCRYPT_KEY:       "IMSYMMETRIC"
-#  category-service-new:
-#    image: gohelpfund/ghf-category-service-new:latest
+#  category-service-ab-testing:
+#    image: gohelpfund/ghf-category-service-ab-testing:latest
 #    mem_limit: 553741824
 #    ports:
 #    - "9102:9102"
