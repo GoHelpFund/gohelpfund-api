@@ -19,18 +19,18 @@ public class UserContextFilter implements Filter {
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 
-        UserContextHolder.getContext().setCorrelationId(httpServletRequest.getHeader(UserContext.CORRELATION_ID));
+        logger.debug("I am entering the campaign service id with auth token: ", httpServletRequest.getHeader("Authorization"));
 
-        logger.debug("UserContextFilter Correlation id: {}", UserContextHolder.getContext().getCorrelationId());
+
+        UserContextHolder.getContext().setCorrelationId(httpServletRequest.getHeader(UserContext.CORRELATION_ID));
+        UserContextHolder.getContext().setAuthToken(httpServletRequest.getHeader(UserContext.AUTH_TOKEN));
 
         filterChain.doFilter(httpServletRequest, servletResponse);
     }
 
     @Override
-    public void init(FilterConfig filterConfig) {
-    }
+    public void init(FilterConfig filterConfig) throws ServletException {}
 
     @Override
-    public void destroy() {
-    }
+    public void destroy() {}
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 @Table(name = "fundraisers")
@@ -19,6 +20,7 @@ public class Fundraiser {
     private String name;
 
     @Column(name = "age")
+    @Min(value = 13, message = "Age should be equal or more than 13")
     private int age;
 
     @JsonProperty("profile_image_url")

@@ -6,9 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @JsonPropertyOrder({"type", "type_description", "sub_type", "sub_type_description"})
-public class FundraiserStatus {
+public class FundraiserStatus implements Serializable {
 
     @JsonIgnore
     private String statusId;

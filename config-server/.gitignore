@@ -14,8 +14,3 @@ git.properties
 .idea
 *.iml
 .factorypath
-
-
-# Spring Cloud Config Server config file
-
-application.yml

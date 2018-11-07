@@ -1,0 +1,28 @@
+spring:
+  cloud:
+    config:
+      discovery:
+        enabled: true
+      server:
+        encrypt.enabled: false
+        git:
+          uri: ${GIT_URI}
+          searchPaths: campaign-service, fundraiser-service, zuul-server, authentication-service
+          username: ${GIT_USERNAME}
+          password: ${GIT_PASSWORD}
+
+####
+#Classpath and file-based solution
+####
+
+#server:
+#  port: 8888
+#spring:
+#  profiles:
+#    active: native
+#  cloud:
+#    config:
+#      server:
+#        native:
+#          #              searchLocations: file://gohelpfund-platform/config/src/main/resources/config/campaignservice
+#          searchLocations: classpath:config/,classpath:config/categoryservice,classpath:config/campaignservice

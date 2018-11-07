@@ -41,16 +41,16 @@ public class AuthUtil extends AWS4Signer {
         String fileName;
         switch (env) {
             case "local":
-                fileName = "local-policy.txt";
+                fileName = "local-policy.json";
                 break;
             case "dev":
-                fileName = "dev-policy.txt";
+                fileName = "dev-policy.json";
                 break;
             case "prod":
-                fileName = "prod-policy.txt";
+                fileName = "prod-policy.json";
                 break;
             default:
-                fileName = "local-policy.txt";
+                fileName = "local-policy.json";
         }
         String policy = StreamUtils.copyToString((new ClassPathResource(fileName)).getInputStream(), UTF_8);
         return Base64.getEncoder().encodeToString(policy.getBytes(UTF_8));

@@ -33,7 +33,7 @@ To learn more about the GoHelpFund platform check out [this presentation video][
    * [Components](#components)
       * [Technologies](#technologies)
       * [Directory Structure](#directory-structure)
-      * [Design Patterns](#design-patterns)
+      * [Patterns](#patterns)
    * [Examples](#examples)
       * [Walkthrough Guides](#walkthrough-guides)
       * [Configuration Files](#configuration-files-1)
@@ -79,20 +79,24 @@ The folders are organized to make it easy to find code and streamline developmen
 Each folder is its own package **without any sub-packages**.
 
     github.com/gohelpfund/gohelpfund-api
-    ├── campaign-service/           # campaigns
-    ├── category-service/           # campaign categories
-    ├── category-service-new/       # campaign categories - new functionality used for A/B testing
-    ├── config-server/              # config service that manages startup data for all other services
-    ├── docker/                     # docker config files for container specifications
-    ├── eureka-server/              # netflix eureka server
-    ├── fundraiser-service/         # fundraisers
-    ├── specialroutes-service/      # service that enables A/B testing
-    ├── upload-service/             # upload service part of the new campaign flow
-    ├── zuul-server/                # netflix zuul server
-    ├── pom.xml                     # dependencies
+    ├── authentication-service/         # oauth2 authentication and authorization
+    ├── campaign-service/               # campaigns logic
+    ├── category-service/               # campaign categories logic
+    ├── category-service-ab-testing/    # campaign categories - new functionality used for A/B testing
+    ├── config-server/                  # git-based configuration repository that manages startup data for all microservices
+    ├── docker/                         # config files per environment, containing all microservices
+    ├── eureka-server/                  # service discovery and load balancing
+    ├── fundraiser-service/             # fundraisers logic
+    ├── specialroutes-service/          # service that enables A/B testing
+    ├── travis_scripts                  # continous deployment scripts: tag, build, deploy, test
+    ├── upload-service/                 # upload images/videos part of the new campaign flow logic
+    ├── zuul-server/                    # services gateway and dynamic routing
+    ├── zipkin-server/                  # visually understand a user’s transaction as it flows across multiple microservice calls
+    ├── pom.xml                         # dependencies
+    ├── .travis.yml                     # build/deploy pipeline using Travis CI
     └── ...
 
-## Design Patterns
+## Patterns
 
 To be added
 

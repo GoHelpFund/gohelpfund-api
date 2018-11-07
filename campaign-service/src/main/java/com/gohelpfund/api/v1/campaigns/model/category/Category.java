@@ -7,11 +7,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.gohelpfund.api.v1.campaigns.model.category.status.CategoryStatus;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @JsonPropertyOrder({"id", "name", "description", "image_url", "status"})
 public class Category {
 
+    @NotNull(message = "Please provide category id")
     private String id;
     private String name;
     private String description;

@@ -7,8 +7,8 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Eureka Server</name>
-  <description>Eureka Server GoHelpFund</description>
+  <name>eureka-server</name>
+  <description>GoHelpFund Eureka Server</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -40,7 +40,7 @@
     <start-class>com.gohelpfund.api.v1.eureka.EurekaServerApplication</start-class>
     <java.version>1.8</java.version>
     <docker.image.name>gohelpfund/ghf-eureka-server</docker.image.name>
-    <docker.image.tag>latest</docker.image.tag>
+    <docker.image.tag>${env.BUILD_NAME}</docker.image.tag>
   </properties>
 
   <build>

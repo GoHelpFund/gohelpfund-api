@@ -28,6 +28,7 @@ zuul-server:
   links:
   - "eureka-server:eureka-server"
   - "config-server:config-server"
+  - "authentication-service:authentication-service"
   - "fundraiser-service:fundraiser-service"
   - "campaign-service:campaign-service"
   environment:
@@ -50,6 +51,26 @@ database:
     POSTGRES_USER: "postgres_prod"
     POSTGRES_PASSWORD:  "p0stgr@s_prod"
     POSTGRES_DB: "gohelpfund_prod"
+
+authentication-service:
+  image: gohelpfund/ghf-authentication-service:latest
+  mem_limit: 353741824
+  ports:
+  - "8764:8764"
+  links:
+  - "config-server:config-server"
+  - "database:database"
+  - "eureka-server:eureka-server"
+  environment:
+    PROFILE: "dev-api"
+    EUREKASERVER_URI:   "http://eureka-server:8761/eureka/"
+    CONFIGSERVER_URI:   "http://config-server:8762"
+    SERVER_PORT:                   "8764"
+    EUREKASERVER_PORT:             "8761"
+    CONFIGSERVER_PORT:             "8762"
+    ZUULSERVER_PORT:               "8763"
+    DATABASESERVER_PORT:           "5432"
+    ENCRYPT_KEY:            "IMSYMMETRIC"
 
 campaign-service:
   image: gohelpfund/ghf-campaign-service:latest
@@ -90,3 +111,9 @@ fundraiser-service:
     ZUULSERVER_PORT:          "8763"
     DATABASESERVER_PORT:      "5432"
     ENCRYPT_KEY:       "IMSYMMETRIC"
+kafka-server:
+  image: spotify/kafka
+  mem_limit: 353741824
+  ports:
+  - 2181:2181
+  - 9092:9092

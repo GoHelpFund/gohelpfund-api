@@ -22,9 +22,35 @@ while ! `nc -z config-server $CONFIGSERVER_PORT`; do sleep 3; done
 echo "*******  Configuration Server has started"
 
 echo "********************************************************"
-echo "Starting Fundraiser Server with Configuration Service via Eureka :  $EUREKASERVER_URI" ON PORT: $SERVER_PORT;
+echo "Waiting for the kafka server to start on port  $(getPort $KAFKASERVER_PORT)"
+echo "********************************************************"
+while ! `nc -z kafka-server  $(getPort $KAFKASERVER_PORT)`; do sleep 10; done
+echo "******* Kafka Server has started"
+
+echo "********************************************************"
+echo "Waiting for the authentication service to start on port $AUTHSERVER_PORT"
+echo "********************************************************"
+while ! `nc -z authentication-service $AUTHSERVER_PORT`; do sleep 3; done
+echo "*******  Authentication Service has started"
+
+echo "********************************************************"
+echo "Waiting for the zipkin server to start  on port $ZIPKIN_PORT"
+echo "********************************************************"
+while ! `nc -z zipkin-server $ZIPKIN_PORT`; do sleep 10; done
+echo "******* Zipkin Server has started"
+
+echo "********************************************************"
+echo "Starting Fundraiser Service with Configuration Service via Eureka :  $EUREKASERVER_URI" ON PORT: $SERVER_PORT;
+echo "Using Kafka Server: $KAFKASERVER_URI"
+echo "Using ZK    Server: $ZKSERVER_URI"
+echo "USing Profile: $PROFILE"
+echo "Fundraiser service will use $AUTHSERVER_URI for URI"
 echo "********************************************************"
 java -Djava.security.egd=file:/dev/./urandom -Dserver.port=$SERVER_PORT   \
      -Deureka.client.serviceUrl.defaultZone=$EUREKASERVER_URI             \
      -Dspring.cloud.config.uri=$CONFIGSERVER_URI                          \
+     -Dspring.cloud.stream.kafka.binder.zkNodes=$KAFKASERVER_URI          \
+     -Dspring.cloud.stream.kafka.binder.brokers=$ZKSERVER_URI             \
+     -Dsecurity.oauth2.resource.userInfoUri=$AUTHSERVER_URI               \
+     -Dspring.zipkin.baseUrl=$ZIPKIN_URI                                  \
      -Dspring.profiles.active=$PROFILE -jar /usr/local/fundraiser-service/@project.build.finalName@.jar

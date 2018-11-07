@@ -9,10 +9,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 
 @JsonPropertyOrder({"job_title", "job_description", "company_name", "company_url"})
-public class FundraiserProfessional {
+public class FundraiserProfessional implements Serializable {
 
     @Id
     @JsonIgnore

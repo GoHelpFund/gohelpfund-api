@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface CampaignMediaResourceRepository extends JpaRepository<CampaignMediaResource,String> {
-    public Optional<CampaignMediaResource> findByResourceId(String resourceId);
-    public List<CampaignMediaResource> findByCampaignId(String campaignId);
+    Optional<CampaignMediaResource> findByResourceId(String resourceId);
+    List<CampaignMediaResource> findByCampaignId(String campaignId);
 }

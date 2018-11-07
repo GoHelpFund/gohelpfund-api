@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +51,7 @@ public class FundraiserController {
     }
 
     @PostMapping()
-    public ResponseEntity<Resource<Fundraiser>> newCategory(@RequestBody Fundraiser fundraiser) {
+    public ResponseEntity<Resource<Fundraiser>> setFundraiser(@Valid @RequestBody Fundraiser fundraiser) {
         Fundraiser newFundraiser;
         if (fundraiser.getFundraiserId() == null) {
             newFundraiser = service.save();

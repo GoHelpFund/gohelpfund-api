@@ -9,10 +9,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 
 @JsonPropertyOrder({"facebook", "twitter", "linkedin", "website", "other"})
-public class FundraiserSocial {
+public class FundraiserSocial implements Serializable {
 
     @JsonIgnore
     private String socialId;

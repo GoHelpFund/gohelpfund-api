@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ServiceConfig{
 
+  @Value("${signing.key}")
+  private String jwtSigningKey;
+
   @Value("${aws.s3.client.id}")
   private String s3AccessKeyId;
 
@@ -46,5 +49,9 @@ public class ServiceConfig{
 
   public String getPlatformEnv() {
     return platformEnv;
+  }
+
+  public String getJwtSigningKey() {
+    return jwtSigningKey;
   }
 }
