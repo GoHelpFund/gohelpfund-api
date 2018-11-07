@@ -1,7 +1,6 @@
 package com.gohelpfund.api.v1.fundraisers.events.source;
 
 import com.gohelpfund.api.v1.fundraisers.events.models.FundraiserChangeModel;
-import com.gohelpfund.api.v1.fundraisers.utils.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +20,13 @@ public class SimpleSourceBean {
         this.source = source;
     }
 
-    public void publishOrgChange(String action,String orgId){
-       logger.debug("Sending Kafka message {} for Organization Id: {}", action, orgId);
+    public void publishFundraiserChange(String action, String fundraiserId){
+       logger.debug("Sending Kafka message {} for Fundraiser Id: {}", action, fundraiserId);
         FundraiserChangeModel change =  new FundraiserChangeModel(
                 FundraiserChangeModel.class.getTypeName(),
                 action,
-                orgId,
-                UserContext.getCorrelationId());
+                fundraiserId,
+                "none");
 
         source.output().send(MessageBuilder.withPayload(change).build());
     }

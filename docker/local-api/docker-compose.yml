@@ -13,21 +13,34 @@ services:
     ports:
     - "8762:8762"
     environment:
-      PROFILE: "local-api"
-      SERVER_PORT: "8762"
-      EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
-      EUREKASERVER_PORT: "8761"
-      ENCRYPT_KEY:       "IMSYMMETRIC"
+      PROFILE:                  "local-api"
+      SERVER_PORT:              "8762"
+      EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
+      EUREKASERVER_PORT:        "8761"
+      ENCRYPT_KEY:              "IMSYMMETRIC"
+      GIT_URI:         $GIT_CONFIG_REPO_URI
+      GIT_USERNAME:    $GIT_CONFIG_REPO_USERNAME
+      GIT_PASSWORD:    $GIT_CONFIG_REPO_PASSWORD
+  zipkin-server:
+    image: gohelpfund/ghf-zipkin-server:latest
+    ports:
+    - "9411:9411"
+    environment:
+      PROFILE:                  "local-api"
+      SERVER_PORT:              "9411"
+      ZIPKIN_URI:               "http://zipkin-server:9411"
   zuul-server:
     image: gohelpfund/ghf-zuul-server:latest
     mem_limit: 353741824
     ports:
     - "80:8763"
     environment:
-      PROFILE: "local-api"
-      SERVER_PORT: "8763"
-      EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
-      CONFIGSERVER_URI: "http://config-server:8762"
+      PROFILE:                  "local-api"
+      SERVER_PORT:              "8763"
+      EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
+      ZIPKIN_URI:               "http://zipkin-server:9411"
+      CONFIGSERVER_URI:         "http://config-server:8762"
+      ZIPKIN_PORT:              "9411"
       EUREKASERVER_PORT:        "8761"
       DATABASESERVER_PORT:      "5432"
       CONFIGSERVER_PORT:        "8762"
@@ -38,69 +51,72 @@ services:
     ports:
     - "5432:5432"
     environment:
-      PROFILE: "local-api"
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: p0stgr@s
-      POSTGRES_DB: gohelpfund_local
+      PROFILE:                  "local-api"
+      POSTGRES_USER:            "postgres"
+      POSTGRES_PASSWORD:        "p0stgr@s"
+      POSTGRES_DB:              "gohelpfund_local"
   fundraiser-service:
     image: gohelpfund/ghf-fundraiser-service:latest
     mem_limit: 353741824
     ports:
     - "9200:9200"
     environment:
-      PROFILE: "local-api"
-      EUREKASERVER_URI: "http://eureka-server:8761/eureka/"
-      CONFIGSERVER_URI: "http://config-server:8762"
-      KAFKASERVER_URI:  "kafka-server"
-      ZKSERVER_URI:     "kafka-server"
-      AUTHSERVER_URI:   "http://authentication-service:8764/api/v1/auth/user"
+      PROFILE:                  "local-api"
+      EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
+      ZIPKIN_URI:               "http://zipkin-server:9411"
+      CONFIGSERVER_URI:         "http://config-server:8762"
+      KAFKASERVER_URI:          "kafka-server"
+      ZKSERVER_URI:             "kafka-server"
+      AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
+      ZIPKIN_PORT:              "9411"
       SERVER_PORT:              "9200"
+      KAFKASERVER_PORT:         "9092"
       EUREKASERVER_PORT:        "8761"
       CONFIGSERVER_PORT:        "8762"
       ZUULSERVER_PORT:          "8763"
       AUTHSERVER_PORT:          "8764"
-      REDIS_PORT:               "6379"
       DATABASESERVER_PORT:      "5432"
-      KAFKASERVER_PORT:         "9092"
       ZKSERVER_PORT:            "2181"
-      ENCRYPT_KEY:       "IMSYMMETRIC"
+      ENCRYPT_KEY:              "IMSYMMETRIC"
   campaign-service:
     image: gohelpfund/ghf-campaign-service:latest
     mem_limit: 553741824
     ports:
     - "9100:9100"
     environment:
-      PROFILE: "local-api"
-      EUREKASERVER_URI:   "http://eureka-server:8761/eureka/"
-      CONFIGSERVER_URI:   "http://config-server:8762"
-      KAFKASERVER_URI:    "kafka-server"
-      ZKSERVER_URI:       "kafka-server"
-      AUTHSERVER_URI:     "http://authentication-service:8764/api/v1/auth/user"
-      SERVER_PORT:                   "9100"
-      EUREKASERVER_PORT:             "8761"
-      CONFIGSERVER_PORT:             "8762"
-      ZUULSERVER_PORT:               "8763"
-      AUTHSERVER_PORT:               "8764"
-      REDIS_PORT:                    "6379"
-      DATABASESERVER_PORT:           "5432"
-      KAFKASERVER_PORT:              "9092"
-      ZKSERVER_PORT:                 "2181"
-      ENCRYPT_KEY:            "IMSYMMETRIC"
+      PROFILE:                  "local-api"
+      EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
+      ZIPKIN_URI:               "http://zipkin-server:9411"
+      CONFIGSERVER_URI:         "http://config-server:8762"
+      KAFKASERVER_URI:          "kafka-server"
+      ZKSERVER_URI:             "kafka-server"
+      AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
+      ZIPKIN_PORT:              "9411"
+      SERVER_PORT:              "9100"
+      KAFKASERVER_PORT:         "9092"
+      EUREKASERVER_PORT:        "8761"
+      CONFIGSERVER_PORT:        "8762"
+      ZUULSERVER_PORT:          "8763"
+      AUTHSERVER_PORT:          "8764"
+      REDIS_PORT:               "6379"
+      DATABASESERVER_PORT:      "5432"
+      ZKSERVER_PORT:            "2181"
+      ENCRYPT_KEY:              "IMSYMMETRIC"
   authentication-service:
     image: gohelpfund/ghf-authentication-service:latest
     mem_limit: 553741824
     ports:
     - "8764:8764"
     environment:
-      PROFILE: "local-api"
-      EUREKASERVER_URI:   "http://eureka-server:8761/eureka/"
-      CONFIGSERVER_URI:   "http://config-server:8762"
-      SERVER_PORT:                   "8764"
-      EUREKASERVER_PORT:             "8761"
-      CONFIGSERVER_PORT:             "8762"
-      ZUULSERVER_PORT:               "8763"
-      DATABASESERVER_PORT:           "5432"
-      ENCRYPT_KEY:            "IMSYMMETRIC"
+      PROFILE:                   "local-api"
+      EUREKASERVER_URI:          "http://eureka-server:8761/eureka/"
+      CONFIGSERVER_URI:          "http://config-server:8762"
+      SERVER_PORT:               "8764"
+      EUREKASERVER_PORT:         "8761"
+      CONFIGSERVER_PORT:         "8762"
+      ZUULSERVER_PORT:           "8763"
+      DATABASESERVER_PORT:       "5432"
+      ENCRYPT_KEY:               "IMSYMMETRIC"
   kafka-server:
     image: spotify/kafka
     mem_limit: 353741824
@@ -112,6 +128,15 @@ services:
     mem_limit: 353741824
     ports:
     - "6379:6379"
+  #Attention:  Replace the value in the “command” attribute with the value supplied to you from Papertrail
+  logspout:
+    image: gliderlabs/logspout
+    mem_limit: 553741824
+    command: syslog://logs7.papertrailapp.com:11494
+    environment:
+      COMPOSE_CONVERT_WINDOWS_PATHS: 1
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
 #  category-service:
 #    image: gohelpfund/ghf-category-service:latest
 #    mem_limit: 353741824

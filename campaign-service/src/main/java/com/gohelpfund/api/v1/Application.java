@@ -1,32 +1,33 @@
 package com.gohelpfund.api.v1;
 
+import com.gohelpfund.api.v1.campaigns.events.CustomChannels;
 import com.gohelpfund.api.v1.config.ServiceConfig;
 import com.gohelpfund.api.v1.events.models.FundraiserChangeModel;
-import com.gohelpfund.api.v1.utils.UserContextInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.sleuth.Sampler;
+import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.oauth2.client.OAuth2ClientContext;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Collections;
-import java.util.List;
 
 @SpringBootApplication
 @EnableEurekaClient
 @EnableCircuitBreaker
-@EnableBinding(Sink.class)
 @EnableResourceServer
 public class Application {
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
@@ -34,31 +35,20 @@ public class Application {
     @Autowired
     private ServiceConfig serviceConfig;
 
-    @StreamListener(Sink.INPUT)
-    public void loggerSink(FundraiserChangeModel fundraiserChange) {
-        logger.debug("Received an event for fundraiser id {}",
-                fundraiserChange.getFundraiserId());
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
-    @Primary
     @Bean
-    public RestTemplate getCustomRestTemplate() {
-        RestTemplate template = new RestTemplate();
-        List interceptors = template.getInterceptors();
-        if (interceptors == null) {
-            template.setInterceptors(Collections.singletonList(new UserContextInterceptor()));
-        } else {
-            interceptors.add(new UserContextInterceptor());
-            template.setInterceptors(interceptors);
-        }
-
-        return template;
+    public OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext,
+                                                 OAuth2ProtectedResourceDetails details) {
+        return new OAuth2RestTemplate(details, oauth2ClientContext);
     }
 
+    @Bean
+    public Sampler defaultSampler() {
+        return new AlwaysSampler();
+    }
 
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {

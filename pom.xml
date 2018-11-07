@@ -14,6 +14,7 @@
   </parent>
   <modules>
     <module>zuul-server</module>
+    <module>zipkin-server</module>
     <module>eureka-server</module>
     <module>config-server</module>
     <module>authentication-service</module>

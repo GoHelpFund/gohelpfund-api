@@ -6,35 +6,46 @@ import com.gohelpfund.api.v1.utils.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
 public class FundraiserRestTemplateClient {
     @Autowired
-    RestTemplate restTemplate;
+    OAuth2RestTemplate restTemplate;
 
     @Autowired
-    FundraiserRedisRepository orgRedisRepo;
+    Tracer tracer;
+
+    @Autowired
+    FundraiserRedisRepository fundraiserRedisRepo;
 
     private static final Logger logger = LoggerFactory.getLogger(FundraiserRestTemplateClient.class);
 
     private Fundraiser checkRedisCache(String fundraiserId) {
+        Span newSpan = tracer.createSpan("readFundraiserDataFromRedis");
         try {
-            return orgRedisRepo.findFundraiser(fundraiserId);
+            return fundraiserRedisRepo.findFundraiser(fundraiserId);
         }
         catch (Exception ex){
             logger.error("Error encountered while trying to retrieve fundraiser {} check Redis Cache.  Exception {}", fundraiserId, ex);
             return null;
+        } finally {
+            newSpan.tag("peer.service", "redis");
+            newSpan.logEvent(org.springframework.cloud.sleuth.Span.CLIENT_RECV);
+            tracer.close(newSpan);
         }
     }
 
     private void cacheFundraiserObject(Fundraiser fundraiser) {
         try {
-            orgRedisRepo.saveFundraiser(fundraiser);
+            fundraiserRedisRepo.saveFundraiser(fundraiser);
         }catch (Exception ex){
             logger.error("Unable to cache fundraiser {} in Redis. Exception {}", fundraiser.getId(), ex);
         }

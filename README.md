@@ -88,9 +88,12 @@ Each folder is its own package **without any sub-packages**.
     ├── eureka-server/                  # service discovery and load balancing
     ├── fundraiser-service/             # fundraisers logic
     ├── specialroutes-service/          # service that enables A/B testing
+    ├── travis_scripts                  # continous deployment scripts: tag, build, deploy, test
     ├── upload-service/                 # upload images/videos part of the new campaign flow logic
     ├── zuul-server/                    # services gateway and dynamic routing
+    ├── zipkin-server/                  # visually understand a user’s transaction as it flows across multiple microservice calls
     ├── pom.xml                         # dependencies
+    ├── .travis.yml                     # build/deploy pipeline using Travis CI
     └── ...
 
 ## Patterns
