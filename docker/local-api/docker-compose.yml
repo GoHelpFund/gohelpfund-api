@@ -1,39 +1,42 @@
 version: '2'
 services:
   eureka-server:
-    image:   gohelpfund/ghf-eureka-server:latest
+    image:   gohelpfund/ghf-eureka-server:${BUILD_NAME}
     mem_limit: 353741824
     ports:
-    - "8761:8761"
+    -                           "8761:8761"
     environment:
-      PROFILE: "local-api"
+      PROFILE:                  "local-api"
+
   config-server:
-    image: gohelpfund/ghf-config-server:latest
+    image: gohelpfund/ghf-config-server:${BUILD_NAME}
     mem_limit: 353741824
     ports:
-    - "8762:8762"
+    -                           "8762:8762"
     environment:
       PROFILE:                  "local-api"
       SERVER_PORT:              "8762"
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
       EUREKASERVER_PORT:        "8761"
       ENCRYPT_KEY:              "IMSYMMETRIC"
-      GIT_URI:         $GIT_CONFIG_REPO_URI
-      GIT_USERNAME:    $GIT_CONFIG_REPO_USERNAME
-      GIT_PASSWORD:    $GIT_CONFIG_REPO_PASSWORD
+      GIT_URI:                  $GIT_CONFIG_REPO_URI
+      GIT_USERNAME:             $GIT_CONFIG_REPO_USERNAME
+      GIT_PASSWORD:             $GIT_CONFIG_REPO_PASSWORD
+
   zipkin-server:
-    image: gohelpfund/ghf-zipkin-server:latest
+    image: gohelpfund/ghf-zipkin-server:${BUILD_NAME}
     ports:
-    - "9411:9411"
+    -                           "9411:9411"
     environment:
       PROFILE:                  "local-api"
       SERVER_PORT:              "9411"
       ZIPKIN_URI:               "http://zipkin-server:9411"
+
   zuul-server:
-    image: gohelpfund/ghf-zuul-server:latest
+    image: gohelpfund/ghf-zuul-server:${BUILD_NAME}
     mem_limit: 353741824
     ports:
-    - "80:8763"
+    -                           "80:8763"
     environment:
       PROFILE:                  "local-api"
       SERVER_PORT:              "8763"
@@ -45,21 +48,23 @@ services:
       DATABASESERVER_PORT:      "5432"
       CONFIGSERVER_PORT:        "8762"
       CATEGORYSERVERNEW_PORT:   "9102"
+
   database:
     image: postgres:9.5
     mem_limit: 253741824
     ports:
-    - "5432:5432"
+    -                           "5432:5432"
     environment:
       PROFILE:                  "local-api"
       POSTGRES_USER:            "postgres"
       POSTGRES_PASSWORD:        "p0stgr@s"
       POSTGRES_DB:              "gohelpfund_local"
+
   fundraiser-service:
-    image: gohelpfund/ghf-fundraiser-service:latest
+    image: gohelpfund/ghf-fundraiser-service:${BUILD_NAME}
     mem_limit: 353741824
     ports:
-    - "9200:9200"
+    -                           "9200:9200"
     environment:
       PROFILE:                  "local-api"
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
@@ -78,11 +83,12 @@ services:
       DATABASESERVER_PORT:      "5432"
       ZKSERVER_PORT:            "2181"
       ENCRYPT_KEY:              "IMSYMMETRIC"
+
   campaign-service:
-    image: gohelpfund/ghf-campaign-service:latest
+    image: gohelpfund/ghf-campaign-service:${BUILD_NAME}
     mem_limit: 553741824
     ports:
-    - "9100:9100"
+    -                           "9100:9100"
     environment:
       PROFILE:                  "local-api"
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
@@ -102,11 +108,12 @@ services:
       DATABASESERVER_PORT:      "5432"
       ZKSERVER_PORT:            "2181"
       ENCRYPT_KEY:              "IMSYMMETRIC"
+
   authentication-service:
-    image: gohelpfund/ghf-authentication-service:latest
+    image: gohelpfund/ghf-authentication-service:${BUILD_NAME}
     mem_limit: 553741824
     ports:
-    - "8764:8764"
+    -                            "8764:8764"
     environment:
       PROFILE:                   "local-api"
       EUREKASERVER_URI:          "http://eureka-server:8761/eureka/"
@@ -117,18 +124,20 @@ services:
       ZUULSERVER_PORT:           "8763"
       DATABASESERVER_PORT:       "5432"
       ENCRYPT_KEY:               "IMSYMMETRIC"
+
   kafka-server:
     image: spotify/kafka
     mem_limit: 353741824
     ports:
-    - "2181:2181"
-    - "9092:9092"
+    -                             "2181:2181"
+    -                             "9092:9092"
+
   redis:
-    image: "redis:alpine"
+    image: redis:alpine
     mem_limit: 353741824
     ports:
-    - "6379:6379"
-  #Attention:  Replace the value in the “command” attribute with the value supplied to you from Papertrail
+    -                             "6379:6379"
+
   logspout:
     image: gliderlabs/logspout
     mem_limit: 553741824
@@ -137,8 +146,9 @@ services:
       COMPOSE_CONVERT_WINDOWS_PATHS: 1
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
+
 #  category-service:
-#    image: gohelpfund/ghf-category-service:latest
+#    image: gohelpfund/ghf-category-service:${BUILD_NAME}
 #    mem_limit: 353741824
 #    ports:
 #    - "9101:9101"
@@ -153,8 +163,9 @@ services:
 #      DATABASESERVER_PORT: "5432"
 #      FUNDRAISERSERVICE_PORT: "9200"
 #      ENCRYPT_KEY:       "IMSYMMETRIC"
+
 #  category-service-ab-testing:
-#    image: gohelpfund/ghf-category-service-ab-testing:latest
+#    image: gohelpfund/ghf-category-service-ab-testing:${BUILD_NAME}
 #    mem_limit: 553741824
 #    ports:
 #    - "9102:9102"
@@ -167,8 +178,9 @@ services:
 #      CONFIGSERVER_PORT:   "8762"
 #      DATABASESERVER_PORT: "5432"
 #      ENCRYPT_KEY:       "IMSYMMETRIC"
+
 #  upload-service:
-#    image: gohelpfund/ghf-upload-service:latest
+#    image: gohelpfund/ghf-upload-service:${BUILD_NAME}
 #    mem_limit: 353741824
 #    ports:
 #    - "9001:9001"
@@ -184,8 +196,9 @@ services:
 #      FUNDRAISERSERVICE_PORT: "9200"
 #      CATEGORYSERVICE_PORT: "9101"
 #      ENCRYPT_KEY:       "IMSYMMETRIC"
+
 #  specialroutes-service:
-#    image: gohelpfund/ghf-specialroutes-service:latest
+#    image: gohelpfund/ghf-specialroutes-service:${BUILD_NAME}
 #    mem_limit: 553741824
 #    ports:
 #    - "9002:9002"

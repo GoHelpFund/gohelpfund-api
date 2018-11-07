@@ -50,7 +50,7 @@
     <start-class>com.gohelpfund.api.v1.campaigns.config.ConfigServerApplication</start-class>
     <java.version>1.8</java.version>
     <docker.image.name>gohelpfund/ghf-config-server</docker.image.name>
-    <docker.image.tag>latest</docker.image.tag>
+    <docker.image.tag>${env.BUILD_NAME}</docker.image.tag>
   </properties>
 
   <build>

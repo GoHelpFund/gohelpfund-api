@@ -115,7 +115,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>com.gohelpfund.api.v1.fundraisers.Application</start-class>
         <docker.image.name>gohelpfund/ghf-fundraiser-service</docker.image.name>
-        <docker.image.tag>latest</docker.image.tag>
+        <docker.image.tag>${env.BUILD_NAME}</docker.image.tag>
     </properties>
 
     <build>

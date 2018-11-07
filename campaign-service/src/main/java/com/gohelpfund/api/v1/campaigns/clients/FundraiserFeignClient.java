@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient("fundraiser-service")
+
 public interface FundraiserFeignClient {
     @RequestMapping(
             value = "/v1/fundraisers/{id}",

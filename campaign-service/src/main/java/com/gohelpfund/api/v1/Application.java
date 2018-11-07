@@ -3,6 +3,7 @@ package com.gohelpfund.api.v1;
 import com.gohelpfund.api.v1.campaigns.events.CustomChannels;
 import com.gohelpfund.api.v1.config.ServiceConfig;
 import com.gohelpfund.api.v1.events.models.FundraiserChangeModel;
+import com.gohelpfund.api.v1.utils.UserContextInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResour
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
+import java.util.List;
+
 @SpringBootApplication
 @EnableEurekaClient
 @EnableCircuitBreaker
@@ -39,10 +43,19 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+    @LoadBalanced
     @Bean
-    public OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext,
-                                                 OAuth2ProtectedResourceDetails details) {
-        return new OAuth2RestTemplate(details, oauth2ClientContext);
+    public RestTemplate getRestTemplate() {
+        RestTemplate template = new RestTemplate();
+        List interceptors = template.getInterceptors();
+        if (interceptors == null) {
+            template.setInterceptors(Collections.singletonList(new UserContextInterceptor()));
+        } else {
+            interceptors.add(new UserContextInterceptor());
+            template.setInterceptors(interceptors);
+        }
+
+        return template;
     }
 
     @Bean

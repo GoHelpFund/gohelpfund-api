@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class FundraiserRestTemplateClient {
     @Autowired
-    OAuth2RestTemplate restTemplate;
+    RestTemplate restTemplate;
 
     @Autowired
     Tracer tracer;
