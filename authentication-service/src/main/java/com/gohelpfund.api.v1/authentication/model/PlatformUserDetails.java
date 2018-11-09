@@ -8,18 +8,24 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class CrmUserDetails implements UserDetails {
+public class PlatformUserDetails implements UserDetails {
 
     private static final long serialVersionUID = 1L;
     private Collection<? extends GrantedAuthority> authorities;
     private String password;
     private String username;
 
+    private boolean accountNonExpired, accountNonLocked, credentialsNonExpired, enabled;
 
-    public CrmUserDetails(User user) {
+
+    public PlatformUserDetails(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.authorities = translate(user.getRoles());
+        this.accountNonExpired = true;
+        this.accountNonLocked = true;
+        this.credentialsNonExpired = true;
+        this.enabled = true;
     }
 
 
@@ -52,21 +58,21 @@ public class CrmUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return accountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return accountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return credentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }

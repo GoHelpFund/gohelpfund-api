@@ -122,6 +122,8 @@
              <artifactId>docker-maven-plugin</artifactId>
              <version>0.4.10</version>
              <configuration>
+                 <!-- optionally overwrite tags every time image is built with docker:build -->
+                 <forceTags>true</forceTags>
                  <imageName>${docker.image.name}:${docker.image.tag}</imageName>
                  <dockerDirectory>${basedir}/target/dockerfile</dockerDirectory>
                  <resources>
