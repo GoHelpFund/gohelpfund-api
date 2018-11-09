@@ -1,6 +1,5 @@
 package com.gohelpfund.api.v1.authentication.clients;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,7 @@ public class AuthenticationRestTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<OAuth2AccessToken> restExchange =
                 restTemplate.exchange(
-                        "http://authentication-service:8764/api/v1/auth/oauth/token",
+                        "http://localhost:8764/api/v1/auth/oauth/token",
                         HttpMethod.POST,
                         requestEntity,
                         OAuth2AccessToken.class, "");

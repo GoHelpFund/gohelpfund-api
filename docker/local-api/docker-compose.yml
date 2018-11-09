@@ -25,6 +25,7 @@ services:
 
   zipkin-server:
     image: gohelpfund/ghf-zipkin-server:${BUILD_NAME}
+    mem_limit: 353741824
     ports:
     -                           "9411:9411"
     environment:
