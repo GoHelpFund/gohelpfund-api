@@ -1,4 +1,4 @@
-package com.gohelpfund.api.v1.authentication.security;
+package com.gohelpfund.api.v1.authentication.security.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;
