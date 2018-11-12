@@ -37,7 +37,7 @@ zuul-server:
   image: gohelpfund/ghf-zuul-server:${BUILD_NAME}
   mem_limit: 353741824
   ports:
-  -                           "80:8763"
+  -                           "443:8763"
   links:
   -                           "zipkin-server:zipkin-server"
   -                           "eureka-server:eureka-server"
