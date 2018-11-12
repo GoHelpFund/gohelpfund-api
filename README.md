@@ -2,12 +2,15 @@
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/gohelpfund/gohelpfund-api.svg?style=for-the-badge)][github-last-commit]
 
+[![Build Status](https://travis-ci.org/GoHelpFund/gohelpfund-api.svg?branch=develop)](https://travis-ci.org/GoHelpFund/gohelpfund-api)
+![Docker Automated build](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg)
+
 [![GitHub issues](https://img.shields.io/github/issues/gohelpfund/gohelpfund-api.svg?style=flat-square&longCache=true)][github-issues]
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/gohelpfund/gohelpfund-api.svg?style=flat-square&longCache=true)][github-issues-closed]
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/gohelpfund/gohelpfund-api.svg?style=flat-square&longCache=true)][github-pulls]
 [![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/gohelpfund/gohelpfund-api.svg?style=flat-square&longCache=true)][github-pulls-closed]
 
-GoHelpFund is crowdfunding platform where people can donate and support campaigns like charity, medical, education, emergency and more.
+GoHelpFund is a open-source platform focused on humanitarian fundraising, where people can donate and support campaigns like charity, medical, education, emergency and more.
 
 GoHelpFund is still in beta, so please submit any issues ([bug reports][github-bug-report] and [feature requests][github-feature-request]).
 

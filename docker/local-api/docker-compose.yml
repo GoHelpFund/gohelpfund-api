@@ -37,7 +37,7 @@ services:
     image: gohelpfund/ghf-zuul-server:${BUILD_NAME}
     mem_limit: 353741824
     ports:
-    -                           "80:8763"
+    -                           "443:8763"
     environment:
       PROFILE:                  "local-api"
       SERVER_PORT:              "8763"
@@ -139,14 +139,14 @@ services:
     ports:
     -                             "6379:6379"
 
-  logspout:
-    image: gliderlabs/logspout
-    mem_limit: 553741824
-    command: syslog://logs7.papertrailapp.com:11494
-    environment:
-      COMPOSE_CONVERT_WINDOWS_PATHS: 1
-    volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
+#  logspout:
+#    image: gliderlabs/logspout
+#    mem_limit: 553741824
+#    command: syslog://logs7.papertrailapp.com:11494
+#    environment:
+#      COMPOSE_CONVERT_WINDOWS_PATHS: 1
+#    volumes:
+#    - /var/run/docker.sock:/var/run/docker.sock
 
 #  category-service:
 #    image: gohelpfund/ghf-category-service:${BUILD_NAME}

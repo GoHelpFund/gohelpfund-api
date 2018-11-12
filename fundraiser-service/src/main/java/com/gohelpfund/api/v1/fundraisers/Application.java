@@ -9,6 +9,7 @@ import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 import javax.servlet.Filter;
@@ -17,6 +18,7 @@ import javax.servlet.Filter;
 @EnableEurekaClient
 @EnableBinding(Source.class)
 @EnableResourceServer
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class Application {
 
     @Bean
