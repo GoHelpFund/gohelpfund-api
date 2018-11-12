@@ -90,7 +90,7 @@ authentication-service:
 
 campaign-service:
   image: gohelpfund/ghf-campaign-service:${BUILD_NAME}
-  mem_limit: 553741824
+  mem_limit: 453741824
   ports:
   -                           "9100:9100"
   links:
@@ -154,7 +154,7 @@ fundraiser-service:
 
 kafka-server:
   image: spotify/kafka
-  mem_limit: 553741824
+  mem_limit: 753741824
   ports:
   -                           "2181:2181"
   -                           "9092:9092"
