@@ -50,7 +50,7 @@ CREATE TABLE oauth_client_details (
 INSERT INTO oauth_client_details
    (client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity, refresh_token_validity)
 VALUES
-   ('gohelpfund', 'ghfsecret', 'web-client,mobile-client', 'refresh_token,password,client_credentials', 'ROLE_FUNDRAISER,ROLE_BACKER', 2592000, 2592000);
+   ('gohelpfund', 'ghfsecret', 'web-client,mobile-client', 'refresh_token,password,client_credentials', 'ROLE_FUNDRAISER,ROLE_BACKER', 36000000, 76000000);
 
 
 DROP TABLE IF EXISTS oauth_client_token;
