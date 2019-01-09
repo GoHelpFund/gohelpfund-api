@@ -23,9 +23,9 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                 .headers().frameOptions().disable().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 // restricting access to authenticated users
-                .requestMatchers()
-                .antMatchers(HttpMethod.POST, "/signup").and()
+                .requestMatchers().and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/oauth/token").authenticated()
                 .antMatchers(HttpMethod.GET, "/auth/user").authenticated()
                 .anyRequest().authenticated();
