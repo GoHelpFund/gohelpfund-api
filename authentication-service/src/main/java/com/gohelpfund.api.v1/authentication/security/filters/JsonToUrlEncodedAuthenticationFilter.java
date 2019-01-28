@@ -25,18 +25,23 @@ public class JsonToUrlEncodedAuthenticationFilter extends OncePerRequestFilter {
 
         if (Objects.equals(request.getServletPath(), "/oauth/token") && Objects.equals(request.getContentType(), "application/json")) {
 
-            byte[] json = ByteStreams.toByteArray(request.getInputStream());
+            if(Objects.equals(request.getMethod(), "OPTIONS")){
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
 
-            Map<String, String> jsonMap = new ObjectMapper().readValue(json, Map.class);
-            ;
-            Map<String, String[]> parameters =
-                    jsonMap.entrySet().stream()
-                            .collect(Collectors.toMap(
-                                    Map.Entry::getKey,
-                                    e -> new String[]{e.getValue()})
-                            );
-            HttpServletRequest requestWrapper = new RequestWrapper(request, parameters);
-            filterChain.doFilter(requestWrapper, response);
+                byte[] json = ByteStreams.toByteArray(request.getInputStream());
+
+                Map<String, String> jsonMap = new ObjectMapper().readValue(json, Map.class);
+                ;
+                Map<String, String[]> parameters =
+                        jsonMap.entrySet().stream()
+                                .collect(Collectors.toMap(
+                                        Map.Entry::getKey,
+                                        e -> new String[]{e.getValue()})
+                                );
+                HttpServletRequest requestWrapper = new RequestWrapper(request, parameters);
+                filterChain.doFilter(requestWrapper, response);
+            }
         } else {
             filterChain.doFilter(request, response);
         }
