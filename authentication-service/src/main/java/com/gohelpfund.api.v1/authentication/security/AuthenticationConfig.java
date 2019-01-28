@@ -40,7 +40,9 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
                 .anonymous().disable() // disable anonymous user
                 .httpBasic().and()
                 // restricting access to authenticated users
-                .authorizeRequests().anyRequest().authenticated();
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
+                .anyRequest().authenticated();
     }
 
     @Override
@@ -70,8 +72,8 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-                .antMatchers(HttpMethod.OPTIONS);
+//        web.ignoring()
+//                .antMatchers(HttpMethod.OPTIONS);
     }
 
 }
