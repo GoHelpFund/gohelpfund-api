@@ -3,6 +3,7 @@ package com.gohelpfund.api.v1.fundraisers.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 
@@ -30,13 +31,10 @@ public class FundraiserProfessional {
     private String companyName;
 
     @Column(name = "company_url")
+    @URL
     private String companyUrl;
 
     public FundraiserProfessional(){
-        this.jobTitle = "Engineer";
-        this.jobDescription = "Engineering stuff 24/7";
-        this.companyName = "iEngineer";
-        this.companyUrl = "https://apple.com";
     }
 
     public String getProfessionalId() {

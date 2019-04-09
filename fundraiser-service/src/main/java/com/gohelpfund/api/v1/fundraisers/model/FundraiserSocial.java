@@ -3,6 +3,8 @@ package com.gohelpfund.api.v1.fundraisers.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 
@@ -21,26 +23,25 @@ public class FundraiserSocial {
     private String fundraiserId;
 
     @Column(name = "facebook")
+    @URL
     private String facebook;
 
     @Column(name = "twitter")
+    @URL
     private String twitter;
 
     @Column(name = "linkedin")
+    @URL
     private String linkedin;
 
     @Column(name = "website")
+    @URL
     private String website;
 
     @Column(name = "other")
     private String other;
 
     public FundraiserSocial(){
-        facebook = "https://facebook.com";
-        twitter = "https://twitter.com";
-        linkedin = "https://linkedin.com";
-        website = "https://duckduckgo.com";
-        other = "https://gohelpfund.com";
     }
 
     public String getSocialId() {

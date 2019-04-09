@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.gohelpfund.api.v1.campaigns.model.mediaresource.status.CampaignMediaResourceStatus;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 
@@ -30,6 +31,7 @@ public class CampaignMediaResource {
     private String format;
 
     @Column(name = "url", nullable = false)
+    @URL
     private String url;
 
     @JsonIgnore

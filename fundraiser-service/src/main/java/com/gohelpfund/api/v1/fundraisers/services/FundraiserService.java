@@ -1,5 +1,6 @@
 package com.gohelpfund.api.v1.fundraisers.services;
 
+import com.gohelpfund.api.v1.fundraisers.controllers.exceptions.EntityNotFoundException;
 import com.gohelpfund.api.v1.fundraisers.events.source.SimpleSourceBean;
 import com.gohelpfund.api.v1.fundraisers.model.Fundraiser;
 import com.gohelpfund.api.v1.fundraisers.repository.FundraiserRepository;
@@ -52,6 +53,8 @@ public class FundraiserService {
         try {
             Optional<Fundraiser> fundraiser = repository.findByFundraiserId(fundraiserId);
 
+            fundraiser.orElseThrow(() -> new EntityNotFoundException(Fundraiser.class, "id", fundraiserId));
+
             fundraiser.get().withStatus(status.getStatusByFundraiserId(fundraiser.get().getFundraiserId()))
                     .withSocial(social.getSocialByFundraiserId(fundraiser.get().getFundraiserId()))
                     .withProfessional(professional.getProfessionalByFundraiserId(fundraiser.get().getFundraiserId()));
@@ -78,7 +81,7 @@ public class FundraiserService {
         return newFundraiser;
     }
 
-    public Fundraiser save() {
+/*    public Fundraiser save() {
         Fundraiser newFundraiser = new Fundraiser();
         String id = UUID.randomUUID().toString();
         newFundraiser.withId(id)
@@ -91,7 +94,7 @@ public class FundraiserService {
         simpleSourceBean.publishFundraiserChange("SAVE", savedFundraiser.getFundraiserId());
 
         return savedFundraiser;
-    }
+    }*/
 
     public Fundraiser update(Fundraiser fundraiser) {
         Fundraiser newFundraiser = repository.save(fundraiser);

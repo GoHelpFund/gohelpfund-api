@@ -37,17 +37,17 @@ public class Campaign {
 
     @JsonProperty("title")
     @Column(name = "campaign_title", nullable = false)
-    @NotNull(message = "Please provide campaign title")
+    @NotNull
     private String campaignTitle;
 
     @JsonProperty("description")
     @Column(name = "campaign_description", nullable = false)
-    @NotNull(message = "Please provide campaign description")
+    @NotNull
     private String campaignDescription;
 
     @JsonProperty("amount_goal")
     @Column(name = "amount_goal", nullable = false)
-    @NotNull(message = "Please provide amount goal")
+    @NotNull
     private Integer amountGoal;
 
     @JsonProperty("amount_raised")
@@ -56,23 +56,23 @@ public class Campaign {
 
     @JsonProperty("expenses_description")
     @Column(name = "expenses_description", nullable = false)
-    @NotNull(message = "Please provide expenses description")
+    @NotNull
     private String expensesDescription;
 
     @Column(name = "location", nullable = false)
-    @NotNull(message = "Please provide location")
+    @NotNull
     private String location;
 
     @JsonProperty("start_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone="UTC")
     @Column(name = "start_date", nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    @NotNull(message = "Please provide start date")
+    @NotNull
     private Date startDate;
 
     @JsonProperty("end_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone="UTC")
     @Column(name = "end_date", nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    @NotNull(message = "Please provide end date")
+    @NotNull
     private Date endDate;
 
     @Column(name = "backers")
@@ -86,7 +86,7 @@ public class Campaign {
     private Fundraiser fundraiser;
 
     @Transient
-    @NotNull(message = "Please provide category")
+    @NotNull
     private Category category;
 
     @JsonProperty("media_resources")

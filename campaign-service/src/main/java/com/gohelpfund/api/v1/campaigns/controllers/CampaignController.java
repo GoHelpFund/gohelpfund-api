@@ -1,7 +1,7 @@
 package com.gohelpfund.api.v1.campaigns.controllers;
 
 import com.gohelpfund.api.v1.campaigns.controllers.assembler.CampaignResourceAssembler;
-import com.gohelpfund.api.v1.campaigns.controllers.exceptions.CampaignNotFoundException;
+import com.gohelpfund.api.v1.campaigns.controllers.exceptions.EntityNotFoundException;
 import com.gohelpfund.api.v1.campaigns.model.Campaign;
 import com.gohelpfund.api.v1.campaigns.model.status.CampaignStatusType;
 import com.gohelpfund.api.v1.campaigns.services.CampaignService;
@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,11 +55,11 @@ public class CampaignController {
         logger.debug("CampaignController Correlation id: {}", UserContextHolder.getContext().getCorrelationId());
         return assembler.toResource(
                 service.getCampaignById(campaignId)
-                        .orElseThrow(() -> new CampaignNotFoundException(campaignId)));
+                        .orElseThrow(() -> new EntityNotFoundException(Campaign.class, "id", campaignId)));
     }
 
     @PostMapping()
-    public ResponseEntity<Resource<Campaign>> newCategory(@RequestBody Campaign campaign) {
+    public ResponseEntity<Resource<Campaign>> newCategory(@RequestBody @Valid Campaign campaign) {
         Campaign newCampaign = service.save(campaign);
 
         return ResponseEntity
@@ -69,7 +70,8 @@ public class CampaignController {
     @PutMapping("/{id}/complete")
     public ResponseEntity<ResourceSupport> complete(@PathVariable("id") String campaignId) {
 
-        Campaign campaign = service.getCampaignById(campaignId).orElseThrow(() -> new CampaignNotFoundException(campaignId));
+        Campaign campaign = service.getCampaignById(campaignId)
+                .orElseThrow(() -> new EntityNotFoundException(Campaign.class, "id", campaignId));
 
         if (campaign.getStatus().getType() == CampaignStatusType.PENDING) {
             campaign.getStatus().setType(CampaignStatusType.COMPLETED);
@@ -83,7 +85,8 @@ public class CampaignController {
 
     @DeleteMapping("/{id}/cancel")
     public ResponseEntity<ResourceSupport> cancel(@PathVariable("id") String campaignId) {
-        Campaign campaign = service.getCampaignById(campaignId).orElseThrow(() -> new CampaignNotFoundException(campaignId));
+        Campaign campaign = service.getCampaignById(campaignId)
+                .orElseThrow(() -> new EntityNotFoundException(Campaign.class, "id", campaignId));
 
         if (campaign.getStatus().getType() == CampaignStatusType.PENDING) {
             campaign.getStatus().setType(CampaignStatusType.CANCELED);

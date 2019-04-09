@@ -1,7 +1,7 @@
 package com.gohelpfund.api.v1.fundraisers.controllers;
 
 import com.gohelpfund.api.v1.fundraisers.controllers.assembler.FundraiserResourceAssembler;
-import com.gohelpfund.api.v1.fundraisers.controllers.exceptions.FundraiserNotFoundException;
+import com.gohelpfund.api.v1.fundraisers.controllers.exceptions.EntityNotFoundException;
 import com.gohelpfund.api.v1.fundraisers.model.Fundraiser;
 import com.gohelpfund.api.v1.fundraisers.services.FundraiserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,17 +48,12 @@ public class FundraiserController {
 
         return assembler.toResource(
                 service.getOne(fundraiserId)
-                        .orElseThrow(() -> new FundraiserNotFoundException(fundraiserId)));
+                        .orElseThrow(() -> new EntityNotFoundException(Fundraiser.class, "id", fundraiserId)));
     }
 
     @PostMapping()
-    public ResponseEntity<Resource<Fundraiser>> setFundraiser(@Valid @RequestBody Fundraiser fundraiser) {
-        Fundraiser newFundraiser;
-        if (fundraiser.getFundraiserId() == null) {
-            newFundraiser = service.save();
-        } else {
-            newFundraiser = service.save(fundraiser);
-        }
+    public ResponseEntity<Resource<Fundraiser>> setFundraiser(@RequestBody @Valid Fundraiser fundraiser) {
+        Fundraiser newFundraiser = service.save(fundraiser);
         return ResponseEntity
                 .created(linkTo(methodOn(FundraiserController.class).one(newFundraiser.getFundraiserId())).toUri())
                 .body(assembler.toResource(newFundraiser));
@@ -66,7 +61,7 @@ public class FundraiserController {
 
     @DeleteMapping("/{fundraiserId}")
     public ResponseEntity<ResourceSupport> cancel(@PathVariable String fundraiserId) {
-        Fundraiser fundraiser = service.getOne(fundraiserId).orElseThrow(() -> new FundraiserNotFoundException(fundraiserId));
+        Fundraiser fundraiser = service.getOne(fundraiserId).orElseThrow(() -> new EntityNotFoundException(Fundraiser.class, "id", fundraiserId));
 
         service.delete(fundraiser.getFundraiserId());
 
@@ -78,7 +73,7 @@ public class FundraiserController {
     @PutMapping("/{fundraiserId}")
     public ResponseEntity<ResourceSupport> complete(@PathVariable String fundraiserId) {
 
-        Fundraiser fundraiser = service.getOne(fundraiserId).orElseThrow(() -> new FundraiserNotFoundException(fundraiserId));
+        Fundraiser fundraiser = service.getOne(fundraiserId).orElseThrow(() -> new EntityNotFoundException(Fundraiser.class, "id", fundraiserId));
 
         service.save(fundraiser);
 

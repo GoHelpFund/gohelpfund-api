@@ -2,6 +2,7 @@ package com.gohelpfund.api.v1.campaigns.services;
 
 import com.gohelpfund.api.v1.campaigns.clients.CategoryRestTemplateClient;
 import com.gohelpfund.api.v1.campaigns.clients.FundraiserRestTemplateClient;
+import com.gohelpfund.api.v1.campaigns.controllers.exceptions.EntityNotFoundException;
 import com.gohelpfund.api.v1.campaigns.model.Campaign;
 import com.gohelpfund.api.v1.campaigns.model.category.Category;
 import com.gohelpfund.api.v1.campaigns.model.fundraiser.Fundraiser;
@@ -90,6 +91,9 @@ public class CampaignService {
 
     public Optional<Campaign> getCampaignById(String campaignId) {
         Optional<Campaign> campaign = repository.findByCampaignId(campaignId);
+
+        campaign.orElseThrow(() -> new EntityNotFoundException(Campaign.class, "id", campaignId));
+
         Fundraiser fundraiser = getFundraiser(campaign.get().getFundraiserId())
                 .withId(campaign.get().getFundraiserId());
         Category category = getCategory(campaign.get().getCategoryId())
