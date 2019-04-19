@@ -1,4 +1,4 @@
-package com.gohelpfund.api.v1.campaigns.controllers.exceptions;
+package com.gohelpfund.api.v1.security.controllers.exceptions;
 
 
 import org.apache.commons.lang3.StringUtils;

@@ -7,11 +7,13 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "fundraiser_social")
 @JsonPropertyOrder({"facebook", "twitter", "linkedin", "website", "other"})
-public class FundraiserSocial {
+public class FundraiserSocial implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @JsonIgnore
@@ -23,25 +25,25 @@ public class FundraiserSocial {
     private String fundraiserId;
 
     @Column(name = "facebook")
-    @URL
+//    @URL
     private String facebook;
 
     @Column(name = "twitter")
-    @URL
+//    @URL
     private String twitter;
 
     @Column(name = "linkedin")
-    @URL
+//    @URL
     private String linkedin;
 
     @Column(name = "website")
-    @URL
+//    @URL
     private String website;
 
     @Column(name = "other")
     private String other;
 
-    public FundraiserSocial(){
+    public FundraiserSocial() {
     }
 
     public String getSocialId() {
@@ -110,4 +112,16 @@ public class FundraiserSocial {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "FundraiserSocial{" +
+                "socialId='" + socialId + '\'' +
+                ", fundraiserId='" + fundraiserId + '\'' +
+                ", facebook='" + facebook + '\'' +
+                ", twitter='" + twitter + '\'' +
+                ", linkedin='" + linkedin + '\'' +
+                ", website='" + website + '\'' +
+                ", other='" + other + '\'' +
+                '}';
+    }
 }

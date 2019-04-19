@@ -14,8 +14,8 @@ import java.io.Serializable;
 
 @JsonPropertyOrder({"job_title", "job_description", "company_name", "company_url"})
 public class FundraiserProfessional implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-    @Id
     @JsonIgnore
     private String professionalId;
 
@@ -35,10 +35,6 @@ public class FundraiserProfessional implements Serializable {
     private String companyUrl;
 
     public FundraiserProfessional(){
-        this.jobTitle = "Engineer";
-        this.jobDescription = "Engineering stuff 24/7";
-        this.companyName = "iEngineer";
-        this.companyUrl = "https://apple.com";
     }
 
     public String getProfessionalId() {
@@ -97,5 +93,17 @@ public class FundraiserProfessional implements Serializable {
     public FundraiserProfessional withFundraiserId(String fundraiserId){
         this.setFundraiserId(fundraiserId);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "FundraiserProfessional{" +
+                "professionalId='" + professionalId + '\'' +
+                ", fundraiserId='" + fundraiserId + '\'' +
+                ", jobTitle='" + jobTitle + '\'' +
+                ", jobDescription='" + jobDescription + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", companyUrl='" + companyUrl + '\'' +
+                '}';
     }
 }

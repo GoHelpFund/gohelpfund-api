@@ -4,6 +4,8 @@ import com.amazonaws.auth.AWS4Signer;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.SigningAlgorithm;
 import org.apache.commons.codec.binary.Hex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StreamUtils;
 
@@ -11,6 +13,9 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
@@ -18,6 +23,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.time.format.DateTimeFormatter.ofPattern;
 
 public class AuthUtil extends AWS4Signer {
+    private static final Logger logger = LoggerFactory.getLogger(AuthUtil.class);
+
     private String serviceName;
     private AWSCredentials credentials;
     private String region;
@@ -28,12 +35,12 @@ public class AuthUtil extends AWS4Signer {
         this.serviceName = serviceName;
     }
 
-    public String getSignature(String policy, LocalDateTime dateTime) {
+    public String getSignature(String policy, LocalDateTime dateTime) throws GeneralSecurityException {
         try {
             String dateStamp = dateTime.format(ofPattern("yyyyMMdd"));
             return Hex.encodeHexString(hmacSha256(newSigningKey(credentials, dateStamp, region, serviceName), policy));
-        } catch (Exception e) {
-            throw new RuntimeException("Error", e);
+        } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
+            throw new GeneralSecurityException("Error", ex);
         }
     }
 
@@ -56,7 +63,7 @@ public class AuthUtil extends AWS4Signer {
         return Base64.getEncoder().encodeToString(policy.getBytes(UTF_8));
     }
 
-    private byte[] hmacSha256(byte[] key, String data) throws Exception {
+    private byte[] hmacSha256(byte[] key, String data) throws NoSuchAlgorithmException, InvalidKeyException {
         Mac mac = Mac.getInstance(SigningAlgorithm.HmacSHA256.name());
         mac.init(new SecretKeySpec(key, SigningAlgorithm.HmacSHA256.name()));
         return mac.doFinal(data.getBytes(StandardCharsets.UTF_8));

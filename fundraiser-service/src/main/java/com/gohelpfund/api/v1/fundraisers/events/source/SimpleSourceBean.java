@@ -21,7 +21,6 @@ public class SimpleSourceBean {
     }
 
     public void publishFundraiserChange(String action, String fundraiserId){
-       logger.debug("Sending Kafka message {} for Fundraiser Id: {}", action, fundraiserId);
         FundraiserChangeModel change =  new FundraiserChangeModel(
                 FundraiserChangeModel.class.getTypeName(),
                 action,
@@ -29,5 +28,6 @@ public class SimpleSourceBean {
                 "none");
 
         source.output().send(MessageBuilder.withPayload(change).build());
+        logger.debug("PUBLISH | Kafka | {} | fundraiser id: {} ", action, fundraiserId);
     }
 }

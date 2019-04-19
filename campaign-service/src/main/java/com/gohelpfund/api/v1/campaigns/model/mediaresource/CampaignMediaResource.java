@@ -7,11 +7,14 @@ import com.gohelpfund.api.v1.campaigns.model.mediaresource.status.CampaignMediaR
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "campaign_media_resources")
 @JsonPropertyOrder({"id", "name", "url", "type", "format", "status"})
-public class CampaignMediaResource {
+public class CampaignMediaResource implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @JsonProperty("id")
     @Column(name = "resource_id", nullable = false)
@@ -103,5 +106,18 @@ public class CampaignMediaResource {
     public CampaignMediaResource withCampaignId(String campaignId){
         this.setCampaignId(campaignId);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "CampaignMediaResource{" +
+                "resourceId='" + resourceId + '\'' +
+                ", campaignId='" + campaignId + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", format='" + format + '\'' +
+                ", url='" + url + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

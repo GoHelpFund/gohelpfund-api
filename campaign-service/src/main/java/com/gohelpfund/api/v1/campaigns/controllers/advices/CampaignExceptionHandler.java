@@ -1,8 +1,8 @@
 
-package com.gohelpfund.api.v1.fundraisers.controllers.advices;
+package com.gohelpfund.api.v1.campaigns.controllers.advices;
 
 import com.gohelpfund.api.v1.campaigns.controllers.errors.ApiError;
-import com.gohelpfund.api.v1.campaigns.controllers.exceptions.EntityNotFoundException;
+import com.gohelpfund.api.v1.security.controllers.exceptions.EntityNotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

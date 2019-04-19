@@ -10,30 +10,33 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "fundraisers")
 @JsonPropertyOrder({"id", "name", "age", "profile_image_url", "status", "social", "professional"})
-public class Fundraiser {
+public class Fundraiser implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @JsonProperty("id")
     @Column(name = "fundraiser_id", nullable = false)
     private String fundraiserId;
 
     @Column(name = "name")
-    @NotBlank
-    @Size(min=2, max=40)
+//    @NotBlank
+//    @Size(min=2, max=40)
     private String name;
 
     @Column(name = "age")
-    @NotNull
-    @Range(min = 18, max = 120)
+//    @NotNull
+//    @Range(min = 18, max = 120)
     private Integer age;
 
     @JsonProperty("profile_image_url")
     @Column(name = "profile_image_url")
-    @URL
-    @Size(min = 10, max = 256)
+//    @URL
+//    @Size(min = 10, max = 256)
     private String profileImageUrl;
 
     @ManyToOne
@@ -49,7 +52,6 @@ public class Fundraiser {
     private FundraiserStatus status;
 
     public Fundraiser() {
-        this.profileImageUrl = "https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/generic-user.jpg";
     }
 
     public String getFundraiserId() {
@@ -128,4 +130,16 @@ public class Fundraiser {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "Fundraiser{" +
+                "fundraiserId='" + fundraiserId + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", profileImageUrl='" + profileImageUrl + '\'' +
+                ", social=" + social +
+                ", professional=" + professional +
+                ", status=" + status +
+                '}';
+    }
 }

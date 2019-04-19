@@ -6,11 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "fundraiser_statuses")
 @JsonPropertyOrder({"type", "typeDescription", "subType", "subTypeDescription"})
-public class FundraiserStatus {
+public class FundraiserStatus implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @JsonIgnore
@@ -41,9 +43,9 @@ public class FundraiserStatus {
 
     public FundraiserStatus(){
         this.type = FundraiserStatusType.PENDING;
-        this.typeDescription = "User is a guest";
-        this.subType = FundraiserStatusSubType.REGISTRATION_REQUIRED;
-        this.subTypeDescription = "User needs to register an account";
+        this.typeDescription = "User is pending";
+        this.subType = FundraiserStatusSubType.VERIFICATION_REQUIRED;
+        this.subTypeDescription = "User needs to verify his account";
     }
 
     public String getStatusId() {
@@ -102,5 +104,17 @@ public class FundraiserStatus {
     public FundraiserStatus withFundraiserId(String fundraiserId) {
         this.setFundraiserId(fundraiserId);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "FundraiserStatus{" +
+                "statusId='" + statusId + '\'' +
+                ", fundraiserId='" + fundraiserId + '\'' +
+                ", type=" + type +
+                ", typeDescription='" + typeDescription + '\'' +
+                ", subType=" + subType +
+                ", subTypeDescription='" + subTypeDescription + '\'' +
+                '}';
     }
 }

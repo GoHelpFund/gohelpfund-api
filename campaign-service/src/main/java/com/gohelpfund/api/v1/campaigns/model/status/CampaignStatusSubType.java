@@ -1,7 +1,6 @@
 package com.gohelpfund.api.v1.campaigns.model.status;
 
 public enum CampaignStatusSubType {
-    REGISTRATION_REQUIRED,
     VERIFICATION_REQUIRED,
     APPROVAL_IN_PROGRESS,
     APPROVED,

@@ -20,24 +20,25 @@ public class FundraiserChangeHandler {
 
     @StreamListener("inboundFundraiserChanges")
     public void loggerSink(FundraiserChangeModel fundraiserChange) {
-        logger.debug("Received a message of type " + fundraiserChange.getType());
         switch (fundraiserChange.getAction()) {
             case "GET":
-                logger.debug("Received a GET event from the fundraiser service for fundraiser id {}", fundraiserChange.getFundraiserId());
+                logger.debug("SUBSCRIBE | Kafka | {} event | type: {} | fundraiser id: {} ", fundraiserChange.getAction(), fundraiserChange.getType(), fundraiserChange.getFundraiserId());
                 break;
             case "SAVE":
-                logger.debug("Received a SAVE event from the fundraiser service for fundraiser id {}", fundraiserChange.getFundraiserId());
+                logger.debug("SUBSCRIBE | Kafka | {} event | type: {} | fundraiser id: {} ", fundraiserChange.getAction(), fundraiserChange.getType(), fundraiserChange.getFundraiserId());
                 break;
             case "UPDATE":
-                logger.debug("Received a UPDATE event from the fundraiser service for fundraiser id {}", fundraiserChange.getFundraiserId());
+                logger.debug("SUBSCRIBE | Kafka | {} event | type: {} | fundraiser id: {} ", fundraiserChange.getAction(), fundraiserChange.getType(), fundraiserChange.getFundraiserId());
                 fundraiserRedisRepository.deleteFundraiser(fundraiserChange.getFundraiserId());
+                logger.debug("DELETE | Redis | removed | fundraiser id: {} ", fundraiserChange.getFundraiserId());
                 break;
             case "DELETE":
-                logger.debug("Received a DELETE event from the fundraiser service for fundraiser id {}", fundraiserChange.getFundraiserId());
+                logger.debug("SUBSCRIBE | Kafka | {} event | type: {} | fundraiser id: {} ", fundraiserChange.getAction(), fundraiserChange.getType(), fundraiserChange.getFundraiserId());
                 fundraiserRedisRepository.deleteFundraiser(fundraiserChange.getFundraiserId());
+                logger.debug("DELETE | Redis | removed | fundraiser id: {} ", fundraiserChange.getFundraiserId());
                 break;
             default:
-                logger.error("Received an UNKNOWN event from the fundraiser service of type {}", fundraiserChange.getType());
+                logger.debug("SUBSCRIBE | Kafka | UNKNOWN event | type: {} | fundraiser id: {} ", fundraiserChange.getType(), fundraiserChange.getFundraiserId());
                 break;
 
         }

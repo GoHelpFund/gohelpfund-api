@@ -1,7 +1,7 @@
 package com.gohelpfund.api.v1.upload.controllers;
 
+import com.gohelpfund.api.v1.security.controllers.exceptions.EntityNotFoundException;
 import com.gohelpfund.api.v1.upload.controllers.assembler.UploadResourceAssembler;
-import com.gohelpfund.api.v1.upload.controllers.exceptions.UploadNotFoundException;
 import com.gohelpfund.api.v1.upload.model.Upload;
 import com.gohelpfund.api.v1.upload.services.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,13 @@ public class UploadController {
 
     @GetMapping()
     public Resource<Upload> one() {
+        Upload upload = service.getUploadConfigParameters();
 
-        return assembler.toResource(
-                service.getConfig()
-                        .orElseThrow(() -> new UploadNotFoundException(null)));
+        if (upload == null) {
+
+            throw new EntityNotFoundException(Upload.class);
+        }
+
+        return assembler.toResource(upload);
     }
 }

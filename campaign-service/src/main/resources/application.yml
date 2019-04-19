@@ -34,4 +34,6 @@ logging:
   level:
     com.netflix: WARN
     org.springframework.web: WARN
-    com.gohelpfund.api.v1: DEBUG
+    com.gohelpfund.api.v1: WARN
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type: TRACE

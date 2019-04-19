@@ -39,7 +39,6 @@ public class JsonToUrlEncodedAuthenticationFilter extends OncePerRequestFilter {
                     jsonString += "\"}";
                 }
 
-
                 ObjectMapper mapperObj = new ObjectMapper();
                 Map<String,String> resultMap = mapperObj.readValue(jsonString,
                         new TypeReference<HashMap<String,String>>(){});

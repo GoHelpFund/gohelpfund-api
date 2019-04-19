@@ -1,16 +1,17 @@
 package com.gohelpfund.api.v1.fundraisers.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "fundraiser_professional")
 @JsonPropertyOrder({"job_title", "job_description", "company_name", "company_url"})
-public class FundraiserProfessional {
+public class FundraiserProfessional implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @JsonIgnore
@@ -22,19 +23,23 @@ public class FundraiserProfessional {
     private String fundraiserId;
 
     @Column(name = "job_title")
-    private String jobTitle;
+    @JsonProperty("job_title")
+    private String job_title;
 
     @Column(name = "job_description")
-    private String jobDescription;
+    @JsonProperty("job_description")
+    private String job_description;
 
     @Column(name = "company_name")
-    private String companyName;
+    @JsonProperty("company_name")
+    private String company_name;
 
     @Column(name = "company_url")
-    @URL
-    private String companyUrl;
+    @JsonProperty("company_url")
+//    @URL
+    private String company_url;
 
-    public FundraiserProfessional(){
+    public FundraiserProfessional() {
     }
 
     public String getProfessionalId() {
@@ -53,36 +58,36 @@ public class FundraiserProfessional {
         this.fundraiserId = fundraiserId;
     }
 
-    public String getJobTitle() {
-        return jobTitle;
+    public String getJob_title() {
+        return job_title;
     }
 
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
+    public void setJob_title(String job_title) {
+        this.job_title = job_title;
     }
 
-    public String getJobDescription() {
-        return jobDescription;
+    public String getJob_description() {
+        return job_description;
     }
 
-    public void setJobDescription(String jobDescription) {
-        this.jobDescription = jobDescription;
+    public void setJob_description(String job_description) {
+        this.job_description = job_description;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getCompany_name() {
+        return company_name;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
     }
 
-    public String getCompanyUrl() {
-        return companyUrl;
+    public String getCompany_url() {
+        return company_url;
     }
 
-    public void setCompanyUrl(String companyUrl) {
-        this.companyUrl = companyUrl;
+    public void setCompany_url(String company_url) {
+        this.company_url = company_url;
     }
 
     public FundraiserProfessional withId(String id){
@@ -93,5 +98,17 @@ public class FundraiserProfessional {
     public FundraiserProfessional withFundraiserId(String fundraiserId){
         this.setFundraiserId(fundraiserId);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "FundraiserProfessional{" +
+                "professionalId='" + professionalId + '\'' +
+                ", fundraiserId='" + fundraiserId + '\'' +
+                ", job_title='" + job_title + '\'' +
+                ", job_description='" + job_description + '\'' +
+                ", company_name='" + company_name + '\'' +
+                ", company_url='" + company_url + '\'' +
+                '}';
     }
 }

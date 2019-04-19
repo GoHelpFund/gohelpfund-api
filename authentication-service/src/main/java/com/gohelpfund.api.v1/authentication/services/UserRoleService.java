@@ -19,35 +19,36 @@ public class UserRoleService {
     private UserRoleRepository repository;
 
     public List<UserRole> getAll(String username) {
-        return repository.findByUsername(username);
+        List<UserRole> roles = repository.findByUsername(username);
+        if (roles == null) {
+            logger.debug("GET | PostgreSQL | not found | roles size: 0");
+        } else {
+            logger.debug("GET | PostgreSQL | found | roles size: {}", roles.size());
+        }
+        return roles;
     }
 
-    public List<UserRole> saveAll(List<UserRole> userRoles, String username) {
+    public List<UserRole> saveAll(String username, List<UserRole> userRoles) {
         List<UserRole> newUserRoles = new ArrayList<>();
 
         if (userRoles != null && !userRoles.isEmpty()) {
             for (UserRole userRole : userRoles) {
-                newUserRoles.add(saveOne(userRole, username));
+                newUserRoles.add(saveOne(username, userRole));
             }
+            logger.debug("POST | PostgreSQL | saved | user_roles size: {} ", newUserRoles.size());
         }
         return newUserRoles;
     }
 
-    public UserRole saveOne(UserRole userRole, String username) {
+    public UserRole saveOne(String username, UserRole userRole) {
         final String id = UUID.randomUUID().toString();
         userRole.withId(id);
         userRole.withUsername(username);
 
-        return repository.save(userRole);
+        UserRole newRole = repository.save(userRole);
+        logger.debug("POST | PostgreSQL | created | user_role id: {} user_name: {} ", newRole.getId(), newRole.getUsername());
+
+        return newRole;
     }
 
-    public UserRole save(String username, String role) {
-        String id = UUID.randomUUID().toString();
-
-        UserRole userRole = new UserRole(username)
-                .withId(id)
-                .withRole(role);
-
-        return repository.save(userRole);
-    }
 }

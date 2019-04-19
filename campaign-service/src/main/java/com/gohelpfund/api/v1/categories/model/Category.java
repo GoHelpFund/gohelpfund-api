@@ -1,6 +1,5 @@
 package com.gohelpfund.api.v1.categories.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -72,6 +71,11 @@ public class Category {
 
     public Category withCategoryId(String categoryId){
         this.setCategoryId(categoryId);
+        return this;
+    }
+
+    public Category withStatus(CategoryStatus status){
+        this.setStatus(status);
         return this;
     }
 

@@ -9,18 +9,23 @@ import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 
 @JsonPropertyOrder({"id", "name", "description", "image_url", "status"})
-public class Category {
+public class Category implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @NotNull
+    @Size(min = 4, max = 256)
     private String id;
     private String name;
     private String description;
 
     @JsonProperty("image_url")
     @URL
+    @Size(min = 4, max = 256)
     private String imageUrl;
 
     @JsonIgnore
@@ -87,4 +92,14 @@ public class Category {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }
