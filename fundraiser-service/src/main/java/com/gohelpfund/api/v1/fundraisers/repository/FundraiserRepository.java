@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface FundraiserRepository extends JpaRepository<Fundraiser, String> {
-    Optional<Fundraiser> findByFundraiserId(String fundraiserId);
+    Fundraiser findByFundraiserId(String fundraiserId);
 }

@@ -1,6 +1,8 @@
 package com.gohelpfund.api.v1.authentication.security.jwt;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.gohelpfund.api.v1.authentication.utils.UserContextHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -10,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JWTTokenEnhancer implements TokenEnhancer {
-
+    private static final Logger logger = LoggerFactory.getLogger(JWTTokenEnhancer.class);
     private String getOrgId(String userName){
         return "-1";
     }
@@ -20,7 +22,8 @@ public class JWTTokenEnhancer implements TokenEnhancer {
         Map<String, Object> additionalInfo = new HashMap<>();
         String orgId =  getOrgId(authentication.getName());
 
-        additionalInfo.put("organization-id", orgId);
+        additionalInfo.put("organization_id", orgId);
+        additionalInfo.put("fundraiser_id", UserContextHolder.getContext().getUserId());
 
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
         return accessToken;

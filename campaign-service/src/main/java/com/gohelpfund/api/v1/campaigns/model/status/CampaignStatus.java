@@ -6,11 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "campaign_statuses")
 @JsonPropertyOrder({"type", "typeDescription", "subType", "subTypeDescription"})
-public class CampaignStatus {
+public class CampaignStatus implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @JsonIgnore
@@ -41,7 +43,7 @@ public class CampaignStatus {
     public CampaignStatus(){
         this.type = CampaignStatusType.PENDING;
         this.typeDescription = "Campaign is not public";
-        this.subType = CampaignStatusSubType.REGISTRATION_REQUIRED;
+        this.subType = CampaignStatusSubType.VERIFICATION_REQUIRED;
         this.subTypeDescription = "Campaign created as an guest - user needs to register";
     }
 

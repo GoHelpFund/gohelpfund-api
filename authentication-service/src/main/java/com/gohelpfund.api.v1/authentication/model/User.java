@@ -10,9 +10,15 @@ public class User{
     @Column(name = "user_id", nullable = false, updatable = false)
     private String id;
 
+    @Column(name = "fundraiser_id", nullable = false)
+    private String fundraiserId;
+
     @Id
     @Column(name = "user_name", nullable = false, unique = true)
     private String username;
+
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -27,7 +33,12 @@ public class User{
     private List<UserRole> roles;
 
     public User(){
+    }
 
+    public User(UserSignUp signUp){
+        this.username = signUp.getUsername();
+        this.email = signUp.getEmail();
+        this.password = signUp.getPassword();
     }
 
     public String getId() {
@@ -38,8 +49,24 @@ public class User{
         this.id = id;
     }
 
+    public String getFundraiserId() {
+        return fundraiserId;
+    }
+
+    public void setFundraiserId(String fundraiserId) {
+        this.fundraiserId = fundraiserId;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPassword(String password) {
@@ -70,8 +97,23 @@ public class User{
         this.enabled = enabled;
     }
 
+    public User withId(String id){
+        this.setId(id);
+        return this;
+    }
+
     public User withUsername(String username){
         this.setUsername(username);
+        return this;
+    }
+
+    public User withFundraiserId(String fundraiserId) {
+        this.setFundraiserId(fundraiserId);
+        return this;
+    }
+
+    public User withEmail(String email){
+        this.setEmail(email);
         return this;
     }
 
@@ -87,12 +129,18 @@ public class User{
         return this;
     }
 
+    public User withEnabled(boolean enabled){
+        this.setEnabled(enabled);
+        return this;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", password=[PROTECTED];"+
                 ", enabled=" + enabled +
                 ", roles=" + roles +
                 '}';

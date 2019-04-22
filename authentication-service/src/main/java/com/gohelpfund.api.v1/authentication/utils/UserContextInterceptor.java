@@ -4,6 +4,7 @@ import com.gohelpfund.api.v1.authentication.utils.UserContext;
 import com.gohelpfund.api.v1.authentication.utils.UserContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
@@ -19,7 +20,7 @@ public class UserContextInterceptor implements ClientHttpRequestInterceptor {
 
         HttpHeaders headers = request.getHeaders();
         headers.add(UserContext.CORRELATION_ID, UserContextHolder.getContext().getCorrelationId());
-        headers.add(UserContext.AUTH_TOKEN, UserContextHolder.getContext().getAuthToken());
+//        headers.add(UserContext.AUTH_TOKEN, UserContextHolder.getContext().getAuthToken());
 
 
         return execution.execute(request, body);

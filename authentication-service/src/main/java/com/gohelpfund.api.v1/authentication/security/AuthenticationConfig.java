@@ -4,6 +4,7 @@ import com.gohelpfund.api.v1.authentication.services.PlatformUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -39,7 +40,9 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
                 .anonymous().disable() // disable anonymous user
                 .httpBasic().and()
                 // restricting access to authenticated users
-                .authorizeRequests().anyRequest().authenticated();
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
+                .anyRequest().authenticated();
     }
 
     @Override
@@ -70,7 +73,7 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
 //        web.ignoring()
-//                .antMatchers(HttpMethod.POST, "/signup");
+//                .antMatchers(HttpMethod.OPTIONS);
     }
 
 }

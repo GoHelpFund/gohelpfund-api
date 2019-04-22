@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface CampaignRepository extends JpaRepository<Campaign, String> {
-    Optional<Campaign> findByCampaignId(String campaignId);
+    Campaign findByCampaignId(String campaignId);
+
 }

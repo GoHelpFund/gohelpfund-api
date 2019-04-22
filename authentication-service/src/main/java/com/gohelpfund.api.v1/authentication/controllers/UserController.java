@@ -1,4 +1,4 @@
-package com.gohelpfund.api.v1.authentication.controller;
+package com.gohelpfund.api.v1.authentication.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +19,14 @@ public class UserController {
     @GetMapping(produces = "application/json")
     public Map<String, Object> user(OAuth2Authentication user) {
         Map<String, Object> userInfo = new HashMap<>();
+        if(user == null){
+            logger.error("================>");
+        } else if (user.getUserAuthentication() == null){
+            logger.error("================> <<<<<<<============");
+        } else if (user.getUserAuthentication().getPrincipal() == null){
+            logger.error("================> <<<<<<<============]]]]]]]]]");
+        }
+
         userInfo.put("user", user.getUserAuthentication().getPrincipal());
         userInfo.put("authorities", AuthorityUtils.authorityListToSet(user.getUserAuthentication().getAuthorities()));
         return userInfo;

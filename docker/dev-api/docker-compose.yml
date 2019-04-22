@@ -57,16 +57,16 @@ zuul-server:
     CONFIGSERVER_PORT:        "8762"
     CATEGORYSERVERNEW_PORT:   "9102"
 
-database:
-  image: postgres:9.5
-  mem_limit: 103741824
-  ports:
-  -                           "5432:5432"
-  environment:
-    PROFILE:                  "dev-api"
-    POSTGRES_USER:            "postgres_dev"
-    POSTGRES_PASSWORD:        "p0stgr@s_dev"
-    POSTGRES_DB:              "gohelpfund_dev"
+#database:
+#  image: postgres:9.5
+#  mem_limit: 103741824
+#  ports:
+#  -                           "5432:5432"
+#  environment:
+#    PROFILE:                  "dev-api"
+#    POSTGRES_USER:            "postgres_dev"
+#    POSTGRES_PASSWORD:        "p0stgr@s_dev"
+#    POSTGRES_DB:              "gohelpfund_dev"
 
 authentication-service:
   image: gohelpfund/ghf-authentication-service:${BUILD_NAME}
@@ -75,7 +75,6 @@ authentication-service:
   -                           "8764:8764"
   links:
   -                           "config-server:config-server"
-  -                           "database:database"
   -                           "eureka-server:eureka-server"
   environment:
     PROFILE:                  "dev-api"
@@ -96,7 +95,6 @@ campaign-service:
   links:
   -                           "authentication-service:authentication-service"
   -                           "config-server:config-server"
-  -                           "database:database"
   -                           "eureka-server:eureka-server"
   -                           "zipkin-server:zipkin-server"
   -                           "kafka-server:kafka-server"
@@ -129,7 +127,6 @@ fundraiser-service:
   links:
   -                           "authentication-service:authentication-service"
   -                           "config-server:config-server"
-  -                           "database:database"
   -                           "zipkin-server:zipkin-server"
   -                           "eureka-server:eureka-server"
   -                           "kafka-server:kafka-server"

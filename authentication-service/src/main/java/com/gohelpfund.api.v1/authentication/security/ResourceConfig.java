@@ -23,11 +23,12 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                 .headers().frameOptions().disable().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 // restricting access to authenticated users
-                .requestMatchers()
-                .antMatchers(HttpMethod.POST, "/signup").and()
+                .requestMatchers().and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/auth/oauth/token").authenticated()
-                .antMatchers(HttpMethod.GET, "/auth/user").authenticated()
+                .antMatchers(HttpMethod.POST, "/signup").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
+                .antMatchers(HttpMethod.POST, "/oauth/token").authenticated()
+                .antMatchers(HttpMethod.GET, "/user").authenticated()
                 .anyRequest().authenticated();
     }
 

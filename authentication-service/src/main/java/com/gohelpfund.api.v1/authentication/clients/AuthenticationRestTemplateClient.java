@@ -1,5 +1,7 @@
 package com.gohelpfund.api.v1.authentication.clients;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +11,9 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class AuthenticationRestTemplateClient {
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationRestTemplateClient.class);
 
-    public OAuth2AccessToken getToken(HttpEntity requestEntity){
+    public OAuth2AccessToken getToken(HttpEntity requestEntity) {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<OAuth2AccessToken> restExchange =
                 restTemplate.exchange(
@@ -18,7 +21,6 @@ public class AuthenticationRestTemplateClient {
                         HttpMethod.POST,
                         requestEntity,
                         OAuth2AccessToken.class, "");
-
         return restExchange.getBody();
     }
 

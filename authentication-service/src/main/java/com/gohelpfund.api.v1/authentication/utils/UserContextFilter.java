@@ -3,6 +3,7 @@ package com.gohelpfund.api.v1.authentication.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -12,6 +13,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 @Component
 public class UserContextFilter implements Filter {
@@ -20,11 +22,12 @@ public class UserContextFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
 
+        HttpServletRequest  httpServletRequest = (HttpServletRequest) servletRequest;
 
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-
-        logger.debug("****** I am entering the service id with auth token: {}", httpServletRequest.getHeader("Authorization"));
-
+        logger.debug("****** I am entering Authentication Service with auth_token: {}", httpServletRequest.getHeader(UserContext.AUTH_TOKEN));
+        logger.debug("****** correlation_id: {}", httpServletRequest.getHeader(UserContext.CORRELATION_ID));
+        logger.debug("****** user_id: {}", httpServletRequest.getHeader(UserContext.USER_ID));
+        logger.debug("****** org_id: {}", httpServletRequest.getHeader(UserContext.ORG_ID));
 
         UserContextHolder.getContext().setCorrelationId(  httpServletRequest.getHeader(UserContext.CORRELATION_ID) );
         UserContextHolder.getContext().setUserId( httpServletRequest.getHeader(UserContext.USER_ID) );

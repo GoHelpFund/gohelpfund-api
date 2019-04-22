@@ -1,5 +1,6 @@
 package com.gohelpfund.api.v1.authentication.model;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,17 +16,21 @@ public class PlatformUserDetails implements UserDetails {
     private String password;
     private String username;
 
+    @JsonProperty("fundraiser_id")
+    private String fundraiserId;
+
     private boolean accountNonExpired, accountNonLocked, credentialsNonExpired, enabled;
 
 
     public PlatformUserDetails(User user) {
         this.username = user.getUsername();
+        this.fundraiserId = user.getFundraiserId();
         this.password = user.getPassword();
         this.authorities = translate(user.getRoles());
         this.accountNonExpired = true;
         this.accountNonLocked = true;
         this.credentialsNonExpired = true;
-        this.enabled = true;
+        this.enabled = user.isEnabled();
     }
 
 
@@ -54,6 +59,10 @@ public class PlatformUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public String getFundraiserId() {
+        return fundraiserId;
     }
 
     @Override

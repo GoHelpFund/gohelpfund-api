@@ -4,13 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.gohelpfund.api.v1.campaigns.model.mediaresource.status.CampaignMediaResourceStatus;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "campaign_media_resources")
 @JsonPropertyOrder({"id", "name", "url", "type", "format", "status"})
-public class CampaignMediaResource {
+public class CampaignMediaResource implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @JsonProperty("id")
     @Column(name = "resource_id", nullable = false)
@@ -30,6 +34,7 @@ public class CampaignMediaResource {
     private String format;
 
     @Column(name = "url", nullable = false)
+    @URL
     private String url;
 
     @JsonIgnore
@@ -101,5 +106,18 @@ public class CampaignMediaResource {
     public CampaignMediaResource withCampaignId(String campaignId){
         this.setCampaignId(campaignId);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "CampaignMediaResource{" +
+                "resourceId='" + resourceId + '\'' +
+                ", campaignId='" + campaignId + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", format='" + format + '\'' +
+                ", url='" + url + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

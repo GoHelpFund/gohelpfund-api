@@ -5,6 +5,7 @@ import com.gohelpfund.api.v1.categories.controllers.exceptions.CategoryNotFoundE
 import com.gohelpfund.api.v1.categories.model.Category;
 import com.gohelpfund.api.v1.categories.model.CategoryStatus;
 import com.gohelpfund.api.v1.categories.services.CategoryService;
+import com.gohelpfund.api.v1.security.controllers.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
@@ -45,15 +46,16 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public Resource<Category> one(@PathVariable("id") String categoryId) {
+        Category category = service.getCategoryById(categoryId);
 
-        return assembler.toResource(
-                service.getCategoryById(categoryId)
-                        .orElseThrow(() -> new CategoryNotFoundException(categoryId)));
+        if (category == null) {
+            throw new EntityNotFoundException(Category.class, "id", categoryId);
+        }
+        return assembler.toResource(category);
     }
 
     @PostMapping()
     public ResponseEntity<Resource<Category>> newCategory(@RequestBody Category category) {
-        category.setStatus(CategoryStatus.PENDING);
         Category newCategory = service.saveCategory(category);
 
         return ResponseEntity
@@ -63,11 +65,17 @@ public class CategoryController {
 
     @DeleteMapping("/{id}/cancel")
     public ResponseEntity<ResourceSupport> cancel(@PathVariable("id") String categoryId) {
-        Category category = service.getCategoryById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+        Category category = service.getCategoryById(categoryId);
+
+        if (category == null) {
+            throw new EntityNotFoundException(Category.class, "id", categoryId);
+        }
 
         if (category.getStatus() == CategoryStatus.PENDING) {
             category.setStatus(CategoryStatus.CANCELLED);
-            return ResponseEntity.ok(assembler.toResource(service.updateCategory(category)));
+            Category newCategory = service.updateCategory(category);
+
+            return ResponseEntity.ok(assembler.toResource(newCategory));
         }
 
         return ResponseEntity
@@ -77,12 +85,17 @@ public class CategoryController {
 
     @PutMapping("/{id}/complete")
     public ResponseEntity<ResourceSupport> complete(@PathVariable("id") String categoryId) {
+        Category category = service.getCategoryById(categoryId);
 
-        Category category = service.getCategoryById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+        if (category == null) {
+            throw new EntityNotFoundException(Category.class, "id", categoryId);
+        }
 
         if (category.getStatus() == CategoryStatus.PENDING) {
             category.setStatus(CategoryStatus.CREATED);
-            return ResponseEntity.ok(assembler.toResource(service.updateCategory(category)));
+            Category newCategory = service.updateCategory(category);
+
+            return ResponseEntity.ok(assembler.toResource(newCategory));
         }
 
         return ResponseEntity

@@ -9,11 +9,11 @@ echo "********************************************************"
 while ! `nc -z eureka-server  $EUREKASERVER_PORT`; do sleep 3; done
 echo "******* Eureka Server has started"
 
-echo "********************************************************"
-echo "Waiting for the database server to start on port $DATABASESERVER_PORT"
-echo "********************************************************"
-while ! `nc -z database $DATABASESERVER_PORT`; do sleep 3; done
-echo "******** Database Server has started "
+#echo "********************************************************"
+#echo "Waiting for the database server to start on port $DATABASESERVER_PORT"
+#echo "********************************************************"
+#while ! `nc -z database $DATABASESERVER_PORT`; do sleep 3; done
+#echo "******** Database Server has started "
 
 echo "********************************************************"
 echo "Waiting for the configuration server to start on port $CONFIGSERVER_PORT"
@@ -27,11 +27,11 @@ echo "********************************************************"
 while ! `nc -z kafka-server  $(getPort $KAFKASERVER_PORT)`; do sleep 10; done
 echo "******* Kafka Server has started"
 
-echo "********************************************************"
-echo "Waiting for redis to start on port $REDIS_PORT"
-echo "********************************************************"
-while ! `nc -z redis $REDIS_PORT`; do sleep 10; done
-echo "******* Redis has started"
+#echo "********************************************************"
+#echo "Waiting for redis to start on port $REDIS_PORT"
+#echo "********************************************************"
+#while ! `nc -z redis $REDIS_PORT`; do sleep 10; done
+#echo "******* Redis has started"
 
 echo "********************************************************"
 echo "Waiting for the authentication service to start on port $AUTHSERVER_PORT"

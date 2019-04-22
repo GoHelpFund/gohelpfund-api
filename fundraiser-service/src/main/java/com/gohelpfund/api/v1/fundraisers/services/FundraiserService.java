@@ -1,5 +1,6 @@
 package com.gohelpfund.api.v1.fundraisers.services;
 
+import com.gohelpfund.api.v1.fundraisers.controllers.exceptions.EntityNotFoundException;
 import com.gohelpfund.api.v1.fundraisers.events.source.SimpleSourceBean;
 import com.gohelpfund.api.v1.fundraisers.model.Fundraiser;
 import com.gohelpfund.api.v1.fundraisers.repository.FundraiserRepository;
@@ -38,23 +39,33 @@ public class FundraiserService {
 
     public List<Fundraiser> getAll() {
         List<Fundraiser> fundraisers = repository.findAll();
-        fundraisers.forEach(fundraiser ->
-                fundraiser.withStatus(status.getStatusByFundraiserId(fundraiser.getFundraiserId()))
-                        .withSocial(social.getSocialByFundraiserId(fundraiser.getFundraiserId()))
-                        .withProfessional(professional.getProfessionalByFundraiserId(fundraiser.getFundraiserId())));
-
+        if (fundraisers == null) {
+            logger.debug("GET | PostgreSQL | empty | fundraisers size: 0");
+        } else {
+            logger.debug("GET | PostgreSQL | found | fundraisers size: {}", fundraisers.size());
+            fundraisers.forEach(fundraiser ->
+                    fundraiser.withStatus(status.getStatusByFundraiserId(fundraiser.getFundraiserId()))
+                            .withSocial(social.getSocialByFundraiserId(fundraiser.getFundraiserId()))
+                            .withProfessional(professional.getProfessionalByFundraiserId(fundraiser.getFundraiserId())));
+        }
         return fundraisers;
     }
 
-    public Optional<Fundraiser> getOne(String fundraiserId) {
+    public Fundraiser getOne(String fundraiserId) {
         Span newSpan = tracer.createSpan("getFundraiserDatabaseCall");
-        logger.debug("In the fundraiserService.getOne() call");
         try {
-            Optional<Fundraiser> fundraiser = repository.findByFundraiserId(fundraiserId);
+            Fundraiser fundraiser = repository.findByFundraiserId(fundraiserId);
 
-            fundraiser.get().withStatus(status.getStatusByFundraiserId(fundraiser.get().getFundraiserId()))
-                    .withSocial(social.getSocialByFundraiserId(fundraiser.get().getFundraiserId()))
-                    .withProfessional(professional.getProfessionalByFundraiserId(fundraiser.get().getFundraiserId()));
+            if (fundraiser == null) {
+                logger.debug("GET | PostgreSQL | not found | fundraiser id: {}", fundraiserId);
+            } else {
+                logger.debug("GET | PostgreSQL | found | fundraiser id: {}", fundraiserId);
+                fundraiser
+                        .withStatus(status.getStatusByFundraiserId(fundraiser.getFundraiserId()))
+                        .withSocial(social.getSocialByFundraiserId(fundraiser.getFundraiserId()))
+                        .withProfessional(professional.getProfessionalByFundraiserId(fundraiser.getFundraiserId()));
+
+            }
 
             return fundraiser;
         } finally {
@@ -64,54 +75,37 @@ public class FundraiserService {
         }
     }
 
-    public Fundraiser save(Fundraiser fundraiser) {
+    public Fundraiser save() {
         String id = UUID.randomUUID().toString();
-        fundraiser.withId(id)
+
+        Fundraiser fundraiser = new Fundraiser()
+                .withId(id)
                 .withStatus(status.saveStatus(id))
-                .withSocial(social.saveSocial(fundraiser.getSocial().withFundraiserId(id)))
-                .withProfessional(professional.saveProfessional(fundraiser.getProfessional().withFundraiserId(id)));
+                .withSocial(social.saveSocial(id))
+                .withProfessional(professional.saveProfessional(id));
 
         Fundraiser newFundraiser = repository.save(fundraiser);
+        logger.debug("POST | PostgreSQL | created | fundraiser id: {} ", newFundraiser.getFundraiserId());
 
         simpleSourceBean.publishFundraiserChange("SAVE", newFundraiser.getFundraiserId());
 
         return newFundraiser;
     }
 
-    public Fundraiser save() {
-        Fundraiser newFundraiser = new Fundraiser();
-        String id = UUID.randomUUID().toString();
-        newFundraiser.withId(id)
-                .withStatus(status.saveStatus(id))
-                .withSocial(social.saveSocial(id))
-                .withProfessional(professional.saveProfessional(id));
-
-        Fundraiser savedFundraiser = repository.save(newFundraiser);
-
-        simpleSourceBean.publishFundraiserChange("SAVE", savedFundraiser.getFundraiserId());
-
-        return savedFundraiser;
-    }
-
     public Fundraiser update(Fundraiser fundraiser) {
         Fundraiser newFundraiser = repository.save(fundraiser);
 
         simpleSourceBean.publishFundraiserChange("UPDATE", newFundraiser.getFundraiserId());
+        logger.debug("PUT | PostgreSQL | updated | fundraiser id: {} ", newFundraiser.getFundraiserId());
 
         return newFundraiser;
     }
 
-    public void delete(String id) {
+    private void delete(String id) {
         repository.delete(id);
+        logger.debug("DELETE | PostgreSQL | removed | fundraiser id: {} ", id);
 
         simpleSourceBean.publishFundraiserChange("DELETE", id);
-    }
-
-    public void delete(Fundraiser fundraiser) {
-
-        repository.delete(fundraiser.getFundraiserId());
-
-        simpleSourceBean.publishFundraiserChange("DELETE", fundraiser.getFundraiserId());
     }
 
 }

@@ -1,6 +1,5 @@
 package com.gohelpfund.api.v1.campaigns.model;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,10 +8,12 @@ import com.gohelpfund.api.v1.campaigns.model.category.Category;
 import com.gohelpfund.api.v1.campaigns.model.fundraiser.Fundraiser;
 import com.gohelpfund.api.v1.campaigns.model.mediaresource.CampaignMediaResource;
 import com.gohelpfund.api.v1.campaigns.model.status.CampaignStatus;
-
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,9 @@ import java.util.List;
 @JsonPropertyOrder({"campaignId", "campaignTitle", "campaignDescription", "amountGoal", "amountRaised",
         "expensesDescription", "location", "startDate", "endDate", "backers", "status",
         "category", "fundraiser", "resources"})
-public class Campaign {
+public class Campaign implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @JsonProperty("id")
     @Column(name = "campaign_id", nullable = false)
@@ -37,17 +40,20 @@ public class Campaign {
 
     @JsonProperty("title")
     @Column(name = "campaign_title", nullable = false)
-    @NotNull(message = "Please provide campaign title")
+    @NotNull
+    @Size(min = 10, max = 256)
     private String campaignTitle;
 
     @JsonProperty("description")
     @Column(name = "campaign_description", nullable = false)
-    @NotNull(message = "Please provide campaign description")
+    @NotNull
+    @Size(min = 10, max = 10240)
     private String campaignDescription;
 
     @JsonProperty("amount_goal")
     @Column(name = "amount_goal", nullable = false)
-    @NotNull(message = "Please provide amount goal")
+    @NotNull
+    @Range(min = 0, max = 1000000)
     private Integer amountGoal;
 
     @JsonProperty("amount_raised")
@@ -56,23 +62,25 @@ public class Campaign {
 
     @JsonProperty("expenses_description")
     @Column(name = "expenses_description", nullable = false)
-    @NotNull(message = "Please provide expenses description")
+    @NotNull
+    @Size(min = 10, max = 10240)
     private String expensesDescription;
 
     @Column(name = "location", nullable = false)
-    @NotNull(message = "Please provide location")
+    @NotNull
+    @Size(min = 2, max = 256)
     private String location;
 
     @JsonProperty("start_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone="UTC")
     @Column(name = "start_date", nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    @NotNull(message = "Please provide start date")
+    @NotNull
     private Date startDate;
 
     @JsonProperty("end_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone="UTC")
     @Column(name = "end_date", nullable = false, columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    @NotNull(message = "Please provide end date")
+    @NotNull
     private Date endDate;
 
     @Column(name = "backers")
@@ -86,7 +94,6 @@ public class Campaign {
     private Fundraiser fundraiser;
 
     @Transient
-    @NotNull(message = "Please provide category")
     private Category category;
 
     @JsonProperty("media_resources")
@@ -263,4 +270,25 @@ public class Campaign {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "Campaign{" +
+                "campaignId='" + campaignId + '\'' +
+                ", fundraiserId='" + fundraiserId + '\'' +
+                ", categoryId='" + categoryId + '\'' +
+                ", campaignTitle='" + campaignTitle + '\'' +
+                ", campaignDescription='" + campaignDescription + '\'' +
+                ", amountGoal=" + amountGoal +
+                ", amountRaised=" + amountRaised +
+                ", expensesDescription='" + expensesDescription + '\'' +
+                ", location='" + location + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", backers=" + backers +
+                ", status=" + status +
+                ", fundraiser=" + fundraiser +
+                ", category=" + category +
+                ", resources=" + resources +
+                '}';
+    }
 }

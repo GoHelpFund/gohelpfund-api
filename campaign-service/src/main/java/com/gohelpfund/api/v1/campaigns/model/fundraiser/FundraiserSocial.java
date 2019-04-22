@@ -14,6 +14,7 @@ import java.io.Serializable;
 
 @JsonPropertyOrder({"facebook", "twitter", "linkedin", "website", "other"})
 public class FundraiserSocial implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @JsonIgnore
     private String socialId;
@@ -37,11 +38,6 @@ public class FundraiserSocial implements Serializable {
     private String other;
 
     public FundraiserSocial(){
-        facebook = "https://facebook.com";
-        twitter = "https://twitter.com";
-        linkedin = "https://linkedin.com";
-        website = "https://duckduckgo.com";
-        other = "https://gohelpfund.com";
     }
 
     public String getSocialId() {
@@ -110,4 +106,16 @@ public class FundraiserSocial implements Serializable {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "FundraiserSocial{" +
+                "socialId='" + socialId + '\'' +
+                ", fundraiserId='" + fundraiserId + '\'' +
+                ", facebook='" + facebook + '\'' +
+                ", twitter='" + twitter + '\'' +
+                ", linkedin='" + linkedin + '\'' +
+                ", website='" + website + '\'' +
+                ", other='" + other + '\'' +
+                '}';
+    }
 }

@@ -35,9 +35,9 @@ public class FundraiserStatus implements Serializable {
 
     public FundraiserStatus(){
         this.type = FundraiserStatusType.PENDING;
-        this.typeDescription = "User is a guest";
-        this.subType = FundraiserStatusSubType.REGISTRATION_REQUIRED;
-        this.subTypeDescription = "User needs to register an account";
+        this.typeDescription = "User is pending";
+        this.subType = FundraiserStatusSubType.VERIFICATION_REQUIRED;
+        this.subTypeDescription = "User needs to verify his account";
     }
 
     public String getStatusId() {
@@ -96,5 +96,17 @@ public class FundraiserStatus implements Serializable {
     public FundraiserStatus withFundraiserId(String fundraiserId) {
         this.setFundraiserId(fundraiserId);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "FundraiserStatus{" +
+                "statusId='" + statusId + '\'' +
+                ", fundraiserId='" + fundraiserId + '\'' +
+                ", type=" + type +
+                ", typeDescription='" + typeDescription + '\'' +
+                ", subType=" + subType +
+                ", subTypeDescription='" + subTypeDescription + '\'' +
+                '}';
     }
 }

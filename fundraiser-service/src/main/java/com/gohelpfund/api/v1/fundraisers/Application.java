@@ -18,7 +18,7 @@ import javax.servlet.Filter;
 @EnableEurekaClient
 @EnableBinding(Source.class)
 @EnableResourceServer
-@EnableGlobalMethodSecurity(securedEnabled = true)
+//@EnableGlobalMethodSecurity(securedEnabled = true)
 public class Application {
 
     @Bean

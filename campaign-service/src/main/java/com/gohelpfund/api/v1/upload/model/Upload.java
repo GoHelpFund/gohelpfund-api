@@ -26,6 +26,10 @@ public class Upload {
     @JsonProperty("signature")
     private String signature;
 
+    public Upload(){
+
+    }
+
     public String getAccessKeyId() {
         return accessKeyId;
     }

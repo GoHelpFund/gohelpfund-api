@@ -11,6 +11,7 @@ import java.io.Serializable;
 
 @JsonPropertyOrder({"id", "name", "age", "profile_image_url", "status", "social", "professional"})
 public class Fundraiser implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private String id;
 
@@ -31,9 +32,6 @@ public class Fundraiser implements Serializable {
     private FundraiserStatus status;
 
     public Fundraiser(){
-        this.name = "Zach";
-        this.age = 29;
-        this.profileImageUrl = "https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/generic-user.jpg";
     }
 
     public String getId() {
@@ -112,4 +110,16 @@ public class Fundraiser implements Serializable {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "Fundraiser{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", profileImageUrl='" + profileImageUrl + '\'' +
+                ", social=" + social +
+                ", professional=" + professional +
+                ", status=" + status +
+                '}';
+    }
 }
