@@ -96,6 +96,8 @@ donation-service:
     -                           "authentication-service:authentication-service"
     -                           "config-server:config-server"
     -                           "eureka-server:eureka-server"
+    -                           "fundraiser-service:fundraiser-service"
+    -                           "campaign-service:campaign-service"
   environment:
     SERVER_PORT:              "9000"
     PROFILE:                  "dev-api"
@@ -117,7 +119,6 @@ campaign-service:
   -                           "9100:9100"
   links:
   -                           "authentication-service:authentication-service"
-  -                           "donation-service:donation-service"
   -                           "config-server:config-server"
   -                           "eureka-server:eureka-server"
   -                           "kafka-server:kafka-server"
@@ -149,7 +150,6 @@ fundraiser-service:
   -                           "9200:9200"
   links:
   -                           "authentication-service:authentication-service"
-  -                           "donation-service:donation-service"
   -                           "config-server:config-server"
   -                           "eureka-server:eureka-server"
   -                           "kafka-server:kafka-server"
