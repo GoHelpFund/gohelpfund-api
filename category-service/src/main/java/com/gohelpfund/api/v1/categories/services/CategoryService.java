@@ -1,7 +1,7 @@
-package com.gohelpfund.api.v1.categories.services;
+package com.gohelpfund.api.v1.wallets.services;
 
-import com.gohelpfund.api.v1.categories.model.Category;
-import com.gohelpfund.api.v1.categories.repository.CategoryRepository;
+import com.gohelpfund.api.v1.wallets.model.Category;
+import com.gohelpfund.api.v1.wallets.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

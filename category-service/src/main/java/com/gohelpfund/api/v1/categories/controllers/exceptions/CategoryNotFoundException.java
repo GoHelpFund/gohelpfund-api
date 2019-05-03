@@ -1,4 +1,4 @@
-package com.gohelpfund.api.v1.categories.controllers.exceptions;
+package com.gohelpfund.api.v1.wallets.controllers.exceptions;
 
 public class CategoryNotFoundException extends RuntimeException {
 

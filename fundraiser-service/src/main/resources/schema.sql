@@ -66,6 +66,7 @@ CREATE TABLE fundraisers (
   fundraiser_id         VARCHAR(100) PRIMARY KEY NOT NULL,
   social_id             VARCHAR(100) NOT NULL,
   professional_id       VARCHAR(100) NOT NULL,
+  wallet_id             VARCHAR(100) NOT NULL,
   status_id             VARCHAR(100) NOT NULL,
 
   name                  TEXT,
@@ -73,9 +74,9 @@ CREATE TABLE fundraisers (
   profile_image_url     TEXT
   );
 
-INSERT INTO fundraisers (fundraiser_id, social_id, professional_id, status_id,  name, age, profile_image_url)
-VALUES ('0c8250bb-f7eb-4adc-925c-2af315cc4a50', 'a28250bb-f7eb-4adc-925c-90f315cc4a27', 'a38250bb-f7eb-4adc-925c-90f315cc4a27', '408250bb-f7eb-4adc-925c-2af315cc4a54', 'Daniel Dascalu', 26, 'https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/daniel-dascalu.jpeg');
-INSERT INTO fundraisers (fundraiser_id, social_id, professional_id, status_id, name, age, profile_image_url)
-VALUES ('100393bc-8aaa-45a8-9093-80c4792348c1', 'b28250bb-f7eb-4adc-925c-90f315cc4a28', 'b49250bb-efec-2adc-925c-aff315cc4a28', '518250bb-f7eb-4adc-925c-2af315cc4a55', 'Daniel Tirzuman', 26, 'https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/daniel-tirzuman.jpg');
-INSERT INTO fundraisers (fundraiser_id, social_id, professional_id, status_id, name, age, profile_image_url)
-VALUES ('2d0343bc-9afa-45a8-6043-e0c7792348z2', 'c29250bb-efec-2adc-925c-aff315cc4a29', 'c49250bb-efec-2adc-925c-aff315cc4a29', '608250bb-f7eb-4adc-925c-2af315cc4a06', 'Vlad Batrinu', 26, 'https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/vlad-batrinu.jpg');
+INSERT INTO fundraisers (fundraiser_id, social_id, professional_id, wallet_id, status_id,  name, age, profile_image_url)
+VALUES ('0c8250bb-f7eb-4adc-925c-2af315cc4a50', 'a28250bb-f7eb-4adc-925c-90f315cc4a27', 'a38250bb-f7eb-4adc-925c-90f315cc4a27', '6yy0a75f-yb90-5482-a1de-108aea2567ay', '408250bb-f7eb-4adc-925c-2af315cc4a54', 'Daniel Dascalu', 26, 'https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/daniel-dascalu.jpeg');
+INSERT INTO fundraisers (fundraiser_id, social_id, professional_id, wallet_id, status_id, name, age, profile_image_url)
+VALUES ('100393bc-8aaa-45a8-9093-80c4792348c1', 'b28250bb-f7eb-4adc-925c-90f315cc4a28', 'b49250bb-efec-2adc-925c-aff315cc4a28', '7yy0a75f-yb90-5482-a1de-108aea2567ay', '518250bb-f7eb-4adc-925c-2af315cc4a55', 'Daniel Tirzuman', 26, 'https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/daniel-tirzuman.jpg');
+INSERT INTO fundraisers (fundraiser_id, social_id, professional_id, wallet_id, status_id, name, age, profile_image_url)
+VALUES ('2d0343bc-9afa-45a8-6043-e0c7792348z2', 'c29250bb-efec-2adc-925c-aff315cc4a29', 'c49250bb-efec-2adc-925c-aff315cc4a29', '8yy0a75f-yb90-5482-a1de-108aea2567ay', '608250bb-f7eb-4adc-925c-2af315cc4a06', 'Vlad Batrinu', 26, 'https://s3.eu-central-1.amazonaws.com/gohelpfund-resources/vlad-batrinu.jpg');

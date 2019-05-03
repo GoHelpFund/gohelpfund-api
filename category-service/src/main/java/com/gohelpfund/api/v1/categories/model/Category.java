@@ -1,4 +1,4 @@
-package com.gohelpfund.api.v1.categories.model;
+package com.gohelpfund.api.v1.wallets.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import javax.persistence.*;
 
 @Entity(name = "Category")
-@Table(name = "categories")
+@Table(name = "wallets")
 @JsonPropertyOrder({"categoryId", "name", "description", "imageUrl", "status"})
 public class Category {
     @Id

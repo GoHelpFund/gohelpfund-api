@@ -1,6 +1,6 @@
-package com.gohelpfund.api.v1.categories.repository;
+package com.gohelpfund.api.v1.wallets.repository;
 
-import com.gohelpfund.api.v1.categories.model.Category;
+import com.gohelpfund.api.v1.wallets.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

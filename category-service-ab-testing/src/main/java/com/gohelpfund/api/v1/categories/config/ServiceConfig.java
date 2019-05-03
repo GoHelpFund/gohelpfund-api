@@ -1,4 +1,4 @@
-package com.gohelpfund.api.v1.categories.config;
+package com.gohelpfund.api.v1.wallets.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

@@ -23,15 +23,15 @@ services:
       GIT_USERNAME:             $GIT_CONFIG_REPO_USERNAME
       GIT_PASSWORD:             $GIT_CONFIG_REPO_PASSWORD
 
-  zipkin-server:
-    image: gohelpfund/ghf-zipkin-server:${BUILD_NAME}
-    mem_limit: 353741824
-    ports:
-    -                           "9411:9411"
-    environment:
-      PROFILE:                  "local-api"
-      SERVER_PORT:              "9411"
-      ZIPKIN_URI:               "http://zipkin-server:9411"
+#  zipkin-server:
+#    image: gohelpfund/ghf-zipkin-server:${BUILD_NAME}
+#    mem_limit: 353741824
+#    ports:
+#    -                           "9411:9411"
+#    environment:
+#      PROFILE:                  "local-api"
+#      SERVER_PORT:              "9411"
+#      ZIPKIN_URI:               "http://zipkin-server:9411"
 
   zuul-server:
     image: gohelpfund/ghf-zuul-server:${BUILD_NAME}
@@ -76,6 +76,29 @@ services:
       ZUULSERVER_PORT:           "8763"
       DATABASESERVER_PORT:       "5432"
       ENCRYPT_KEY:               "IMSYMMETRIC"
+
+  donation-service:
+    image: gohelpfund/ghf-donation-service:${BUILD_NAME}
+    mem_limit: 353741824
+    ports:
+      -                          "9000:9000"
+    environment:
+      SERVER_PORT:              "9000"
+      PROFILE:                  "local-api"
+      EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
+      ZIPKIN_URI:               "http://zipkin-server:9411"
+      CONFIGSERVER_URI:         "http://config-server:8762"
+      AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
+      ZIPKIN_PORT:              "9411"
+      KAFKASERVER_PORT:         "9092"
+      EUREKASERVER_PORT:        "8761"
+      CONFIGSERVER_PORT:        "8762"
+      ZUULSERVER_PORT:          "8763"
+      AUTHSERVER_PORT:          "8764"
+      REDIS_PORT:               "6379"
+      DATABASESERVER_PORT:      "5432"
+      ZKSERVER_PORT:            "2181"
+      ENCRYPT_KEY:              "IMSYMMETRIC"
 
   fundraiser-service:
     image: gohelpfund/ghf-fundraiser-service:${BUILD_NAME}
