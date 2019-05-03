@@ -55,6 +55,7 @@ VALUES
    ('gohelpfund', 'ghfsecret', 'web-client,mobile-client', 'refresh_token,password,client_credentials', NULL, 36000000, 76000000);
 
 
+
 DROP TABLE IF EXISTS oauth_client_token;
 CREATE TABLE oauth_client_token (
   token_id                VARCHAR(255),
