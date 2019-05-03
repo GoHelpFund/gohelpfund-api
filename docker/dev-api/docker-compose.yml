@@ -89,7 +89,7 @@ authentication-service:
 
 donation-service:
   image: gohelpfund/ghf-donation-service:${BUILD_NAME}
-  mem_limit: 253741824
+  mem_limit: 453741824
   ports:
     -                           "9000:9000"
   links:
