@@ -30,9 +30,7 @@ public class WalletController {
 
     @PostMapping()
     public ResponseEntity<Resource<Wallet>> newWallet(@RequestBody Wallet wallet) {
-        logger.warn("============> ENTERED");
         Wallet newWallet = service.createWallet(wallet.getEntityId(), wallet.getType());
-        logger.warn("============> CREATED");
         return ResponseEntity
                 .created(linkTo(methodOn(WalletController.class).one(newWallet.getId())).toUri())
                 .body(assembler.toResource(newWallet));

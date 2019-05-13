@@ -88,6 +88,29 @@ authentication-service:
     DATABASESERVER_PORT:      "5432"
     ENCRYPT_KEY:              "IMSYMMETRIC"
 
+donation-service:
+  image: gohelpfund/ghf-donation-service:${BUILD_NAME}
+  mem_limit: 453741824
+  ports:
+    -                           "9000:9000"
+  links:
+    -                           "authentication-service:authentication-service"
+    -                           "config-server:config-server"
+    -                           "eureka-server:eureka-server"
+  environment:
+    SERVER_PORT:              "9000"
+    PROFILE:                  "dev-api"
+    EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
+    CONFIGSERVER_URI:         "http://config-server:8762"
+    AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
+    EUREKASERVER_PORT:        "8761"
+    CONFIGSERVER_PORT:        "8762"
+    ZUULSERVER_PORT:          "8763"
+    AUTHSERVER_PORT:          "8764"
+    DATABASESERVER_PORT:      "5432"
+    ZKSERVER_PORT:            "2181"
+    ENCRYPT_KEY:              "IMSYMMETRIC"
+
 campaign-service:
   image: gohelpfund/ghf-campaign-service:${BUILD_NAME}
   mem_limit: 553741824
@@ -95,6 +118,7 @@ campaign-service:
   -                           "9100:9100"
   links:
   -                           "authentication-service:authentication-service"
+  -                           "donation-service:donation-service"
   -                           "config-server:config-server"
   -                           "database:database"
   -                           "eureka-server:eureka-server"
@@ -112,6 +136,7 @@ campaign-service:
     ZIPKIN_PORT:              "9411"
     SERVER_PORT:              "9100"
     KAFKASERVER_PORT:         "9092"
+    DONATION_PORT:            "9000"
     EUREKASERVER_PORT:        "8761"
     CONFIGSERVER_PORT:        "8762"
     ZUULSERVER_PORT:          "8763"
@@ -128,6 +153,7 @@ fundraiser-service:
   -                           "9200:9200"
   links:
   -                           "authentication-service:authentication-service"
+  -                           "donation-service:donation-service"
   -                           "config-server:config-server"
   -                           "database:database"
   -                           "zipkin-server:zipkin-server"
@@ -144,6 +170,7 @@ fundraiser-service:
     ZIPKIN_PORT:              "9411"
     SERVER_PORT:              "9200"
     KAFKASERVER_PORT:         "9092"
+    DONATION_PORT:            "9000"
     EUREKASERVER_PORT:        "8761"
     CONFIGSERVER_PORT:        "8762"
     ZUULSERVER_PORT:          "8763"

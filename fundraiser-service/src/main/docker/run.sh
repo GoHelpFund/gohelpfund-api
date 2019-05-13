@@ -33,6 +33,12 @@ echo "********************************************************"
 while ! `nc -z authentication-service $AUTHSERVER_PORT`; do sleep 3; done
 echo "*******  Authentication Service has started"
 
+echo "********************************************************"
+echo "Waiting for the donation service to start on port $DONATION_PORT"
+echo "********************************************************"
+while ! `nc -z donation-service $DONATION_PORT`; do sleep 3; done
+echo "*******  Donation Service has started"
+
 #echo "********************************************************"
 #echo "Waiting for the zipkin server to start  on port $ZIPKIN_PORT"
 #echo "********************************************************"

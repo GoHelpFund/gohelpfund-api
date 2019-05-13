@@ -1,6 +1,8 @@
 package com.gohelpfund.api.v1.fundraiser_service.clients;
 
 import com.gohelpfund.api.v1.fundraiser_service.model.wallet.Wallet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -10,6 +12,8 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class WalletRestTemplateClient {
+    private static final Logger logger = LoggerFactory.getLogger(WalletRestTemplateClient.class);
+
     @Autowired
     RestTemplate restTemplate;
 

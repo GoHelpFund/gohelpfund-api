@@ -95,8 +95,6 @@ donation-service:
     -                           "authentication-service:authentication-service"
     -                           "config-server:config-server"
     -                           "eureka-server:eureka-server"
-    -                           "fundraiser-service:fundraiser-service"
-    -                           "campaign-service:campaign-service"
   environment:
     SERVER_PORT:              "9000"
     PROFILE:                  "dev-api"
@@ -118,6 +116,7 @@ campaign-service:
   -                           "9100:9100"
   links:
   -                           "authentication-service:authentication-service"
+  -                           "donation-service:donation-service"
   -                           "config-server:config-server"
   -                           "eureka-server:eureka-server"
   -                           "kafka-server:kafka-server"
@@ -133,6 +132,7 @@ campaign-service:
     ZIPKIN_PORT:              "9411"
     SERVER_PORT:              "9100"
     KAFKASERVER_PORT:         "9092"
+    DONATION_PORT:            "9000"
     EUREKASERVER_PORT:        "8761"
     CONFIGSERVER_PORT:        "8762"
     ZUULSERVER_PORT:          "8763"
@@ -149,6 +149,7 @@ fundraiser-service:
   -                           "9200:9200"
   links:
   -                           "authentication-service:authentication-service"
+  -                           "donation-service:donation-service"
   -                           "config-server:config-server"
   -                           "eureka-server:eureka-server"
   -                           "kafka-server:kafka-server"
@@ -163,6 +164,7 @@ fundraiser-service:
     ZIPKIN_PORT:              "9411"
     SERVER_PORT:              "9200"
     KAFKASERVER_PORT:         "9092"
+    DONATION_PORT:            "9000"
     EUREKASERVER_PORT:        "8761"
     CONFIGSERVER_PORT:        "8762"
     ZUULSERVER_PORT:          "8763"
