@@ -134,6 +134,7 @@ public class CampaignService {
                         campaign.withMediaResources(resources.getAll(campaign.getCampaignId()));
                         campaign.withFundraiser(getFundraiser(campaign.getFundraiserId()));
                         campaign.withCategory(getCategory(campaign.getCategoryId()));
+                        campaign.withWallet(getWallet(campaign.getWalletId()));
                     }
             );
         }
