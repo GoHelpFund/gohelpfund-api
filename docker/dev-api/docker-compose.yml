@@ -56,7 +56,6 @@ zuul-server:
     DATABASESERVER_PORT:      "5432"
     CONFIGSERVER_PORT:        "8762"
     CATEGORYSERVERNEW_PORT:   "9102"
-
 #database:
 #  image: postgres:9.5
 #  mem_limit: 103741824
