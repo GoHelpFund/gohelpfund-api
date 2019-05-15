@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
-@JsonPropertyOrder({"id", "date", "type", "blockchainTransactionId", "amount", "senderHelpId", "receiverHelpId",
+@JsonPropertyOrder({"id", "date", "type", "blockchain_transaction_id", "amount", "sender_help_id", "receiver_help_id",
         "sender_name", "sender_address"})
 public class HelpWalletTransaction implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -37,11 +37,9 @@ public class HelpWalletTransaction implements Serializable {
     @JsonProperty("amount")
     private Integer amount;
 
-    @JsonIgnore
     @JsonProperty("sender_help_id")
     private String senderHelpId;
 
-    @JsonIgnore
     @JsonProperty("receiver_help_id")
     private String receiverHelpId;
 
