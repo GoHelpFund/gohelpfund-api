@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"address", "balance"})
+import javax.persistence.Transient;
+import java.util.List;
+
+@JsonPropertyOrder({"address", "balance", "transactions"})
 public class HelpWalletDetails {
     private static final long serialVersionUID = 1L;
 
@@ -22,6 +25,14 @@ public class HelpWalletDetails {
 
     @JsonProperty("balance")
     private Integer balance;
+
+    @JsonProperty("transactions")
+    @Transient
+    private List<HelpWalletTransaction> transactions;
+
+    @JsonProperty("backers")
+    @Transient
+    private List<HelpWalletBacker> backers;
 
     public HelpWalletDetails() {
     }
@@ -64,6 +75,22 @@ public class HelpWalletDetails {
 
     public void setBalance(Integer balance) {
         this.balance = balance;
+    }
+
+    public List<HelpWalletTransaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<HelpWalletTransaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public List<HelpWalletBacker> getBackers() {
+        return backers;
+    }
+
+    public void setBackers(List<HelpWalletBacker> backers) {
+        this.backers = backers;
     }
 
     public HelpWalletDetails withId(String id){

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HelpWalletDetailsRepository extends JpaRepository<HelpWalletDetails, String> {
-    HelpWalletDetails findById(String helpId);
+    HelpWalletDetails findByHelpId(String helpId);
     HelpWalletDetails findByEntityId(String entityId);
 }

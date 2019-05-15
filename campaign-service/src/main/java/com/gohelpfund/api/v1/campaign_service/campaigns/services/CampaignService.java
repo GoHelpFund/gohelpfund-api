@@ -177,7 +177,6 @@ public class CampaignService {
 
         campaign
                 .withId(id)
-                .withBackers(0)
                 .withStatus(status.save(id))
                 .withMediaResources(resources.saveAll(campaign.getResources(), id))
                 .withCategoryId(categoryId)
@@ -202,7 +201,9 @@ public class CampaignService {
 
     public Wallet updateCampaign(String campaignId, String walletId, String fundraiserId, Integer amount) {
 
-        Wallet wallet = updateWallet(campaignId, walletId, getHttpEntity(fundraiserId, amount));
+        String fundraiserName = getFundraiser(fundraiserId).getName();
+
+        Wallet wallet = updateWallet(campaignId, walletId, getHttpEntity(fundraiserId, fundraiserName, amount));
 
         logger.debug("PUT | PostgreSQL | updated | wallet id: {} ", wallet.getId());
 
@@ -227,7 +228,7 @@ public class CampaignService {
         return new HttpEntity<>(map, headers);
     }
 
-    private HttpEntity<Map<String, Object>> getHttpEntity(String fundraiserId, Integer amount) {
+    private HttpEntity<Map<String, Object>> getHttpEntity(String fundraiserId, String fundraiserName, Integer amount) {
         HttpHeaders headers = new HttpHeaders();
         String token = UserContextHolder.getContext().getAuthToken();
         headers.set("Authorization", token);
@@ -235,6 +236,7 @@ public class CampaignService {
 
         Map<String, Object> map = new HashMap<>();
         map.put("entity_id", fundraiserId);
+        map.put("entity_name", fundraiserName);
         map.put("amount", amount);
         map.put("type", "fundraiser");
 

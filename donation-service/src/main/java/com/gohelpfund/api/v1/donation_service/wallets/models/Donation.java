@@ -6,18 +6,29 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
 
-@JsonPropertyOrder({"entity_id", "type", "amount"})
+@JsonPropertyOrder({"entity_id", "entity_name", "type", "amount"})
 public class Donation implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @JsonProperty("entity_id")
     private String entity_id;
 
+    @JsonProperty("entity_name")
+    private String entity_name;
+
     private Integer amount;
 
     private String type;
 
     public Donation() {
+    }
+
+    public String getEntity_name() {
+        return entity_name;
+    }
+
+    public void setEntity_name(String entity_name) {
+        this.entity_name = entity_name;
     }
 
     public Integer getAmount() {

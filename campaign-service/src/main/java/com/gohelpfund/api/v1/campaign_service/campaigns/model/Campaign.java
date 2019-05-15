@@ -85,9 +85,6 @@ public class Campaign implements Serializable {
     @NotNull
     private Date endDate;
 
-    @Column(name = "backers")
-    private Integer backers;
-
     @ManyToOne
     @JoinColumn(name = "status_id")
     private CampaignStatus status;
@@ -230,14 +227,6 @@ public class Campaign implements Serializable {
         this.resources = resources;
     }
 
-    public Integer getBackers() {
-        return backers;
-    }
-
-    public void setBackers(Integer backers) {
-        this.backers = backers;
-    }
-
     public CampaignStatus getStatus() {
         return status;
     }
@@ -248,11 +237,6 @@ public class Campaign implements Serializable {
 
     public Campaign withId(String campaignId) {
         this.setCampaignId(campaignId);
-        return this;
-    }
-
-    public Campaign withBackers(Integer backers){
-        this.setBackers(backers);
         return this;
     }
 
@@ -314,7 +298,6 @@ public class Campaign implements Serializable {
                 Objects.equals(location, campaign.location) &&
                 Objects.equals(startDate, campaign.startDate) &&
                 Objects.equals(endDate, campaign.endDate) &&
-                Objects.equals(backers, campaign.backers) &&
                 Objects.equals(status, campaign.status) &&
                 Objects.equals(wallet, campaign.wallet) &&
                 Objects.equals(fundraiser, campaign.fundraiser) &&
@@ -324,7 +307,7 @@ public class Campaign implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(campaignId, fundraiserId, categoryId, walletId, campaignTitle, campaignDescription, amountGoal, expensesDescription, location, startDate, endDate, backers, status, wallet, fundraiser, category, resources);
+        return Objects.hash(campaignId, fundraiserId, categoryId, walletId, campaignTitle, campaignDescription, amountGoal, expensesDescription, location, startDate, endDate, status, wallet, fundraiser, category, resources);
     }
 
     @Override
@@ -341,7 +324,6 @@ public class Campaign implements Serializable {
                 ", location='" + location + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", backers=" + backers +
                 ", status=" + status +
                 ", wallet=" + wallet +
                 ", fundraiser=" + fundraiser +

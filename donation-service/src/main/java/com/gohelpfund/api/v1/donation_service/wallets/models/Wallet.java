@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "wallets")
-@JsonPropertyOrder({"id", "name", "age", "profile_image_url", "status", "social", "professional"})
+@JsonPropertyOrder({"id", "entity_id", "type", "help"})
 public class Wallet implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -87,5 +87,15 @@ public class Wallet implements Serializable {
     public Wallet withHelpWalletDetails(HelpWalletDetails helpWallet){
         this.setHelpWallet(helpWallet);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Wallet{" +
+                "id='" + id + '\'' +
+                ", entityId='" + entityId + '\'' +
+                ", type='" + type + '\'' +
+                ", helpWallet=" + helpWallet +
+                '}';
     }
 }

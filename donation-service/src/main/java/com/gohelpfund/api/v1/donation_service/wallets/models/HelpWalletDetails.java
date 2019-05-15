@@ -2,21 +2,22 @@ package com.gohelpfund.api.v1.donation_service.wallets.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "help_wallet_details")
-public class HelpWalletDetails {
+@JsonPropertyOrder({"publicKey", "balance", "transactions"})
+public class HelpWalletDetails implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @JsonIgnore
     @Column(name = "help_id", nullable = false)
-    private String id;
+    private String helpId;
 
     @JsonIgnore
     @Column(name = "entity_id", nullable = false)
@@ -34,15 +35,23 @@ public class HelpWalletDetails {
     @Column(name = "balance")
     private Integer balance;
 
+    @JsonProperty("transactions")
+    @Transient
+    private List<HelpWalletTransaction> transactions;
+
+    @JsonProperty("backers")
+    @Transient
+    private List<HelpWalletBacker> backers;
+
     public HelpWalletDetails() {
     }
 
-    public String getId() {
-        return id;
+    public String getHelpId() {
+        return helpId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setHelpId(String helpId) {
+        this.helpId = helpId;
     }
 
     public String getEntityId() {
@@ -77,8 +86,24 @@ public class HelpWalletDetails {
         this.balance = balance;
     }
 
-    public HelpWalletDetails withId(String id){
-        this.setId(id);
+    public List<HelpWalletTransaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<HelpWalletTransaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public List<HelpWalletBacker> getBackers() {
+        return backers;
+    }
+
+    public void setBackers(List<HelpWalletBacker> backers) {
+        this.backers = backers;
+    }
+
+    public HelpWalletDetails withId(String helpId){
+        this.setHelpId(helpId);
         return this;
     }
 
@@ -102,4 +127,15 @@ public class HelpWalletDetails {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "HelpWalletDetails{" +
+                "helpId='" + helpId + '\'' +
+                ", entityId='" + entityId + '\'' +
+                ", publicKey='" + publicKey + '\'' +
+                ", balance=" + balance +
+                ", transactions=" + transactions +
+                ", backers=" + backers +
+                '}';
+    }
 }
