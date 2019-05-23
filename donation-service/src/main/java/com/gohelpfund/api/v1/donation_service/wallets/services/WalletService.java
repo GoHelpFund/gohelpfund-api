@@ -1,6 +1,9 @@
 package com.gohelpfund.api.v1.donation_service.wallets.services;
 
-import com.gohelpfund.api.v1.donation_service.wallets.models.*;
+import com.gohelpfund.api.v1.donation_service.wallets.models.Donation;
+import com.gohelpfund.api.v1.donation_service.wallets.models.HelpWalletBacker;
+import com.gohelpfund.api.v1.donation_service.wallets.models.HelpWalletDetails;
+import com.gohelpfund.api.v1.donation_service.wallets.models.Wallet;
 import com.gohelpfund.api.v1.donation_service.wallets.repository.WalletRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +29,9 @@ public class WalletService {
 
     @Autowired
     private HelpWalletBackersService helpWalletBackersService;
+
+    @Autowired
+    private HelpWalletInsightService helpInsight;
 
     public Wallet getWalletById(String walletId) {
         Wallet wallet = walletRepository.findById(walletId);
@@ -105,13 +111,15 @@ public class WalletService {
         String campaignHelpId = campaignWallet.getHelpWallet().getHelpId();
 
         String donatorAddress = donatorWallet.getHelpWallet().getPublicKey();
-
-        helpWalletTransactionsService.save(donatorHelpId, currentDate, "sent", donation.getAmount(), donatorHelpId, campaignHelpId, entityName, donatorAddress);
+        String donatorPrivateKey = donatorWallet.getHelpWallet().getPrivateKey();
+        String campaignAddress = campaignWallet.getHelpWallet().getPublicKey();
+        String txid = helpInsight.sendHelpCoins(donatorAddress, donatorPrivateKey, campaignAddress, donation.getAmount());
+        helpWalletTransactionsService.save(donatorHelpId, currentDate, "sent", donation.getAmount(), donatorHelpId, campaignHelpId, entityName, donatorAddress, txid);
 
         donatorWallet.getHelpWallet().setBalance(remaining);
 
         helpWalletDetailsService.update(donatorWallet.getHelpWallet());
-        helpWalletTransactionsService.save(campaignHelpId, currentDate, "received", donation.getAmount(), donatorHelpId, campaignHelpId, entityName, donatorAddress);
+        helpWalletTransactionsService.save(campaignHelpId, currentDate, "received", donation.getAmount(), donatorHelpId, campaignHelpId, entityName, donatorAddress, txid);
 
         List<HelpWalletBacker> backers = helpWalletBackersService.getAll(campaignHelpId);
         boolean backerExists = backers.stream().anyMatch(b -> b.getFundraiser_id().equals(entityId));
@@ -130,6 +138,8 @@ public class WalletService {
 
         return campaignWallet;
     }
+
+
 
 
 }

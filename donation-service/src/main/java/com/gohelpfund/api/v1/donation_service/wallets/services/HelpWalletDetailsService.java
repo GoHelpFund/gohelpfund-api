@@ -1,20 +1,23 @@
 package com.gohelpfund.api.v1.donation_service.wallets.services;
 
+import com.gohelpfund.api.v1.donation_service.config.ServiceConfig;
 import com.gohelpfund.api.v1.donation_service.wallets.models.CryptoCurrencyCredentials;
 import com.gohelpfund.api.v1.donation_service.wallets.models.HelpWalletDetails;
-import com.gohelpfund.api.v1.donation_service.wallets.models.HelpWalletTransaction;
 import com.gohelpfund.api.v1.donation_service.wallets.repository.HelpWalletDetailsRepository;
+import org.bitcoinj.core.NetworkParameters;
+import org.bitcoinj.params.MainNetParams;
+import org.bitcoinj.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
 public class HelpWalletDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(HelpWalletDetailsService.class);
+
     @Autowired
     private HelpWalletDetailsRepository repository;
 
@@ -23,6 +26,12 @@ public class HelpWalletDetailsService {
 
     @Autowired
     private HelpWalletBackersService backers;
+
+    @Autowired
+    private HelpWalletInsightService insight;
+
+    @Autowired
+    ServiceConfig config;
 
     public HelpWalletDetails getByEntityId(String entityId) {
         HelpWalletDetails helpWalletDetails = repository.findByEntityId(entityId);
@@ -50,9 +59,7 @@ public class HelpWalletDetailsService {
     }
 
     public HelpWalletDetails update(HelpWalletDetails helpWallet) {
-        logger.warn("======???");
         HelpWalletDetails newHelpWalletDetails = repository.save(helpWallet);
-        logger.warn("======???=====");
         logger.debug("POST | PostgreSQL | updated | help_wallet_details id: {} ", helpWallet.getHelpId());
 
         return newHelpWalletDetails;
@@ -61,14 +68,16 @@ public class HelpWalletDetailsService {
     public HelpWalletDetails saveOne(String entityId, String type) {
         String id = UUID.randomUUID().toString();
 
-        int balance = 0;
-        if (type.equalsIgnoreCase("fundraiser")){
-            balance = 100;
-        }
-
         HelpWalletDetails helpWalletDetails = new HelpWalletDetails();
         CryptoCurrencyCredentials credentials = generateCryptoCurrencyCredentials();
 
+        int balance = 0;
+        if (type.equalsIgnoreCase("fundraiser")){
+            balance = 10;
+            String topUpAddress = config.getTopUpHelpAddr();
+            String topUpPrivateKey = config.getTopUpHelpPk();
+            insight.sendHelpCoins(topUpAddress, topUpPrivateKey, credentials.getPublicKey(), balance);
+        }
         helpWalletDetails
                 .withId(id)
                 .withEnityId(entityId)
@@ -84,11 +93,14 @@ public class HelpWalletDetailsService {
 
     private CryptoCurrencyCredentials generateCryptoCurrencyCredentials(){
         CryptoCurrencyCredentials credentials = new CryptoCurrencyCredentials();
-        credentials.setPublicKey("XpLRm8JgdejrDgpRxnS5Fxp6hqKa3riU9r");
-        credentials.setPrivateKey("X");
+        NetworkParameters params = MainNetParams.get();
+        Wallet wallet = new Wallet(params);
+        credentials.setPublicKey(wallet.currentReceiveAddress().toString());
+        credentials.setPrivateKey(wallet.currentReceiveKey().getPrivateKeyAsWiF(MainNetParams.get()));
 
         return credentials;
     }
+
 
 
 }

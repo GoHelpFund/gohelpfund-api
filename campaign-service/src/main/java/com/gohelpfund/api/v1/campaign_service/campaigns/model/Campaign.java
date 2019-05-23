@@ -47,13 +47,13 @@ public class Campaign implements Serializable {
     @JsonProperty("title")
     @Column(name = "campaign_title", nullable = false)
     @NotNull
-    @Size(min = 10, max = 256)
+    @Size(min = 1, max = 256)
     private String campaignTitle;
 
     @JsonProperty("description")
     @Column(name = "campaign_description", nullable = false)
     @NotNull
-    @Size(min = 10, max = 10240)
+    @Size(min = 1, max = 10240)
     private String campaignDescription;
 
     @JsonProperty("amount_goal")
@@ -65,12 +65,12 @@ public class Campaign implements Serializable {
     @JsonProperty("expenses_description")
     @Column(name = "expenses_description", nullable = false)
     @NotNull
-    @Size(min = 10, max = 10240)
+    @Size(min = 1, max = 10240)
     private String expensesDescription;
 
     @Column(name = "location", nullable = false)
     @NotNull
-    @Size(min = 2, max = 256)
+    @Size(min = 1, max = 256)
     private String location;
 
     @JsonProperty("start_date")

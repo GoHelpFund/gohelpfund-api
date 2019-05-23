@@ -34,7 +34,7 @@ public class CampaignMediaResource implements Serializable {
     private String format;
 
     @Column(name = "url", nullable = false)
-    @URL
+//    @URL
     private String url;
 
     @JsonIgnore

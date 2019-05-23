@@ -10,6 +10,14 @@
   <name>donations-service</name>
   <description>GoHelpFund Payments Service</description>
 
+  <repositories>
+    <repository>
+      <id>bintray-dash-Dashj</id>
+      <name>dash-Dashj</name>
+      <url>https://dl.bintray.com/dash/Dashj/</url>
+    </repository>
+  </repositories>
+
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -95,6 +103,15 @@
       <version>3.5</version>
       <scope>compile</scope>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.dashj/dashj-core -->
+    <dependency>
+      <groupId>org.dashj</groupId>
+      <artifactId>dashj-core</artifactId>
+      <version>LATEST</version>
+    </dependency>
+
+
   </dependencies>
 
   <!--Docker build Config-->

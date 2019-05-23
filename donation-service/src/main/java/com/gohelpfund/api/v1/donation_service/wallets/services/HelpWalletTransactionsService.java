@@ -29,13 +29,14 @@ public class HelpWalletTransactionsService {
         return transactions;
     }
 
-    public HelpWalletTransaction save(String helpId, Date date, String type, Integer amount, String senderHelpId, String receiverHelpId, String senderName, String senderAddress) {
+    public HelpWalletTransaction save(String helpId, Date date, String type, Integer amount, String senderHelpId,
+                                      String receiverHelpId, String senderName, String senderAddress, String txid) {
         HelpWalletTransaction transaction = new HelpWalletTransaction();
         transaction.withId(UUID.randomUUID().toString())
                 .withHelpId(helpId)
                 .withDate(date)
                 .withType(type)
-                .withBlockchainTransactionId("e2ecdd1d3844a1897fe6891ac89f430785b88372d3521210db990ba58b869055")
+                .withBlockchainTransactionId(txid)
                 .withAmount(amount)
                 .withSenderHelpId(senderHelpId)
                 .withReceiverHelpId(receiverHelpId)

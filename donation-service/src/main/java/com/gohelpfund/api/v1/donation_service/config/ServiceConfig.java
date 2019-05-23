@@ -12,6 +12,12 @@ public class ServiceConfig {
     @Value("${platform.env}")
     private String platformEnv;
 
+    @Value("${topup.help.pk}")
+    private String topUpHelpPk;
+
+    @Value("${topup.help.addr}")
+    private String topUpHelpAddr;
+
 
     public String getPlatformEnv() {
         return platformEnv;
@@ -21,4 +27,11 @@ public class ServiceConfig {
         return jwtSigningKey;
     }
 
+    public String getTopUpHelpPk() {
+        return topUpHelpPk;
+    }
+
+    public String getTopUpHelpAddr() {
+        return topUpHelpAddr;
+    }
 }
