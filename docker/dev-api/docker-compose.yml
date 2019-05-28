@@ -1,26 +1,29 @@
 version: '2'
+
+networks:
+  default:
+    driver: bridge
+
 services:
   eureka-server:
     image:   gohelpfund/ghf-eureka-server:${BUILD_NAME}
-    cpu_shares: 100
-    mem_limit: 524288000
     ports:
-    -                           "8761:8761"
+      -                           "8761:8761"
     environment:
       PROFILE:                  "dev-api"
     networks:
-      main:
+      default:
         aliases:
           - eureka-server
 
   config-server:
     image: gohelpfund/ghf-config-server:${BUILD_NAME}
-    cpu_shares: 100
-    mem_limit: 524288000
     ports:
-    -                           "8762:8762"
+      -                           "8762:8762"
+    links:
+      - "eureka-server:eureka-server"
     networks:
-      main:
+      default:
         aliases:
           - config-server
     environment:
@@ -35,12 +38,16 @@ services:
 
   zuul-server:
     image: gohelpfund/ghf-zuul-server:${BUILD_NAME}
-    cpu_shares: 100
-    mem_limit: 524288000
     ports:
-    -                           "443:8763"
+      -                           "443:8763"
+    links:
+      - "eureka-server:eureka-server"
+      - "config-server:config-server"
+      - "authentication-service:authentication-service"
+      - "fundraiser-service:fundraiser-service"
+      - "campaign-service:campaign-service"
     networks:
-      main:
+      default:
         aliases:
           - zuul-server
     environment:
@@ -57,14 +64,12 @@ services:
 
   database:
     image: postgres:9.5
-    cpu_shares: 100
-    mem_limit: 224288000
-    networks:
-      main:
-        aliases:
-          - database
     ports:
     -                           "5432:5432"
+    networks:
+      default:
+        aliases:
+          - database
     environment:
       PROFILE:                  "dev-api"
       POSTGRES_USER:            "postgres_dev"
@@ -73,12 +78,14 @@ services:
 
   authentication-service:
     image: gohelpfund/ghf-authentication-service:${BUILD_NAME}
-    cpu_shares: 200
-    mem_limit: 753741824
     ports:
-    -                           "8764:8764"
+      -                           "8764:8764"
+    links:
+      - "config-server:config-server"
+      - "eureka-server:eureka-server"
+      - "database:database"
     networks:
-      main:
+      default:
         aliases:
           - authentication-service
     environment:
@@ -95,12 +102,15 @@ services:
 
   donation-service:
     image: gohelpfund/ghf-donation-service:${BUILD_NAME}
-    cpu_shares: 200
-    mem_limit: 524288000
     ports:
       -                           "9000:9000"
+    links:
+      - "authentication-service:authentication-service"
+      - "config-server:config-server"
+      - "eureka-server:eureka-server"
+      - "database:database"
     networks:
-      main:
+      default:
         aliases:
           - donation-service
     environment:
@@ -119,12 +129,18 @@ services:
 
   campaign-service:
     image: gohelpfund/ghf-campaign-service:${BUILD_NAME}
-    cpu_shares: 200
-    mem_limit: 953741824
     ports:
-    -                           "9100:9100"
+      -                           "9100:9100"
+    links:
+      - "authentication-service:authentication-service"
+      - "donation-service:donation-service"
+      - "config-server:config-server"
+      - "eureka-server:eureka-server"
+      - "kafka-server:kafka-server"
+      - "redis:redis"
+      - "database:database"
     networks:
-      main:
+      default:
         aliases:
           - campaign-service
     environment:
@@ -150,12 +166,17 @@ services:
 
   fundraiser-service:
     image: gohelpfund/ghf-fundraiser-service:${BUILD_NAME}
-    cpu_shares: 200
-    mem_limit: 524288000
     ports:
-    -                           "9200:9200"
+      -                           "9200:9200"
+    links:
+      - "authentication-service:authentication-service"
+      - "donation-service:donation-service"
+      - "config-server:config-server"
+      - "eureka-server:eureka-server"
+      - "kafka-server:kafka-server"
+      - "database:database"
     networks:
-      main:
+      default:
         aliases:
           - fundraiser-service
     environment:
@@ -180,26 +201,19 @@ services:
 
   kafka-server:
     image: spotify/kafka
-    cpu_shares: 100
-    mem_limit: 753741824
     ports:
-    -                           "2181:2181"
-    -                           "9092:9092"
+      -                           "2181:2181"
+      -                           "9092:9092"
     networks:
-      main:
+      default:
         aliases:
           - kafka-server
 
   redis:
     image: redis:alpine
-    cpu_shares: 100
-    mem_limit: 353741824
     ports:
-    -                           "6379:6379"
+      -                           "6379:6379"
     networks:
-      main:
+      default:
         aliases:
           - redis
-
-networks:
-  main:
