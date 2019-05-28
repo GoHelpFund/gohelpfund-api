@@ -102,7 +102,7 @@ public class UserService {
         return newAttendance;
     }
 
-    private Fundraiser updateFundraiser(String fundraiserId, HttpEntity httpEntity) {
+/*    private Fundraiser updateFundraiser(String fundraiserId, HttpEntity httpEntity) {
         Fundraiser newFundraiser = fundraiserClient.updateFundraiser(fundraiserId, httpEntity);
 
         if (newFundraiser != null) {
@@ -112,7 +112,7 @@ public class UserService {
         }
 
         return newFundraiser;
-    }
+    }*/
 
     private List<UserRole> createRoles(String username) {
         List<UserRole> roles = Arrays.asList(

@@ -28,7 +28,7 @@ public class FundraiserRestTemplateClient {
         return restExchange.getBody();
     }
 
-    public Fundraiser updateFundraiser(String id, HttpEntity httpEntity){
+/*    public Fundraiser updateFundraiser(String id, HttpEntity httpEntity){
         RestTemplate template = new RestTemplate();
 
         ResponseEntity<Fundraiser> restExchange =
@@ -39,7 +39,7 @@ public class FundraiserRestTemplateClient {
                         Fundraiser.class, id);
 
         return restExchange.getBody();
-    }
+    }*/
 
 
 }
