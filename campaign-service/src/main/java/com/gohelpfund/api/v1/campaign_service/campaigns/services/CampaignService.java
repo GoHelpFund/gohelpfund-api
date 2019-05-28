@@ -5,7 +5,6 @@ import com.gohelpfund.api.v1.campaign_service.campaigns.clients.FundraiserRestTe
 import com.gohelpfund.api.v1.campaign_service.campaigns.clients.WalletRestTemplateClient;
 import com.gohelpfund.api.v1.campaign_service.campaigns.model.Campaign;
 import com.gohelpfund.api.v1.campaign_service.campaigns.model.category.Category;
-import com.gohelpfund.api.v1.campaign_service.campaigns.model.donation.Donation;
 import com.gohelpfund.api.v1.campaign_service.campaigns.model.fundraiser.Fundraiser;
 import com.gohelpfund.api.v1.campaign_service.campaigns.model.wallet.Wallet;
 import com.gohelpfund.api.v1.campaign_service.campaigns.repository.CampaignRepository;
@@ -112,9 +111,9 @@ public class CampaignService {
         Wallet newWallet = walletClient.updateWallet(walletId, httpEntity);
 
         if (newWallet != null) {
-            logger.debug("POST | /api/v1/wallets{}/donate | updated | campaign id: {} wallet id: {}", walletId, campaignId, newWallet.getId());
+            logger.debug("POST | /api/v1/wallets/{}/donate | updated | campaign id: {} wallet id: {}", walletId, campaignId, newWallet.getId());
         } else {
-            logger.debug("POST | /api/v1/wallets{}/donate | update failed | campaign id: {}", walletId, campaignId);
+            logger.debug("POST | /api/v1/wallets/{}/donate | update failed | campaign id: {}", walletId, campaignId);
         }
 
         return newWallet;

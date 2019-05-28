@@ -1,13 +1,21 @@
 package com.gohelpfund.api.v1.donation_service.wallets.services;
 
 import com.gohelpfund.api.v1.donation_service.wallets.models.Donation;
-import com.gohelpfund.api.v1.donation_service.wallets.models.HelpWalletBacker;
-import com.gohelpfund.api.v1.donation_service.wallets.models.HelpWalletDetails;
-import com.gohelpfund.api.v1.donation_service.wallets.models.Wallet;
+import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.help.HelpWalletBacker;
+import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.help.HelpWalletDetails;
+import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.Wallet;
+import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.promise.PromiseWalletBacker;
+import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.promise.PromiseWalletDetails;
 import com.gohelpfund.api.v1.donation_service.wallets.repository.WalletRepository;
+import com.gohelpfund.api.v1.donation_service.wallets.services.help.HelpWalletBackersService;
+import com.gohelpfund.api.v1.donation_service.wallets.services.help.HelpWalletDetailsService;
+import com.gohelpfund.api.v1.donation_service.wallets.services.help.api.HelpWalletInsightService;
+import com.gohelpfund.api.v1.donation_service.wallets.services.help.HelpWalletTransactionsService;
+import com.gohelpfund.api.v1.donation_service.wallets.services.promise.PromiseWalletBackersService;
+import com.gohelpfund.api.v1.donation_service.wallets.services.promise.PromiseWalletDetailsService;
+import com.gohelpfund.api.v1.donation_service.wallets.services.promise.PromiseWalletTransactionsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,20 +26,35 @@ import java.util.UUID;
 public class WalletService {
     private static final Logger logger = LoggerFactory.getLogger(WalletService.class);
 
-    @Autowired
-    private WalletRepository walletRepository;
+    private final WalletRepository walletRepository;
 
-    @Autowired
-    private HelpWalletDetailsService helpWalletDetailsService;
+    private final HelpWalletDetailsService helpWalletDetailsService;
+    private final PromiseWalletDetailsService promiseWalletDetailsService;
 
-    @Autowired
-    private HelpWalletTransactionsService helpWalletTransactionsService;
+    private final HelpWalletTransactionsService helpWalletTransactionsService;
+    private final PromiseWalletTransactionsService promiseWalletTransactionsService;
 
-    @Autowired
-    private HelpWalletBackersService helpWalletBackersService;
+    private final HelpWalletBackersService helpWalletBackersService;
+    private final PromiseWalletBackersService promiseWalletBackersService;
 
-    @Autowired
-    private HelpWalletInsightService helpInsight;
+    private final HelpWalletInsightService helpInsight;
+
+    public WalletService(WalletRepository walletRepository, HelpWalletDetailsService helpWalletDetailsService,
+                         PromiseWalletDetailsService promiseWalletDetailsService,
+                         HelpWalletTransactionsService helpWalletTransactionsService,
+                         PromiseWalletTransactionsService promiseWalletTransactionsService,
+                         HelpWalletBackersService helpWalletBackersService,
+                         PromiseWalletBackersService promiseWalletBackersService,
+                         HelpWalletInsightService helpInsight) {
+        this.walletRepository = walletRepository;
+        this.helpWalletDetailsService = helpWalletDetailsService;
+        this.promiseWalletDetailsService = promiseWalletDetailsService;
+        this.helpWalletTransactionsService = helpWalletTransactionsService;
+        this.promiseWalletTransactionsService = promiseWalletTransactionsService;
+        this.helpWalletBackersService = helpWalletBackersService;
+        this.promiseWalletBackersService = promiseWalletBackersService;
+        this.helpInsight = helpInsight;
+    }
 
     public Wallet getWalletById(String walletId) {
         Wallet wallet = walletRepository.findById(walletId);
@@ -39,10 +62,13 @@ public class WalletService {
             logger.debug("GET | PostgreSQL | not found | wallet id: {}", walletId);
         } else {
             logger.debug("GET | PostgreSQL | found | wallet id: {}", wallet.getId());
-            wallet
-                    .withHelpWalletDetails(helpWalletDetailsService.getByHelpId(wallet.getHelpWallet().getHelpId()));
-        }
+            HelpWalletDetails help = helpWalletDetailsService.getByHelpId(wallet.getHelpId());
+            PromiseWalletDetails promise = promiseWalletDetailsService.getByPromiseId(wallet.getPromiseId());
 
+            wallet
+                    .withHelpWalletDetails(help)
+                    .withPromiseWalletDetails(promise);
+        }
         return wallet;
     }
 
@@ -53,7 +79,8 @@ public class WalletService {
         } else {
             logger.debug("GET | PostgreSQL | found | entity id: {}", wallet.getEntityId());
             wallet
-                    .withHelpWalletDetails(helpWalletDetailsService.getByHelpId(wallet.getHelpWallet().getHelpId()));
+                    .withHelpWalletDetails(helpWalletDetailsService.getByHelpId(wallet.getHelpId()))
+                    .withPromiseWalletDetails(promiseWalletDetailsService.getByPromiseId(wallet.getPromiseId()));
         }
 
         return wallet;
@@ -65,12 +92,16 @@ public class WalletService {
         Wallet wallet = new Wallet();
 
         HelpWalletDetails help = helpWalletDetailsService.saveOne(entityId, type);
+        PromiseWalletDetails promise = promiseWalletDetailsService.saveOne(entityId, type);
 
         wallet
                 .withWalletId(id)
+                .withHelpId(help.getHelpId())
+                .withPromiseId(promise.getPromiseId())
                 .withEntityId(entityId)
                 .withType(type)
-                .withHelpWalletDetails(help);
+                .withHelpWalletDetails(help)
+                .withPromiseWalletDetails(promise);
 
         Wallet newWallet = walletRepository.save(wallet);
         logger.debug("POST | PostgreSQL | created | wallet id: {} ", newWallet.getId());
@@ -82,11 +113,13 @@ public class WalletService {
         String id = UUID.randomUUID().toString();
 
         HelpWalletDetails help = helpWalletDetailsService.update(wallet.getHelpWallet());
+        PromiseWalletDetails promise = promiseWalletDetailsService.update(wallet.getPromiseWallet());
 
         wallet
                 .withWalletId(id)
                 .withEntityId(wallet.getEntityId())
-                .withHelpWalletDetails(help);
+                .withHelpWalletDetails(help)
+                .withPromiseWalletDetails(promise);
 
         Wallet newWallet = walletRepository.save(wallet);
         logger.debug("POST | PostgreSQL | created | wallet id: {} ", newWallet.getId());
@@ -98,48 +131,81 @@ public class WalletService {
         Date currentDate = new Date();
         String entityId = donation.getEntity_id();
         String entityName = donation.getEntity_name();
+
         Wallet donatorWallet = getWalletByEntityId(entityId);
-        String donatorHelpId = donatorWallet.getHelpWallet().getHelpId();
+        Wallet receiverWallet = getWalletById(walletId);
 
-        Integer remaining = donatorWallet.getHelpWallet().getBalance() - donation.getAmount();
+        if (receiverWallet.getType().equalsIgnoreCase("campaign")) {
+            String receiverHelpId = receiverWallet.getHelpId();
+            String donatorHelpId = donatorWallet.getHelpId();
 
-        if (remaining < 0) {
-            throw new Exception("Balance is lower than donation amount");
+            Integer remaining = donatorWallet.getHelpWallet().getBalance() - donation.getAmount();
+
+            if (remaining < 0) {
+                throw new Exception("Balance is lower than donation amount");
+            }
+
+
+            String donatorAddress = donatorWallet.getHelpWallet().getPublicKey();
+            String donatorPrivateKey = donatorWallet.getHelpWallet().getPrivateKey();
+            String receiverAddress = receiverWallet.getHelpWallet().getPublicKey();
+            String txid = helpInsight.sendHelpCoins(donatorAddress, donatorPrivateKey, receiverAddress, donation.getAmount());
+            helpWalletTransactionsService.save(donatorHelpId, currentDate, "sent", donation.getAmount(), donatorHelpId, receiverHelpId, entityName, donatorAddress, txid);
+
+            donatorWallet.getHelpWallet().setBalance(remaining);
+
+            helpWalletDetailsService.update(donatorWallet.getHelpWallet());
+            helpWalletTransactionsService.save(receiverHelpId, currentDate, "received", donation.getAmount(), donatorHelpId, receiverHelpId, entityName, donatorAddress, txid);
+
+            List<HelpWalletBacker> backers = helpWalletBackersService.getAll(receiverHelpId);
+            boolean backerExists = backers.stream().anyMatch(b -> b.getFundraiser_id().equals(entityId));
+
+            if (!backerExists) {
+                HelpWalletBacker backer = new HelpWalletBacker();
+                backer.setHelpId(receiverHelpId);
+                backer.setFundraiser_id(entityId);
+                helpWalletBackersService.save(backer);
+            }
+            receiverWallet.getHelpWallet().setBalance(receiverWallet.getHelpWallet().getBalance() + donation.getAmount());
+
+            helpWalletDetailsService.update(receiverWallet.getHelpWallet());
+            receiverWallet.withHelpWalletDetails(helpWalletDetailsService.getByHelpId(receiverHelpId));
+            logger.debug("PUT | PostgreSQL | updated | wallet id: {} ", walletId);
+        } else if (receiverWallet.getType().equalsIgnoreCase("event")) {
+            String receiverPromiseId = receiverWallet.getPromiseId();
+            String donatorPromiseId = donatorWallet.getPromiseId();
+
+            Integer remaining = donatorWallet.getPromiseWallet().getBalance() - donation.getAmount();
+
+            if (remaining < 0) {
+                throw new Exception("Balance is lower than donation amount");
+            }
+
+            promiseWalletTransactionsService.save(donatorPromiseId, currentDate, "sent", donation.getAmount(), donatorPromiseId, receiverPromiseId, entityName);
+
+            donatorWallet.getPromiseWallet().setBalance(remaining);
+
+            promiseWalletDetailsService.update(donatorWallet.getPromiseWallet());
+            promiseWalletTransactionsService.save(receiverPromiseId, currentDate, "received", donation.getAmount(), donatorPromiseId, receiverPromiseId, entityName);
+
+            List<PromiseWalletBacker> backers = promiseWalletBackersService.getAll(receiverPromiseId);
+            boolean backerExists = backers.stream().anyMatch(b -> b.getFundraiser_id().equals(entityId));
+
+            if (!backerExists) {
+                PromiseWalletBacker backer = new PromiseWalletBacker();
+                backer.setPromiseId(receiverPromiseId);
+                backer.setFundraiser_id(entityId);
+                promiseWalletBackersService.save(backer);
+            }
+            receiverWallet.getPromiseWallet().setBalance(receiverWallet.getPromiseWallet().getBalance() + donation.getAmount());
+
+            promiseWalletDetailsService.update(receiverWallet.getPromiseWallet());
+            receiverWallet.withPromiseWalletDetails(promiseWalletDetailsService.getByPromiseId(receiverPromiseId));
+            logger.debug("PUT | PostgreSQL | updated | wallet id: {} ", walletId);
         }
 
-        Wallet campaignWallet = getWalletById(walletId);
-        String campaignHelpId = campaignWallet.getHelpWallet().getHelpId();
-
-        String donatorAddress = donatorWallet.getHelpWallet().getPublicKey();
-        String donatorPrivateKey = donatorWallet.getHelpWallet().getPrivateKey();
-        String campaignAddress = campaignWallet.getHelpWallet().getPublicKey();
-        String txid = helpInsight.sendHelpCoins(donatorAddress, donatorPrivateKey, campaignAddress, donation.getAmount());
-        helpWalletTransactionsService.save(donatorHelpId, currentDate, "sent", donation.getAmount(), donatorHelpId, campaignHelpId, entityName, donatorAddress, txid);
-
-        donatorWallet.getHelpWallet().setBalance(remaining);
-
-        helpWalletDetailsService.update(donatorWallet.getHelpWallet());
-        helpWalletTransactionsService.save(campaignHelpId, currentDate, "received", donation.getAmount(), donatorHelpId, campaignHelpId, entityName, donatorAddress, txid);
-
-        List<HelpWalletBacker> backers = helpWalletBackersService.getAll(campaignHelpId);
-        boolean backerExists = backers.stream().anyMatch(b -> b.getFundraiser_id().equals(entityId));
-
-        if (!backerExists) {
-            HelpWalletBacker backer = new HelpWalletBacker();
-            backer.setHelpId(campaignHelpId);
-            backer.setFundraiser_id(entityId);
-            helpWalletBackersService.save(backer);
-        }
-        campaignWallet.getHelpWallet().setBalance(campaignWallet.getHelpWallet().getBalance() + donation.getAmount());
-
-        helpWalletDetailsService.update(campaignWallet.getHelpWallet());
-        campaignWallet.withHelpWalletDetails(helpWalletDetailsService.getByHelpId(campaignHelpId));
-        logger.debug("PUT | PostgreSQL | updated | wallet id: {} ", walletId);
-
-        return campaignWallet;
+        return receiverWallet;
     }
-
-
 
 
 }

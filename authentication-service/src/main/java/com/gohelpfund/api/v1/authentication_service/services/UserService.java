@@ -1,6 +1,8 @@
 package com.gohelpfund.api.v1.authentication_service.services;
 
+import com.gohelpfund.api.v1.authentication_service.clients.EventRestTemplateClient;
 import com.gohelpfund.api.v1.authentication_service.clients.FundraiserRestTemplateClient;
+import com.gohelpfund.api.v1.authentication_service.model.EventAttendance;
 import com.gohelpfund.api.v1.authentication_service.model.User;
 import com.gohelpfund.api.v1.authentication_service.model.UserRole;
 import com.gohelpfund.api.v1.authentication_service.model.fundraiser.Fundraiser;
@@ -32,6 +34,10 @@ public class UserService {
     FundraiserRestTemplateClient fundraiserClient;
 
     @Autowired
+    EventRestTemplateClient eventClient;
+
+
+    @Autowired
     private UserRoleService userRoleService;
 
     public User getUser(String username) {
@@ -47,12 +53,18 @@ public class UserService {
     }
 
     public User addUser(String clientToken,
+                        String name,
+                        String eventId,
+                        String table,
                         User user) {
         String id = UUID.randomUUID().toString();
         String username = user.getUsername();
 
+        Fundraiser fundraiser = createFundraiser(username, getHttpEntity(name, clientToken));
 
-        Fundraiser fundraiser = createFundraiser(username, getHttpEntity(clientToken));
+        if(eventId != null && table!= null){
+            createAttendance(username, eventId, getHttpEntity(fundraiser.getId(), table, clientToken));
+        }
 
         user.withId(id)
                 .withPassword(passwordEncoder.encode(user.getPassword()))
@@ -61,6 +73,7 @@ public class UserService {
                 .withEnabled(true);
 
         User newUser = userRepository.save(user);
+
         logger.debug("POST | PostgreSQL | created | user id: {} ", newUser.getId());
 
         return newUser;
@@ -73,6 +86,30 @@ public class UserService {
             logger.debug("POST | /api/v1/fundraisers | created | user_name: {} fundraiser id: {}", username, newFundraiser.getId());
         } else {
             logger.debug("POST | /api/v1/fundraisers | creation failed | user_name: {}", username);
+        }
+
+        return newFundraiser;
+    }
+
+    private EventAttendance createAttendance(String username, String eventId, HttpEntity httpEntity) {
+        EventAttendance newAttendance = eventClient.createAttendance(eventId, httpEntity);
+
+        if (newAttendance != null) {
+            logger.debug("POST | /api/v1/events/{}/attendance | created | user_name: {} attendance id: {}", eventId, username, newAttendance.getAttendanceId());
+        } else {
+            logger.debug("POST | /api/v1/events/{}/attendance | creation failed | user_name: {}", eventId, username);
+        }
+
+        return newAttendance;
+    }
+
+    private Fundraiser updateFundraiser(String fundraiserId, HttpEntity httpEntity) {
+        Fundraiser newFundraiser = fundraiserClient.updateFundraiser(fundraiserId, httpEntity);
+
+        if (newFundraiser != null) {
+            logger.debug("POST | /api/v1/fundraisers | updated | user_name: {} fundraiser id: {}", fundraiserId, newFundraiser.getId());
+        } else {
+            logger.debug("POST | /api/v1/fundraisers | creation failed | user_name: {}", fundraiserId);
         }
 
         return newFundraiser;
@@ -91,6 +128,29 @@ public class UserService {
         headers.set("Authorization", "Bearer " + clientToken);
 
         return new HttpEntity<>(null, headers);
+    }
+
+    private HttpEntity<Map<String, String>> getHttpEntity(String name,String clientToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + clientToken);
+        headers.set("Content-Type", "application/json");
+
+        Map<String, String> map = new HashMap<>();
+        map.put("name", name);
+
+        return new HttpEntity<>(map, headers);
+    }
+
+    private HttpEntity<Map<String, String>> getHttpEntity(String fundraiserId, String tableId, String clientToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + clientToken);
+        headers.set("Content-Type", "application/json");
+
+        Map<String, String> map = new HashMap<>();
+        map.put("fundraiser_id", fundraiserId);
+        map.put("table_id", tableId);
+
+        return new HttpEntity<>(map, headers);
     }
 
 }

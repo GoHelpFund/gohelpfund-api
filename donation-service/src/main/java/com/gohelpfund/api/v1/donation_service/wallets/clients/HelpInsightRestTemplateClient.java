@@ -1,8 +1,8 @@
 package com.gohelpfund.api.v1.donation_service.wallets.clients;
 
-import com.gohelpfund.api.v1.donation_service.wallets.models.insight.InsightHelpAddr;
-import com.gohelpfund.api.v1.donation_service.wallets.models.insight.InsightHelpTx;
-import com.gohelpfund.api.v1.donation_service.wallets.models.insight.InsightHelpTxResponse;
+import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightHelpAddr;
+import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightHelpTx;
+import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightHelpTxResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;

@@ -2,6 +2,7 @@ package com.gohelpfund.api.v1.fundraiser_service.model.fundraiser;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.gohelpfund.api.v1.fundraiser_service.model.fundraiser.professional.FundraiserProfessional;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "fundraisers")
 @JsonPropertyOrder({"id", "name", "age", "profile_image_url", "status", "social", "professional"})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Fundraiser implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -24,14 +26,29 @@ public class Fundraiser implements Serializable {
     private String fundraiserId;
 
     @JsonIgnore
+    @Column(name ="social_id", nullable = false)
+    private String socialId;
+
+    @JsonIgnore
+    @Column(name ="professional_id", nullable = false)
+    private String professionalId;
+
+    @JsonIgnore
     @Column(name ="wallet_id", nullable = false)
     private String walletId;
 
+    @JsonIgnore
+    @Column(name ="status_id", nullable = false)
+    private String statusId;
+
+
+    @JsonProperty("name")
     @Column(name = "name")
 //    @NotBlank
 //    @Size(min=2, max=40)
     private String name;
 
+    @JsonProperty("age")
     @Column(name = "age")
 //    @NotNull
 //    @Range(min = 18, max = 120)
@@ -43,19 +60,16 @@ public class Fundraiser implements Serializable {
 //    @Size(min = 10, max = 256)
     private String profileImageUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "social_id")
+    @Transient
     private FundraiserSocial social;
 
-    @ManyToOne
-    @JoinColumn(name = "professional_id")
+    @Transient
     private FundraiserProfessional professional;
 
     @Transient
     private Wallet wallet;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id")
+    @Transient
     private FundraiserStatus status;
 
     public Fundraiser() {
@@ -113,6 +127,30 @@ public class Fundraiser implements Serializable {
         this.walletId = walletId;
     }
 
+    public String getSocialId() {
+        return socialId;
+    }
+
+    public void setSocialId(String socialId) {
+        this.socialId = socialId;
+    }
+
+    public String getProfessionalId() {
+        return professionalId;
+    }
+
+    public void setProfessionalId(String professionalId) {
+        this.professionalId = professionalId;
+    }
+
+    public String getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(String statusId) {
+        this.statusId = statusId;
+    }
+
     public Wallet getWallet() {
         return wallet;
     }
@@ -140,6 +178,21 @@ public class Fundraiser implements Serializable {
 
     public Fundraiser withWalletId(String walletId){
         this.setWalletId(walletId);
+        return this;
+    }
+
+    public Fundraiser withSocialId(String socialId){
+        this.setSocialId(socialId);
+        return this;
+    }
+
+    public Fundraiser withProfessionalId(String professionalId){
+        this.setProfessionalId(professionalId);
+        return this;
+    }
+
+    public Fundraiser withStatusId(String statusId){
+        this.setStatusId(statusId);
         return this;
     }
 

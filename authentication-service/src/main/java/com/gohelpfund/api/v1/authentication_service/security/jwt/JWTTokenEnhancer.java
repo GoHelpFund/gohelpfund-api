@@ -13,16 +13,11 @@ import java.util.Map;
 
 public class JWTTokenEnhancer implements TokenEnhancer {
     private static final Logger logger = LoggerFactory.getLogger(JWTTokenEnhancer.class);
-    private String getOrgId(String userName){
-        return "-1";
-    }
 
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         Map<String, Object> additionalInfo = new HashMap<>();
-        String orgId =  getOrgId(authentication.getName());
 
-        additionalInfo.put("organization_id", orgId);
         additionalInfo.put("fundraiser_id", UserContextHolder.getContext().getUserId());
 
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);

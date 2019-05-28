@@ -14,10 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,9 +31,12 @@ public class SignupController {
     AuthenticationRestTemplateClient authClient;
 
     @PostMapping()
-    public ResponseEntity<OAuth2AccessToken> signup(@RequestBody UserSignUp signUp) {
+    public ResponseEntity<OAuth2AccessToken> signup(@RequestBody UserSignUp signUp,
+                                                    @RequestParam(required = false) String event,
+                                                    @RequestParam(required = false) String table) {
         String username = signUp.getUsername();
         String email = signUp.getEmail();
+        String name = signUp.getName();
         String password = signUp.getPassword();
         String scope = signUp.getScope();
 
@@ -48,7 +48,10 @@ public class SignupController {
 
         OAuth2AccessToken clientToken = authClient.getToken(getHttpEntity(basicAuthToken, scope));
 
-        User user = signupService.addUser(clientToken.getValue(),
+        signupService.addUser(clientToken.getValue(),
+                name,
+                event,
+                table,
                 new User()
                         .withUsername(username)
                         .withEmail(email)

@@ -6,7 +6,6 @@ import com.gohelpfund.api.v1.fundraiser_service.model.fundraiser.Fundraiser;
 import com.gohelpfund.api.v1.fundraiser_service.services.FundraiserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RestController
 @RequestMapping("api/v1/fundraisers")
 public class FundraiserController {
-
     @Autowired
     private FundraiserService service;
 
@@ -46,7 +44,7 @@ public class FundraiserController {
 
         Fundraiser fundraiser = service.getOne(fundraiserId);
 
-        if(fundraiser == null){
+        if (fundraiser == null) {
             throw new EntityNotFoundException(Fundraiser.class, "id", fundraiserId);
         }
         return assembler.toResource(fundraiser);
@@ -54,28 +52,28 @@ public class FundraiserController {
     }
 
     @PostMapping()
-    public ResponseEntity<Resource<Fundraiser>> setFundraiser() {
-        Fundraiser newFundraiser = service.save();
+    public ResponseEntity<Resource<Fundraiser>> setFundraiser(@RequestBody Fundraiser fundraiser) {
+        Fundraiser newFundraiser = service.save(fundraiser);
         return ResponseEntity
                 .created(linkTo(methodOn(FundraiserController.class).one(newFundraiser.getFundraiserId())).toUri())
                 .body(assembler.toResource(newFundraiser));
     }
 
     @PutMapping("/{fundraiserId}")
-    public ResponseEntity<ResourceSupport> complete(@PathVariable String fundraiserId) {
+    public ResponseEntity<Resource<Fundraiser>> complete(@PathVariable String fundraiserId, @RequestBody Fundraiser updateFundraiser) {
 
         Fundraiser fundraiser = service.getOne(fundraiserId);
 
-        if(fundraiser == null){
+        if (fundraiser == null) {
             throw new EntityNotFoundException(Fundraiser.class, "id", fundraiserId);
         }
 
         // TODO: 15-Apr-19  implement update logic of a fundraiser
-        service.save();
+        Fundraiser newFundraiser = service.update(updateFundraiser);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(null);
+                .body(assembler.toResource(newFundraiser));
     }
 
 /*    @DeleteMapping("/{fundraiserId}")

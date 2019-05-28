@@ -1,7 +1,7 @@
 package com.gohelpfund.api.v1.donation_service.wallets.controllers.assembler;
 
 import com.gohelpfund.api.v1.donation_service.wallets.controllers.WalletController;
-import com.gohelpfund.api.v1.donation_service.wallets.models.Wallet;
+import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.Wallet;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.stereotype.Component;

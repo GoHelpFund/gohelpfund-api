@@ -5,12 +5,17 @@ import javax.validation.constraints.NotNull;
 public class UserSignUp {
     @NotNull
     private String scope;
+
     @NotNull
     private String username;
+
     @NotNull
     private String email;
+
     @NotNull
     private String password;
+
+    private String name;
 
     public UserSignUp() {
 
@@ -46,5 +51,13 @@ public class UserSignUp {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

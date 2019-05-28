@@ -3,6 +3,9 @@ package com.gohelpfund.api.v1.fundraiser_service.services;
 import com.gohelpfund.api.v1.fundraiser_service.clients.WalletRestTemplateClient;
 import com.gohelpfund.api.v1.fundraiser_service.events.source.SimpleSourceBean;
 import com.gohelpfund.api.v1.fundraiser_service.model.fundraiser.Fundraiser;
+import com.gohelpfund.api.v1.fundraiser_service.model.fundraiser.professional.FundraiserProfessional;
+import com.gohelpfund.api.v1.fundraiser_service.model.fundraiser.social.FundraiserSocial;
+import com.gohelpfund.api.v1.fundraiser_service.model.fundraiser.status.FundraiserStatus;
 import com.gohelpfund.api.v1.fundraiser_service.model.wallet.Wallet;
 import com.gohelpfund.api.v1.fundraiser_service.repository.FundraiserRepository;
 import com.gohelpfund.api.v1.fundraiser_service.utils.UserContextHolder;
@@ -107,25 +110,34 @@ public class FundraiserService {
         }
     }
 
-    public Fundraiser save() {
+    public Fundraiser save(Fundraiser fundraiser) {
         String id = UUID.randomUUID().toString();
 
         Wallet wallet = createWallet(id, getHttpEntity(id));
+        FundraiserSocial social = this.social.saveSocial(id);
+        FundraiserProfessional professional = this.professional.saveProfessional(id);
+        FundraiserStatus status = this.status.saveStatus(id);
 
-        Fundraiser fundraiser = new Fundraiser()
+        Fundraiser fundraiserDTO = new Fundraiser()
                 .withId(id)
                 .withWalletId(wallet.getId())
-                .withStatus(status.saveStatus(id))
-                .withSocial(social.saveSocial(id))
-                .withProfessional(professional.saveProfessional(id))
+                .withSocialId(social.getSocialId())
+                .withProfessionalId(professional.getProfessionalId())
+                .withStatusId(status.getStatusId())
+                .withStatus(status)
+                .withSocial(social)
+                .withProfessional(professional)
                 .withWallet(wallet);
 
-        Fundraiser newFundraiser = repository.save(fundraiser);
-        logger.debug("POST | PostgreSQL | created | fundraiser id: {} ", newFundraiser.getFundraiserId());
+        fundraiserDTO.setName(fundraiser.getName());
+        fundraiserDTO.setAge(fundraiser.getAge());
 
-        simpleSourceBean.publishFundraiserChange("SAVE", newFundraiser.getFundraiserId());
+        Fundraiser fundraiserDAO = repository.save(fundraiserDTO);
+        logger.debug("POST | PostgreSQL | created | fundraiser id: {} ", fundraiserDAO.getFundraiserId());
 
-        return newFundraiser;
+        simpleSourceBean.publishFundraiserChange("SAVE", fundraiserDAO.getFundraiserId());
+
+        return fundraiserDAO;
     }
 
     public Fundraiser update(Fundraiser fundraiser) {

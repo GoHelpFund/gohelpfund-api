@@ -33,6 +33,6 @@ eureka:
 #Setting the logging levels for the service
 logging:
   level:
-    com.netflix: WARN
-    org.springframework.web: WARN
-    com.gohelpfund.api.v1: WARN
+    com.netflix: INFO
+    org.springframework.web: INFO
+    com.gohelpfund.api.v1: INFO

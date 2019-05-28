@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class FundraiserRestTemplateClient {
     private static final Logger logger = LoggerFactory.getLogger(FundraiserRestTemplateClient.class);
+
     @Autowired
     RestTemplate restTemplate;
 
@@ -24,9 +25,20 @@ public class FundraiserRestTemplateClient {
                         httpEntity,
                         Fundraiser.class, "");
 
-        Fundraiser fundraiser = restExchange.getBody();
+        return restExchange.getBody();
+    }
 
-        return fundraiser;
+    public Fundraiser updateFundraiser(String id, HttpEntity httpEntity){
+        RestTemplate template = new RestTemplate();
+
+        ResponseEntity<Fundraiser> restExchange =
+                template.exchange(
+                        "http://fundraiser-service:9200/api/v1/fundraisers/{id}",
+                        HttpMethod.PUT,
+                        httpEntity,
+                        Fundraiser.class, id);
+
+        return restExchange.getBody();
     }
 
 

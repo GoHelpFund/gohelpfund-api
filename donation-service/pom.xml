@@ -108,7 +108,7 @@
     <dependency>
       <groupId>org.dashj</groupId>
       <artifactId>dashj-core</artifactId>
-      <version>LATEST</version>
+      <version>0.15.3</version>
     </dependency>
 
 

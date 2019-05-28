@@ -3,7 +3,7 @@ package com.gohelpfund.api.v1.donation_service.wallets.controllers;
 import com.gohelpfund.api.v1.donation_service.wallets.controllers.assembler.WalletResourceAssembler;
 import com.gohelpfund.api.v1.donation_service.wallets.controllers.exceptions.EntityNotFoundException;
 import com.gohelpfund.api.v1.donation_service.wallets.models.Donation;
-import com.gohelpfund.api.v1.donation_service.wallets.models.Wallet;
+import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.Wallet;
 import com.gohelpfund.api.v1.donation_service.wallets.services.WalletService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
