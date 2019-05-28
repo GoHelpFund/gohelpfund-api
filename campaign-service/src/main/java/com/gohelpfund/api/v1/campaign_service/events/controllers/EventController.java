@@ -89,8 +89,6 @@ public class EventController {
     @PostMapping("/{id}/attendance")
     public ResponseEntity<ResourceSupport> setAttendance(@PathVariable("id") String id, @RequestBody EventAttendance attendance) {
         // TODO: 28-may-19  implement exists logic of a event
-        logger.info("id: {}", id);
-        logger.info("attendance: {}", attendance);
         EventAttendance newAttendance = attendanceService.save(id, attendance);
         return ResponseEntity.ok(attendanceAssembler.toResource(newAttendance));
     }

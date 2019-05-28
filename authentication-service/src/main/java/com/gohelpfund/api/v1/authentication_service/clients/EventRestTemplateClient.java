@@ -18,11 +18,9 @@ public class EventRestTemplateClient {
     RestTemplate restTemplate;
 
     public EventAttendance createAttendance(String id, HttpEntity httpEntity) {
-        //RestTemplate template = new RestTemplate();
-
-        logger.info("id: {}", id);
+        RestTemplate template = new RestTemplate();
         ResponseEntity<EventAttendance> restExchange =
-                restTemplate.exchange(
+                template.exchange(
                         "http://campaign-service:9100/api/v1/events/{id}/attendance",
                         HttpMethod.POST,
                         httpEntity,
