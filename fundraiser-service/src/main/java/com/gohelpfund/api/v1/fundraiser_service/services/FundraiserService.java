@@ -136,7 +136,6 @@ public class FundraiserService {
         logger.debug("POST | PostgreSQL | created | fundraiser id: {} ", fundraiserDAO.getFundraiserId());
 
         simpleSourceBean.publishFundraiserChange("SAVE", fundraiserDAO.getFundraiserId());
-
         return fundraiserDAO;
     }
 

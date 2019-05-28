@@ -57,9 +57,7 @@ public class EventService {
     }
 
     public boolean exists(String eventId) {
-        Event event = repository.findByEventId(eventId);
-
-        return event == null;
+        return repository.exists(eventId);
     }
 
     public Event getEventById(String eventId) {

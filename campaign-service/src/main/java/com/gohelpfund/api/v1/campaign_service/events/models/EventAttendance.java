@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "event_attendance")
-@JsonPropertyOrder({"fundraiser_id", "table_id"})
+@JsonPropertyOrder({"fundraiser_id", "fundraiser_name", "table_id"})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EventAttendance implements Serializable {
 
@@ -30,6 +30,11 @@ public class EventAttendance implements Serializable {
     @JsonProperty("fundraiser_id")
     @Column(name = "fundraiser_id", nullable = false)
     private String fundraiserId;
+
+    @NotNull
+    @JsonProperty("fundraiser_name")
+    @Column(name = "fundraiser_name", nullable = false)
+    private String fundraiserName;
 
     @NotNull
     @JsonProperty("table_id")
@@ -61,6 +66,14 @@ public class EventAttendance implements Serializable {
         this.fundraiserId = fundraiserId;
     }
 
+    public String getFundraiserName() {
+        return fundraiserName;
+    }
+
+    public void setFundraiserName(String fundraiserName) {
+        this.fundraiserName = fundraiserName;
+    }
+
     public String getTableId() {
         return tableId;
     }
@@ -75,6 +88,7 @@ public class EventAttendance implements Serializable {
                 "attendanceId='" + attendanceId + '\'' +
                 ", eventId='" + eventId + '\'' +
                 ", fundraiserId='" + fundraiserId + '\'' +
+                ", fundraiserName='" + fundraiserName + '\'' +
                 ", tableId='" + tableId + '\'' +
                 '}';
     }

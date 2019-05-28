@@ -20,7 +20,6 @@ echo "********************************************************"
 while ! `nc -z config-server $CONFIGSERVER_PORT`; do sleep 3; done
 echo "*******  Configuration Server has started"
 
-
 echo "********************************************************"
 echo "Starting Authentication Service                           "
 echo "********************************************************"

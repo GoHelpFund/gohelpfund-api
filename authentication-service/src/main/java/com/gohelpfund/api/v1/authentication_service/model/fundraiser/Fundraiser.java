@@ -95,6 +95,11 @@ public class Fundraiser implements Serializable {
         return this;
     }
 
+    public Fundraiser withName(String name){
+        this.setName(name);
+        return this;
+    }
+
     public Fundraiser withSocial(FundraiserSocial social){
         this.setSocial(social);
         return this;

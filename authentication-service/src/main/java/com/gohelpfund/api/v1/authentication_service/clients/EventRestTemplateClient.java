@@ -3,6 +3,7 @@ package com.gohelpfund.api.v1.authentication_service.clients;
 import com.gohelpfund.api.v1.authentication_service.model.EventAttendance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +14,19 @@ import org.springframework.web.client.RestTemplate;
 public class EventRestTemplateClient {
     private static final Logger logger = LoggerFactory.getLogger(EventRestTemplateClient.class);
 
-    public EventAttendance createAttendance(String eventId, HttpEntity httpEntity) {
+    @Autowired
+    RestTemplate restTemplate;
 
-        RestTemplate template = new RestTemplate();
+    public EventAttendance createAttendance(String id, HttpEntity httpEntity) {
+        //RestTemplate template = new RestTemplate();
+
+        logger.info("id: {}", id);
         ResponseEntity<EventAttendance> restExchange =
-                template.exchange(
-                        "http://campaign-service:9100/api/v1/events/{eventId}/attendance",
+                restTemplate.exchange(
+                        "http://campaign-service:9100/api/v1/events/{id}/attendance",
                         HttpMethod.POST,
                         httpEntity,
-                        EventAttendance.class, eventId);
+                        EventAttendance.class, id);
         return restExchange.getBody();
     }
 
