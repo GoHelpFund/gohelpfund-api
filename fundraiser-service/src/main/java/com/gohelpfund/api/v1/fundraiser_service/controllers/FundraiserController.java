@@ -27,7 +27,6 @@ public class FundraiserController {
     @Autowired
     private FundraiserResourceAssembler assembler;
 
-
     @GetMapping()
     public Resources<Resource<Fundraiser>> all() {
 
