@@ -133,12 +133,13 @@ CREATE TABLE event_attendance (
   event_id                VARCHAR(100) NOT NULL,
   fundraiser_id           VARCHAR(100) NOT NULL,
   fundraiser_name         VARCHAR(100) NOT NULL,
+  fundraiser_type         VARCHAR(100) NOT NULL,
   table_id                VARCHAR(100) NOT NULL
 
   );
-INSERT INTO event_attendance (attendance_id, event_id, fundraiser_id, fundraiser_name, table_id)
-VALUES ('ev081764-bea1-4249-b86d-f8fb8182eec0',  'bal81764-bea1-4249-b86d-f8fb8182eec1', '0c8250bb-f7eb-4adc-925c-2af315cc4a50', 'Daniel Dascalu', '0');
-INSERT INTO event_attendance (attendance_id, event_id, fundraiser_id, fundraiser_name, table_id)
-VALUES ('ev181764-bea1-4249-b86d-f8fb8182eec0',  'bal81764-bea1-4249-b86d-f8fb8182eec1', '100393bc-8aaa-45a8-9093-80c4792348c1', 'Daniel Tirzuman', '0');
-INSERT INTO event_attendance (attendance_id, event_id, fundraiser_id, fundraiser_name, table_id)
-VALUES ('ev281764-bea1-4249-b86d-f8fb8182eec0',  'bal81764-bea1-4249-b86d-f8fb8182eec1', '2d0343bc-9afa-45a8-6043-e0c7792348z2', 'Vlad Batrinu', '0');
+INSERT INTO event_attendance (attendance_id, event_id, fundraiser_id, fundraiser_name, fundraiser_type, table_id)
+VALUES ('ev081764-bea1-4249-b86d-f8fb8182eec0',  'bal81764-bea1-4249-b86d-f8fb8182eec1', '0c8250bb-f7eb-4adc-925c-2af315cc4a50', 'Daniel Dascalu', 'natural', '0');
+INSERT INTO event_attendance (attendance_id, event_id, fundraiser_id, fundraiser_name, fundraiser_type, table_id)
+VALUES ('ev181764-bea1-4249-b86d-f8fb8182eec0',  'bal81764-bea1-4249-b86d-f8fb8182eec1', '100393bc-8aaa-45a8-9093-80c4792348c1', 'Daniel Tirzuman', 'natural', '0');
+INSERT INTO event_attendance (attendance_id, event_id, fundraiser_id, fundraiser_name, fundraiser_type, table_id)
+VALUES ('ev281764-bea1-4249-b86d-f8fb8182eec0',  'bal81764-bea1-4249-b86d-f8fb8182eec1', '2d0343bc-9afa-45a8-6043-e0c7792348z2', 'Vlad Batrinu', 'natural', '0');

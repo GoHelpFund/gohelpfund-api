@@ -37,6 +37,11 @@ public class EventAttendance implements Serializable {
     private String fundraiserName;
 
     @NotNull
+    @JsonProperty("fundraiser_type")
+    @Column(name = "fundraiser_type", nullable = false)
+    private String fundraiserType;
+
+    @NotNull
     @JsonProperty("table_id")
     @Column(name = "table_id", nullable = false)
     private String tableId;
@@ -74,6 +79,14 @@ public class EventAttendance implements Serializable {
         this.fundraiserName = fundraiserName;
     }
 
+    public String getFundraiserType() {
+        return fundraiserType;
+    }
+
+    public void setFundraiserType(String fundraiserType) {
+        this.fundraiserType = fundraiserType;
+    }
+
     public String getTableId() {
         return tableId;
     }
@@ -89,6 +102,7 @@ public class EventAttendance implements Serializable {
                 ", eventId='" + eventId + '\'' +
                 ", fundraiserId='" + fundraiserId + '\'' +
                 ", fundraiserName='" + fundraiserName + '\'' +
+                ", fundraiserType='" + fundraiserType + '\'' +
                 ", tableId='" + tableId + '\'' +
                 '}';
     }

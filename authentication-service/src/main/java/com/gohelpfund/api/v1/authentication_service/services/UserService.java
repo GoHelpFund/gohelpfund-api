@@ -56,13 +56,15 @@ public class UserService {
                         String name,
                         String eventId,
                         String table,
+                        String type,
                         User user) {
         String id = UUID.randomUUID().toString();
         String username = user.getUsername();
-        Fundraiser fundraiser = createFundraiser(username, getHttpEntity(name, clientToken));
+        String source = eventId != null ? "event" : "default";
+        Fundraiser fundraiser = createFundraiser(username, source, getHttpEntity(name, clientToken));
 
-        if(eventId != null && table!= null){
-            createAttendance(username, eventId, getHttpEntity(fundraiser.getId(), name, table, clientToken));
+        if(eventId != null && table!= null && type!= null){
+            createAttendance(username, eventId, getHttpEntity(fundraiser.getId(), name, table, type, clientToken));
         }
 
         user.withId(id)
@@ -78,8 +80,8 @@ public class UserService {
         return newUser;
     }
 
-    private Fundraiser createFundraiser(String username, HttpEntity httpEntity) {
-        Fundraiser newFundraiser = fundraiserClient.createFundraiser(httpEntity);
+    private Fundraiser createFundraiser(String username, String source, HttpEntity httpEntity) {
+        Fundraiser newFundraiser = fundraiserClient.createFundraiser(source, httpEntity);
 
         if (newFundraiser != null) {
             logger.debug("POST | /api/v1/fundraisers | created | user_name: {} fundraiser id: {}", username, newFundraiser.getId());
@@ -140,7 +142,7 @@ public class UserService {
         return new HttpEntity<>(map, headers);
     }
 
-    private HttpEntity<Map<String, String>> getHttpEntity(String fundraiserId, String fundraiserName, String tableId, String clientToken) {
+    private HttpEntity<Map<String, String>> getHttpEntity(String fundraiserId, String fundraiserName, String tableId, String type, String clientToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + clientToken);
         headers.set("Content-Type", "application/json");
@@ -148,6 +150,7 @@ public class UserService {
         Map<String, String> map = new HashMap<>();
         map.put("fundraiser_id", fundraiserId);
         map.put("fundraiser_name", fundraiserName);
+        map.put("fundraiser_type", type);
         map.put("table_id", tableId);
 
         return new HttpEntity<>(map, headers);

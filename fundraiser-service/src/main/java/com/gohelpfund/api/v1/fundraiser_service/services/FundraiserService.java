@@ -57,8 +57,8 @@ public class FundraiserService {
         return wallet;
     }
 
-    private Wallet createWallet(String fundraiserId, HttpEntity httpEntity) {
-        Wallet newWallet = walletClient.createWallet(httpEntity);
+    private Wallet createWallet(String fundraiserId, String source, HttpEntity httpEntity) {
+        Wallet newWallet = walletClient.createWallet(source, httpEntity);
 
         if (newWallet != null) {
             logger.debug("POST | /api/v1/wallets | created | fundraiser id: {} wallet id: {}", fundraiserId, newWallet.getId());
@@ -110,10 +110,10 @@ public class FundraiserService {
         }
     }
 
-    public Fundraiser save(Fundraiser fundraiser) {
+    public Fundraiser save(Fundraiser fundraiser, String source) {
         String id = UUID.randomUUID().toString();
 
-        Wallet wallet = createWallet(id, getHttpEntity(id));
+        Wallet wallet = createWallet(id, source, getHttpEntity(id));
         FundraiserSocial social = this.social.saveSocial(id);
         FundraiserProfessional professional = this.professional.saveProfessional(id);
         FundraiserStatus status = this.status.saveStatus(id);

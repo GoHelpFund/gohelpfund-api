@@ -33,7 +33,8 @@ public class SignupController {
     @PostMapping()
     public ResponseEntity<OAuth2AccessToken> signup(@RequestBody UserSignUp signUp,
                                                     @RequestParam(required = false) String event,
-                                                    @RequestParam(required = false) String table) {
+                                                    @RequestParam(required = false) String table,
+                                                    @RequestParam(required = false) String type) {
         String username = signUp.getUsername();
         String email = signUp.getEmail();
         String name = signUp.getName();
@@ -52,6 +53,7 @@ public class SignupController {
                 name,
                 event,
                 table,
+                type,
                 new User()
                         .withUsername(username)
                         .withEmail(email)

@@ -22,11 +22,11 @@ public class Wallet implements Serializable {
     private String id;
 
     @JsonIgnore
-    @Column(name = "help_id", nullable = false)
+    @Column(name = "help_id")
     private String helpId;
 
     @JsonIgnore
-    @Column(name = "promise_id", nullable = false)
+    @Column(name = "promise_id")
     private String promiseId;
 
     @JsonProperty("entity_id")

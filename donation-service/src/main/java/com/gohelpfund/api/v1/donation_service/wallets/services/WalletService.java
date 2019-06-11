@@ -86,22 +86,25 @@ public class WalletService {
         return wallet;
     }
 
-    public Wallet createWallet(String entityId, String type) {
+    public Wallet createWallet(String entityId, String type, String source) {
         String id = UUID.randomUUID().toString();
 
         Wallet wallet = new Wallet();
-
-        HelpWalletDetails help = helpWalletDetailsService.saveOne(entityId, type);
         PromiseWalletDetails promise = promiseWalletDetailsService.saveOne(entityId, type);
 
         wallet
                 .withWalletId(id)
-                .withHelpId(help.getHelpId())
                 .withPromiseId(promise.getPromiseId())
                 .withEntityId(entityId)
                 .withType(type)
-                .withHelpWalletDetails(help)
                 .withPromiseWalletDetails(promise);
+
+        if (source != null && !source.equals("event")) {
+            HelpWalletDetails help = helpWalletDetailsService.saveOne(entityId, type);
+            wallet
+                    .withHelpId(help.getHelpId())
+                    .withHelpWalletDetails(help);
+        }
 
         Wallet newWallet = walletRepository.save(wallet);
         logger.debug("POST | PostgreSQL | created | wallet id: {} ", newWallet.getId());

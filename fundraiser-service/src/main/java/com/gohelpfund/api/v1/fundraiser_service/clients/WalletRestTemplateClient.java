@@ -27,13 +27,13 @@ public class WalletRestTemplateClient {
         return restExchange.getBody();
     }
 
-    public Wallet createWallet(HttpEntity httpEntity){
+    public Wallet createWallet(String source, HttpEntity httpEntity){
         RestTemplate template = new RestTemplate();
         ResponseEntity<Wallet> restExchange =
                 template.exchange(
-                        "http://donation-service:9000/api/v1/wallets",
+                        "http://donation-service:9000/api/v1/wallets?source={source}",
                         HttpMethod.POST,
-                        httpEntity, Wallet.class, "");
+                        httpEntity, Wallet.class, source);
 
         return restExchange.getBody();
     }

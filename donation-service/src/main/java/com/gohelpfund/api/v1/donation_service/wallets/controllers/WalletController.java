@@ -29,8 +29,9 @@ public class WalletController {
     private WalletResourceAssembler assembler;
 
     @PostMapping()
-    public ResponseEntity<Resource<Wallet>> newWallet(@RequestBody Wallet wallet) {
-        Wallet newWallet = service.createWallet(wallet.getEntityId(), wallet.getType());
+    public ResponseEntity<Resource<Wallet>> newWallet(@RequestBody Wallet wallet,
+                                                      @RequestParam(required = false) String source) {
+        Wallet newWallet = service.createWallet(wallet.getEntityId(), wallet.getType(), source);
         return ResponseEntity
                 .created(linkTo(methodOn(WalletController.class).one(newWallet.getId())).toUri())
                 .body(assembler.toResource(newWallet));

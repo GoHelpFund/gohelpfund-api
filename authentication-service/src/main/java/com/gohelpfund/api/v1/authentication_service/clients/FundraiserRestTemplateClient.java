@@ -17,13 +17,13 @@ public class FundraiserRestTemplateClient {
     @Autowired
     RestTemplate restTemplate;
 
-    public Fundraiser createFundraiser(HttpEntity httpEntity){
+    public Fundraiser createFundraiser(String source, HttpEntity httpEntity){
         ResponseEntity<Fundraiser> restExchange =
                 restTemplate.exchange(
-                        "http://fundraiser-service:9200/api/v1/fundraisers/",
+                        "http://fundraiser-service:9200/api/v1/fundraisers?source={source}",
                         HttpMethod.POST,
                         httpEntity,
-                        Fundraiser.class, "");
+                        Fundraiser.class, source);
 
         return restExchange.getBody();
     }
