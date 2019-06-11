@@ -192,13 +192,20 @@ public class WalletService {
             promiseWalletTransactionsService.save(receiverPromiseId, currentDate, "received", donation.getAmount(), donatorPromiseId, receiverPromiseId, entityName);
 
             List<PromiseWalletBacker> backers = promiseWalletBackersService.getAll(receiverPromiseId);
-            boolean backerExists = backers.stream().anyMatch(b -> b.getFundraiser_id().equals(entityId));
+            PromiseWalletBacker backerDAO = backers.stream()
+                    .filter(b -> b.getFundraiser_id().equals(entityId))
+                    .findAny()
+                    .orElse(null);
 
-            if (!backerExists) {
+            if (backerDAO == null) {
                 PromiseWalletBacker backer = new PromiseWalletBacker();
                 backer.setPromiseId(receiverPromiseId);
                 backer.setFundraiser_id(entityId);
+                backer.setTotalAmount(donation.getAmount());
                 promiseWalletBackersService.save(backer);
+            } else {
+                backerDAO.setTotalAmount(backerDAO.getTotalAmount() + donation.getAmount());
+                promiseWalletBackersService.save(backerDAO);
             }
             receiverWallet.getPromiseWallet().setBalance(receiverWallet.getPromiseWallet().getBalance() + donation.getAmount());
 

@@ -2,11 +2,14 @@ package com.gohelpfund.api.v1.campaign_service.events.controllers;
 
 import com.gohelpfund.api.v1.campaign_service.campaigns.model.donation.Donation;
 import com.gohelpfund.api.v1.campaign_service.campaigns.model.wallet.Wallet;
+import com.gohelpfund.api.v1.campaign_service.campaigns.model.wallet.promise.PromiseWalletBacker;
 import com.gohelpfund.api.v1.campaign_service.config.ServiceConfig;
 import com.gohelpfund.api.v1.campaign_service.events.controllers.assembler.EventAttendanceResourceAssembler;
+import com.gohelpfund.api.v1.campaign_service.events.controllers.assembler.EventDonateResponseAssembler;
 import com.gohelpfund.api.v1.campaign_service.events.controllers.assembler.EventResourceAssembler;
 import com.gohelpfund.api.v1.campaign_service.events.models.Event;
 import com.gohelpfund.api.v1.campaign_service.events.models.EventAttendance;
+import com.gohelpfund.api.v1.campaign_service.events.models.EventDonateResponse;
 import com.gohelpfund.api.v1.campaign_service.events.services.EventAttendanceService;
 import com.gohelpfund.api.v1.campaign_service.events.services.EventService;
 import com.gohelpfund.api.v1.campaign_service.security.controllers.exceptions.EntityNotFoundException;
@@ -36,6 +39,7 @@ public class EventController {
 
     private final EventResourceAssembler assembler;
     private final EventAttendanceResourceAssembler attendanceAssembler;
+    private final EventDonateResponseAssembler donateResponseAssembler;
     private final EventService service;
     private final EventAttendanceService attendanceService;
     private final ServiceConfig config;
@@ -45,11 +49,13 @@ public class EventController {
                     EventAttendanceService attendanceService,
                     EventResourceAssembler assembler,
                     EventAttendanceResourceAssembler attendanceAssembler,
+                    EventDonateResponseAssembler donateResponseAssembler,
                     ServiceConfig config) {
         this.service = eventService;
         this.attendanceService = attendanceService;
         this.assembler = assembler;
         this.attendanceAssembler = attendanceAssembler;
+        this.donateResponseAssembler = donateResponseAssembler;
         this.config = config;
     }
 
@@ -116,7 +122,19 @@ public class EventController {
 
         Wallet newWallet = service.updateEvent(eventId, walletId, fundraiserId, amount);
         event.withWallet(newWallet);
-        return ResponseEntity.ok(assembler.toResource(event));
+
+        PromiseWalletBacker backer = newWallet.getPromiseWallet().getBackers().stream()
+                .filter(b -> b.getFundraiser_id().equals(fundraiserId))
+                .findAny()
+                .orElse(null);
+
+        EventDonateResponse donateResponse = new EventDonateResponse();
+
+        if(backer != null) {
+            donateResponse.setTotalAmountDonated(backer.getTotalAmount());
+        }
+
+        return ResponseEntity.ok(donateResponseAssembler.toResource(donateResponse));
     }
 
     private String getValueFromJWTByKey(String key) {

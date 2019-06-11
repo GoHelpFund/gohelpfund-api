@@ -30,7 +30,9 @@ public class PromiseWalletBackersService {
     }
 
     public PromiseWalletBacker save(PromiseWalletBacker backer) {
-        backer.setBackerId(UUID.randomUUID().toString());
+        if(backer.getBackerId() == null) {
+            backer.setBackerId(UUID.randomUUID().toString());
+        }
 
         PromiseWalletBacker newBacker = repository.save(backer);
         logger.debug("POST | PostgreSQL | saved | promise_wallet_backer id: {} ", newBacker.getBackerId());

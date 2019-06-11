@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@JsonPropertyOrder({"fundraiser_id"})
+@JsonPropertyOrder({"fundraiser_id, total_amount"})
 public class PromiseWalletBacker implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -24,6 +24,9 @@ public class PromiseWalletBacker implements Serializable {
 
     @JsonProperty("fundraiser_id")
     private String fundraiser_id;
+
+    @JsonProperty("total_amount")
+    private Integer totalAmount;
 
     public PromiseWalletBacker(){
     }
@@ -52,12 +55,21 @@ public class PromiseWalletBacker implements Serializable {
         this.fundraiser_id = fundraiser_id;
     }
 
+    public Integer getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Integer totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     @Override
     public String toString() {
         return "PromiseWalletBacker{" +
                 "backerId='" + backerId + '\'' +
                 ", promiseId='" + promiseId + '\'' +
                 ", fundraiser_id='" + fundraiser_id + '\'' +
+                ", totalAmount=" + totalAmount +
                 '}';
     }
 }

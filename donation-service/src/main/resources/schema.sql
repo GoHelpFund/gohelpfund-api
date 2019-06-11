@@ -133,11 +133,12 @@ CREATE TABLE promise_wallet_backers (
   backer_id                     VARCHAR(100) PRIMARY KEY NOT NULL,
   promise_id                    VARCHAR(100),
 
-  fundraiser_id                 VARCHAR(100) NOT NULL
+  fundraiser_id                 VARCHAR(100) NOT NULL,
+  total_amount                  INT  NOT NULL
   );
 -- Live Event Promise backer
-INSERT INTO promise_wallet_backers (backer_id,  promise_id, fundraiser_id)
-VALUES ('0vv4a76f-0240-5782-70dd-008aea2567fz', '9ff0a75f-9b90-5482-a1de-108aea2567az', '100393bc-8aaa-45a8-9093-80c4792348c1');
+INSERT INTO promise_wallet_backers (backer_id,  promise_id, fundraiser_id, total_amount)
+VALUES ('0vv4a76f-0240-5782-70dd-008aea2567fz', '9ff0a75f-9b90-5482-a1de-108aea2567az', '100393bc-8aaa-45a8-9093-80c4792348c1', 5000);
 
 /*
 ** Wallets

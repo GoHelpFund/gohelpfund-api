@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "promise_wallet_backers")
-@JsonPropertyOrder({"fundraiser_id"})
+@JsonPropertyOrder({"fundraiser_id, total_amount"})
 public class PromiseWalletBacker implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -28,6 +28,10 @@ public class PromiseWalletBacker implements Serializable {
     @JsonProperty("fundraiser_id")
     @Column(name = "fundraiser_id", nullable = false)
     private String fundraiser_id;
+
+    @JsonProperty("total_amount")
+    @Column(name = "total_amount", nullable = false)
+    private Integer totalAmount;
 
     public PromiseWalletBacker(){
     }
@@ -56,12 +60,21 @@ public class PromiseWalletBacker implements Serializable {
         this.fundraiser_id = fundraiser_id;
     }
 
+    public int getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(int totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     @Override
     public String toString() {
         return "PromiseWalletBacker{" +
                 "backerId='" + backerId + '\'' +
                 ", promiseId='" + promiseId + '\'' +
                 ", fundraiser_id='" + fundraiser_id + '\'' +
+                ", totalAmount='" + totalAmount + '\'' +
                 '}';
     }
 }
