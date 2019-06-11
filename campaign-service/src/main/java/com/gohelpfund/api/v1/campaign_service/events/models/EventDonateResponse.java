@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
 
-@JsonPropertyOrder({"id"})
+@JsonPropertyOrder({"total_amount_donated"})
 public class EventDonateResponse implements Serializable {
     @JsonProperty("total_amount_donated")
     private Integer totalAmountDonated;

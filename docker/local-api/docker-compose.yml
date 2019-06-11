@@ -22,7 +22,7 @@ services:
       SERVER_PORT:              "8762"
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
       EUREKASERVER_PORT:        "8761"
-      ENCRYPT_KEY:              "IMSYMMETRIC"
+      ENCRYPT_KEY:              $SYMMETRIC_ENCRYPTION_KEY
       GIT_URI:                  $GIT_CONFIG_REPO_URI
       GIT_USERNAME:             $GIT_CONFIG_REPO_USERNAME
       GIT_PASSWORD:             $GIT_CONFIG_REPO_PASSWORD
@@ -86,7 +86,7 @@ services:
       CONFIGSERVER_PORT:         "8762"
       ZUULSERVER_PORT:           "8763"
       DATABASESERVER_PORT:       "5432"
-      ENCRYPT_KEY:               "IMSYMMETRIC"
+      ENCRYPT_KEY:               $SYMMETRIC_ENCRYPTION_KEY
 
   donation-service:
     image: gohelpfund/ghf-donation-service:${BUILD_NAME}
@@ -113,7 +113,7 @@ services:
       REDIS_PORT:               "6379"
       DATABASESERVER_PORT:      "5432"
       ZKSERVER_PORT:            "2181"
-      ENCRYPT_KEY:              "IMSYMMETRIC"
+      ENCRYPT_KEY:              $SYMMETRIC_ENCRYPTION_KEY
 
   campaign-service:
     image: gohelpfund/ghf-campaign-service:${BUILD_NAME}
@@ -143,7 +143,7 @@ services:
       REDIS_PORT:               "6379"
       DATABASESERVER_PORT:      "5432"
       ZKSERVER_PORT:            "2181"
-      ENCRYPT_KEY:              "IMSYMMETRIC"
+      ENCRYPT_KEY:              $SYMMETRIC_ENCRYPTION_KEY
 
 
   fundraiser-service:
@@ -173,7 +173,7 @@ services:
       AUTHSERVER_PORT:          "8764"
       DATABASESERVER_PORT:      "5432"
       ZKSERVER_PORT:            "2181"
-      ENCRYPT_KEY:              "IMSYMMETRIC"
+      ENCRYPT_KEY:              $SYMMETRIC_ENCRYPTION_KEY
 
   kafka-server:
     image: spotify/kafka
@@ -233,7 +233,7 @@ networks:
 #      ZUULSERVER_PORT:     "8763"
 #      DATABASESERVER_PORT: "5432"
 #      FUNDRAISERSERVICE_PORT: "9200"
-#      ENCRYPT_KEY:       "IMSYMMETRIC"
+#      ENCRYPT_KEY:       $SYMMETRIC_ENCRYPTION_KEY
 
 #  category-service-ab-testing:
 #    image: gohelpfund/ghf-category-service-ab-testing:${BUILD_NAME}
@@ -248,7 +248,7 @@ networks:
 #      EUREKASERVER_PORT:   "8761"
 #      CONFIGSERVER_PORT:   "8762"
 #      DATABASESERVER_PORT: "5432"
-#      ENCRYPT_KEY:       "IMSYMMETRIC"
+#      ENCRYPT_KEY:       $SYMMETRIC_ENCRYPTION_KEY
 
 #  upload-service:
 #    image: gohelpfund/ghf-upload-service:${BUILD_NAME}
@@ -266,7 +266,7 @@ networks:
 #      DATABASESERVER_PORT: "5432"
 #      FUNDRAISERSERVICE_PORT: "9200"
 #      CATEGORYSERVICE_PORT: "9101"
-#      ENCRYPT_KEY:       "IMSYMMETRIC"
+#      ENCRYPT_KEY:       $SYMMETRIC_ENCRYPTION_KEY
 
 #  specialroutes-service:
 #    image: gohelpfund/ghf-specialroutes-service:${BUILD_NAME}
@@ -281,4 +281,4 @@ networks:
 #      EUREKASERVER_PORT:        "8761"
 #      CONFIGSERVER_PORT:        "8762"
 #      DATABASESERVER_PORT:      "5432"
-#      ENCRYPT_KEY:       "IMSYMMETRIC"
+#      ENCRYPT_KEY:       $SYMMETRIC_ENCRYPTION_KEY
