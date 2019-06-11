@@ -4,18 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 
-@Entity
 @JsonPropertyOrder({"fundraiser_id, total_amount"})
 public class PromiseWalletBacker implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
     @JsonIgnore
     private String backerId;
 

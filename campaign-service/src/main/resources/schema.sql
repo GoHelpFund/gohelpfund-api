@@ -1,4 +1,10 @@
 DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS campaign_media_resources;
+DROP TABLE IF EXISTS campaign_statuses;
+DROP TABLE IF EXISTS campaigns;
+DROP TABLE IF EXISTS events;
+DROP TABLE IF EXISTS event_attendance;
+
 CREATE TABLE categories (
   category_id   VARCHAR(100)   PRIMARY KEY NOT NULL,
 
@@ -9,9 +15,7 @@ CREATE TABLE categories (
   status        VARCHAR(100)
   );
 
-
-DROP TABLE IF EXISTS campaign_media_resources;
-CREATE TABLE campaign_media_resources (
+CREATE TABLE campaign_media_resources  (
   resource_id     VARCHAR(100) PRIMARY KEY NOT NULL,
   campaign_id     VARCHAR(100) NOT NULL,
 
@@ -23,8 +27,6 @@ CREATE TABLE campaign_media_resources (
   status          VARCHAR(100)
   );
 
-
-DROP TABLE IF EXISTS campaign_statuses;
 CREATE TABLE campaign_statuses (
   status_id                          VARCHAR(100) PRIMARY KEY NOT NULL,
   campaign_id                        VARCHAR(100) NOT NULL,
@@ -36,7 +38,6 @@ CREATE TABLE campaign_statuses (
 
   );
 
-DROP TABLE IF EXISTS campaigns;
 CREATE TABLE campaigns (
   campaign_id                VARCHAR(100) NOT NULL  PRIMARY KEY,
   category_id                VARCHAR(100) NOT NULL,
@@ -57,7 +58,6 @@ CREATE TABLE campaigns (
 
   );
 
-DROP TABLE IF EXISTS events;
 CREATE TABLE events (
   event_id                VARCHAR(100) NOT NULL  PRIMARY KEY,
   fundraiser_id           VARCHAR(100) NOT NULL,
@@ -71,7 +71,6 @@ CREATE TABLE events (
   start_date              TIMESTAMP WITH TIME ZONE NOT NULL
   );
 
-DROP TABLE IF EXISTS event_attendance;
 CREATE TABLE event_attendance (
   attendance_id           VARCHAR(100) NOT NULL  PRIMARY KEY,
   event_id                VARCHAR(100) NOT NULL,

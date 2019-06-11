@@ -1,4 +1,12 @@
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS user_roles;
+DROP TABLE IF EXISTS oauth_client_details;
+DROP TABLE IF EXISTS oauth_client_token;
+DROP TABLE IF EXISTS oauth_access_token;
+DROP TABLE IF EXISTS oauth_refresh_token;
+DROP TABLE IF EXISTS oauth_code;
+DROP TABLE IF EXISTS oauth_approvals;
+
 CREATE  TABLE users (
   user_id             VARCHAR(100) NOT NULL,
   fundraiser_id       VARCHAR(100) NOT NULL,
@@ -9,7 +17,6 @@ CREATE  TABLE users (
   enabled             BOOLEAN NOT NULL
   );
 
-DROP TABLE IF EXISTS user_roles;
 CREATE TABLE user_roles (
   user_role_id           VARCHAR(100) PRIMARY KEY NOT NULL,
   user_name              VARCHAR(100) NOT NULL,
@@ -18,7 +25,6 @@ CREATE TABLE user_roles (
   );
 
 -- Tables for OAuth token store
-DROP TABLE IF EXISTS oauth_client_details;
 CREATE TABLE oauth_client_details (
   client_id               VARCHAR(255) PRIMARY KEY,
   resource_ids            VARCHAR(255),
@@ -33,7 +39,6 @@ CREATE TABLE oauth_client_details (
   autoapprove             VARCHAR(256)
 );
 
-DROP TABLE IF EXISTS oauth_client_token;
 CREATE TABLE oauth_client_token (
   token_id                VARCHAR(255),
   token                   bytea,
@@ -42,7 +47,6 @@ CREATE TABLE oauth_client_token (
   client_id               VARCHAR(255)
 );
 
-DROP TABLE IF EXISTS oauth_access_token;
 CREATE TABLE oauth_access_token (
   token_id                VARCHAR(255),
   token                   bytea,
@@ -53,20 +57,17 @@ CREATE TABLE oauth_access_token (
   refresh_token           VARCHAR(255)
 );
 
-DROP TABLE IF EXISTS oauth_refresh_token;
 CREATE TABLE oauth_refresh_token (
   token_id                VARCHAR(255),
   token                   bytea,
   authentication          bytea
 );
 
-DROP TABLE IF EXISTS oauth_code;
 CREATE TABLE oauth_code (
   code                    VARCHAR(255),
   authentication          bytea
 );
 
-DROP TABLE IF EXISTS oauth_approvals;
 CREATE TABLE oauth_approvals (
 	userId                  VARCHAR(256),
 	clientId                VARCHAR(256),

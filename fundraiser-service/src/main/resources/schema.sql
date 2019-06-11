@@ -1,4 +1,9 @@
 DROP TABLE IF EXISTS fundraiser_social;
+DROP TABLE IF EXISTS fundraiser_professional;
+DROP TABLE IF EXISTS fundraiser_statuses;
+DROP TABLE IF EXISTS fundraisers;
+
+
 CREATE TABLE fundraiser_social (
   social_id           VARCHAR(100) PRIMARY KEY NOT NULL,
   fundraiser_id       VARCHAR(100) NOT NULL,
@@ -10,7 +15,6 @@ CREATE TABLE fundraiser_social (
   other               TEXT
   );
 
-DROP TABLE IF EXISTS fundraiser_professional;
 CREATE TABLE fundraiser_professional (
   professional_id     VARCHAR(100) PRIMARY KEY NOT NULL,
   fundraiser_id       VARCHAR(100) NOT NULL,
@@ -21,7 +25,6 @@ CREATE TABLE fundraiser_professional (
   company_url         TEXT
   );
 
-DROP TABLE IF EXISTS fundraiser_statuses;
 CREATE TABLE fundraiser_statuses (
   status_id                          VARCHAR(100) PRIMARY KEY NOT NULL,
   fundraiser_id                      VARCHAR(100) NOT NULL,
@@ -33,7 +36,6 @@ CREATE TABLE fundraiser_statuses (
 
   );
 
-DROP TABLE IF EXISTS fundraisers;
 CREATE TABLE fundraisers (
   fundraiser_id         VARCHAR(100) PRIMARY KEY NOT NULL,
   social_id             VARCHAR(100) NOT NULL,
