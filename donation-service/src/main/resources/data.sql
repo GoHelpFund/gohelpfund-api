@@ -48,25 +48,25 @@ VALUES ('1xx4a76f-0240-5782-70dd-008aea2567fz', '0zz0a75f-9b90-5482-a1de-108aea2
 INSERT INTO promise_wallet_details (promise_id, entity_id, balance)
 VALUES ('6ff0a75f-9b90-5482-a1de-108aea2567az', '0c8250bb-f7eb-4adc-925c-2af315cc4a50', 1000000);
 INSERT INTO promise_wallet_details (promise_id, entity_id, balance)
-VALUES ('7ff0a75f-9b90-5482-a1de-108aea2567az', '100393bc-8aaa-45a8-9093-80c4792348c1', 800500);
+VALUES ('7ff0a75f-9b90-5482-a1de-108aea2567az', '100393bc-8aaa-45a8-9093-80c4792348c1', 810000);
 INSERT INTO promise_wallet_details (promise_id, entity_id, balance)
 VALUES ('7af0a75f-9b90-5482-a1de-108aea2567az', '1a0393bc-8aaa-45a8-9093-80c4792348c1', 1000000);
 INSERT INTO promise_wallet_details (promise_id, entity_id, balance)
 VALUES ('8ff0a75f-9b90-5482-a1de-108aea2567az', '2d0343bc-9afa-45a8-6043-e0c7792348z2', 1000000);
 -- Event Promise wallets
 INSERT INTO promise_wallet_details (promise_id,  entity_id,  balance)
-VALUES ('9ff0a75f-9b90-5482-a1de-108aea2567az', 'bal81764-bea1-4249-b86d-f8fb8182eec1', 199500);
+VALUES ('9ff0a75f-9b90-5482-a1de-108aea2567az', 'bal81764-bea1-4249-b86d-f8fb8182eec1', 190000);
 
 
 INSERT INTO promise_wallet_transactions (transaction_id, promise_id, transaction_date, transaction_type, amount, sender_promise_id, receiver_promise_id, sender_name)
-VALUES ('0ee0a76f-0b90-0482-a0dd-008aea2567ff', '7ff0a75f-9b90-5482-a1de-108aea2567az', '2019-05-22T18:58:57Z', 'sent', 199500, '7ff0a75f-9b90-5482-a1de-108aea2567az', '9ff0a75f-9b90-5482-a1de-108aea2567az', 'Daniel Tirzuman');
+VALUES ('0ee0a76f-0b90-0482-a0dd-008aea2567ff', '7ff0a75f-9b90-5482-a1de-108aea2567az', '2019-05-22T18:58:57Z', 'sent', 190000, '7ff0a75f-9b90-5482-a1de-108aea2567az', '9ff0a75f-9b90-5482-a1de-108aea2567az', 'Daniel Tirzuman');
 INSERT INTO promise_wallet_transactions (transaction_id, promise_id, transaction_date, transaction_type, amount, sender_promise_id, receiver_promise_id, sender_name)
-VALUES ('1ee0a76f-0b90-0482-a0dd-008aea2567ff', '9ff0a75f-9b90-5482-a1de-108aea2567az', '2019-05-22T18:58:57Z', 'received', 199500, '7ff0a75f-9b90-5482-a1de-108aea2567az', '9ff0a75f-9b90-5482-a1de-108aea2567az', 'Daniel Tirzuman');
+VALUES ('1ee0a76f-0b90-0482-a0dd-008aea2567ff', '9ff0a75f-9b90-5482-a1de-108aea2567az', '2019-05-22T18:58:57Z', 'received', 190000, '7ff0a75f-9b90-5482-a1de-108aea2567az', '9ff0a75f-9b90-5482-a1de-108aea2567az', 'Daniel Tirzuman');
 
 
 -- Live Event Promise backer
 INSERT INTO promise_wallet_backers (backer_id,  promise_id, fundraiser_id, total_amount)
-VALUES ('0vv4a76f-0240-5782-70dd-008aea2567fz', '9ff0a75f-9b90-5482-a1de-108aea2567az', '100393bc-8aaa-45a8-9093-80c4792348c1', 199500);
+VALUES ('0vv4a76f-0240-5782-70dd-008aea2567fz', '9ff0a75f-9b90-5482-a1de-108aea2567az', '100393bc-8aaa-45a8-9093-80c4792348c1', 190000);
 
 
 -- Campaign wallets
