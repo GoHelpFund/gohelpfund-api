@@ -7,7 +7,7 @@ spring:
         encrypt.enabled: false
         git:
           uri: ${GIT_URI}
-          searchPaths: campaign-service, fundraiser-service, zuul-server, authentication-service
+          searchPaths: donation-service, campaign-service, fundraiser-service, zuul-server, authentication-service
           username: ${GIT_USERNAME}
           password: ${GIT_PASSWORD}
 

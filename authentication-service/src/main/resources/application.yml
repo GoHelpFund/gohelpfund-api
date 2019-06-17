@@ -17,7 +17,7 @@ server:
 #Setting the logging levels for the service
 logging:
   level:
-    com.netflix: WARN
-    org.springframework.web: WARN
-    com.gohelpfund: WARN
+    com.netflix: INFO
+    org.springframework.web: INFO
+    com.gohelpfund: INFO
 

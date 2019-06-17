@@ -1,10 +1,10 @@
-package com.gohelpfund.api.v1.categories.controllers;
+package com.gohelpfund.api.v1.wallets.controllers;
 
-import com.gohelpfund.api.v1.categories.controllers.assembler.CategoryResourceAssembler;
-import com.gohelpfund.api.v1.categories.controllers.exceptions.CategoryNotFoundException;
-import com.gohelpfund.api.v1.categories.model.Category;
-import com.gohelpfund.api.v1.categories.model.CategoryStatus;
-import com.gohelpfund.api.v1.categories.services.CategoryService;
+import com.gohelpfund.api.v1.wallets.controllers.assembler.CategoryResourceAssembler;
+import com.gohelpfund.api.v1.wallets.controllers.exceptions.CategoryNotFoundException;
+import com.gohelpfund.api.v1.wallets.model.Category;
+import com.gohelpfund.api.v1.wallets.model.CategoryStatus;
+import com.gohelpfund.api.v1.wallets.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
@@ -22,7 +22,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 
 @RestController
-@RequestMapping("v1/categories")
+@RequestMapping("v1/wallets")
 public class CategoryController {
 
     @Autowired

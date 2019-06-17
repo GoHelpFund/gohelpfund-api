@@ -1,4 +1,4 @@
-package com.gohelpfund.api.v1.categories.utils;
+package com.gohelpfund.api.v1.wallets.utils;
 
 import org.springframework.stereotype.Component;
 

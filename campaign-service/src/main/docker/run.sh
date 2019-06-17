@@ -27,11 +27,11 @@ echo "********************************************************"
 while ! `nc -z kafka-server  $(getPort $KAFKASERVER_PORT)`; do sleep 10; done
 echo "******* Kafka Server has started"
 
-#echo "********************************************************"
-#echo "Waiting for redis to start on port $REDIS_PORT"
-#echo "********************************************************"
-#while ! `nc -z redis $REDIS_PORT`; do sleep 10; done
-#echo "******* Redis has started"
+echo "********************************************************"
+echo "Waiting for redis to start on port $REDIS_PORT"
+echo "********************************************************"
+while ! `nc -z redis $REDIS_PORT`; do sleep 10; done
+echo "******* Redis has started"
 
 echo "********************************************************"
 echo "Waiting for the authentication service to start on port $AUTHSERVER_PORT"
@@ -40,10 +40,16 @@ while ! `nc -z authentication-service $AUTHSERVER_PORT`; do sleep 3; done
 echo "*******  Authentication Service has started"
 
 echo "********************************************************"
-echo "Waiting for the zipkin server to start  on port $ZIPKIN_PORT"
+echo "Waiting for the donation service to start on port $DONATION_PORT"
 echo "********************************************************"
-while ! `nc -z zipkin-server $ZIPKIN_PORT`; do sleep 10; done
-echo "******* Zipkin Server has started"
+while ! `nc -z donation-service $DONATION_PORT`; do sleep 3; done
+echo "*******  Donation Service has started"
+
+#echo "********************************************************"
+#echo "Waiting for the zipkin server to start  on port $ZIPKIN_PORT"
+#echo "********************************************************"
+#while ! `nc -z zipkin-server $ZIPKIN_PORT`; do sleep 10; done
+#echo "******* Zipkin Server has started"
 
 echo "********************************************************"
 echo "Starting Campaign Service with Configuration Service via Eureka :  $EUREKASERVER_URI" ON PORT: $SERVER_PORT;

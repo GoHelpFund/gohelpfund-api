@@ -1,6 +1,6 @@
-package com.gohelpfund.api.v1.categories.security;
+package com.gohelpfund.api.v1.wallets.security;
 
-import com.gohelpfund.api.v1.categories.config.ServiceConfig;
+import com.gohelpfund.api.v1.wallets.config.ServiceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

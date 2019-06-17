@@ -34,7 +34,7 @@ while ! `nc -z fundraiser-service $FUNDRAISERSERVICE_PORT`; do sleep 3; done
 echo "*******  Configuration Server has started"
 
 echo "********************************************************"
-echo "Waiting for the categories service to start on port $CATEGORYSERVICE_PORT"
+echo "Waiting for the wallets service to start on port $CATEGORYSERVICE_PORT"
 echo "********************************************************"
 while ! `nc -z category-service $CATEGORYSERVICE_PORT`; do sleep 3; done
 echo "*******  Configuration Server has started"

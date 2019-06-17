@@ -6,9 +6,9 @@ security:
 spring:
 #  jackson:
 #    default-property-inclusion: NON_NULL
-  zipkin:
-    enabled: true
-    baseUrl:  localhost:9411
+#  zipkin:
+#    enabled: true
+#    baseUrl:  localhost:9411
   hateoas:
     use-hal-as-default-json-media-type: false
   cloud:
@@ -33,6 +33,6 @@ eureka:
 #Setting the logging levels for the service
 logging:
   level:
-    com.netflix: WARN
-    org.springframework.web: WARN
-    com.gohelpfund.api.v1: WARN
+    com.netflix: INFO
+    org.springframework.web: INFO
+    com.gohelpfund.api.v1: INFO

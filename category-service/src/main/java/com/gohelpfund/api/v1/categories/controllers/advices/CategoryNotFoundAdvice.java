@@ -1,7 +1,7 @@
 
-package com.gohelpfund.api.v1.categories.controllers.advices;
+package com.gohelpfund.api.v1.wallets.controllers.advices;
 
-import com.gohelpfund.api.v1.categories.controllers.exceptions.CategoryNotFoundException;
+import com.gohelpfund.api.v1.wallets.controllers.exceptions.CategoryNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

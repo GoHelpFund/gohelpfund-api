@@ -1,8 +1,8 @@
-package com.gohelpfund.api.v1.categories.controllers.assembler;
+package com.gohelpfund.api.v1.wallets.controllers.assembler;
 
-import com.gohelpfund.api.v1.categories.controllers.CategoryController;
-import com.gohelpfund.api.v1.categories.model.Category;
-import com.gohelpfund.api.v1.categories.model.CategoryStatus;
+import com.gohelpfund.api.v1.wallets.controllers.CategoryController;
+import com.gohelpfund.api.v1.wallets.model.Category;
+import com.gohelpfund.api.v1.wallets.model.CategoryStatus;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class CategoryResourceAssembler implements ResourceAssembler<Category, Re
 
         Resource<Category> categoryResource = new Resource<>(category,
                 linkTo(methodOn(CategoryController.class).one(category.getCategoryId())).withSelfRel(),
-                linkTo(methodOn(CategoryController.class).all()).withRel("categories")
+                linkTo(methodOn(CategoryController.class).all()).withRel("wallets")
         );
 
         /// Conditional links based on state of the category
