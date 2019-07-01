@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.gohelpfund.api.v1.campaign_service.campaigns.model.category.Category;
+import com.gohelpfund.api.v1.campaign_service.campaigns.model.expense.CampaignExpense;
 import com.gohelpfund.api.v1.campaign_service.campaigns.model.fundraiser.Fundraiser;
 import com.gohelpfund.api.v1.campaign_service.campaigns.model.mediaresource.CampaignMediaResource;
 import com.gohelpfund.api.v1.campaign_service.campaigns.model.status.CampaignStatus;
@@ -21,8 +22,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "campaigns")
-@JsonPropertyOrder({"campaignId", "campaignTitle", "campaignDescription", "amountGoal",
-        "expensesDescription", "location", "startDate", "endDate", "backers", "wallet", "status",
+@JsonPropertyOrder({"campaignId", "campaignTitle", "campaignDescription",
+        "amountGoal", "expenses",
+        "location", "startDate", "endDate", "backers", "wallet", "status",
         "category", "fundraiser", "resources"})
 public class Campaign implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -62,11 +64,9 @@ public class Campaign implements Serializable {
     @Range(min = 0, max = 1000000)
     private Integer amountGoal;
 
-    @JsonProperty("expenses_description")
-    @Column(name = "expenses_description", nullable = false)
-    @NotNull
-    @Size(min = 1, max = 10240)
-    private String expensesDescription;
+    @JsonProperty("expenses")
+    @Transient
+    private List<CampaignExpense> expenses;
 
     @Column(name = "location", nullable = false)
     @NotNull
@@ -99,8 +99,7 @@ public class Campaign implements Serializable {
     private Category category;
 
     @JsonProperty("media_resources")
-    @JoinColumn(name = "campaign_id")
-    @ElementCollection(targetClass = CampaignMediaResource.class)
+    @Transient
     private List<CampaignMediaResource> resources;
 
     public Campaign() {
@@ -171,12 +170,12 @@ public class Campaign implements Serializable {
         this.amountGoal = amountGoal;
     }
 
-    public String getExpensesDescription() {
-        return expensesDescription;
+    public List<CampaignExpense> getExpenses() {
+        return expenses;
     }
 
-    public void setExpensesDescription(String expensesDescription) {
-        this.expensesDescription = expensesDescription;
+    public void setExpenses(List<CampaignExpense> expenses) {
+        this.expenses = expenses;
     }
 
     public String getLocation() {
@@ -267,6 +266,13 @@ public class Campaign implements Serializable {
         return this;
     }
 
+    public Campaign withExpenses(List<CampaignExpense> expenses) {
+        if (expenses != null) {
+            this.setExpenses(expenses);
+        }
+        return this;
+    }
+
     public Campaign withFundraiser(Fundraiser fundraiser){
         this.setFundraiser(fundraiser);
         return this;
@@ -294,7 +300,7 @@ public class Campaign implements Serializable {
                 Objects.equals(campaignTitle, campaign.campaignTitle) &&
                 Objects.equals(campaignDescription, campaign.campaignDescription) &&
                 Objects.equals(amountGoal, campaign.amountGoal) &&
-                Objects.equals(expensesDescription, campaign.expensesDescription) &&
+                Objects.equals(expenses, campaign.expenses) &&
                 Objects.equals(location, campaign.location) &&
                 Objects.equals(startDate, campaign.startDate) &&
                 Objects.equals(endDate, campaign.endDate) &&
@@ -307,7 +313,7 @@ public class Campaign implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(campaignId, fundraiserId, categoryId, walletId, campaignTitle, campaignDescription, amountGoal, expensesDescription, location, startDate, endDate, status, wallet, fundraiser, category, resources);
+        return Objects.hash(campaignId, fundraiserId, categoryId, walletId, campaignTitle, campaignDescription, amountGoal, expenses, location, startDate, endDate, status, wallet, fundraiser, category, resources);
     }
 
     @Override
@@ -320,7 +326,7 @@ public class Campaign implements Serializable {
                 ", campaignTitle='" + campaignTitle + '\'' +
                 ", campaignDescription='" + campaignDescription + '\'' +
                 ", amountGoal=" + amountGoal +
-                ", expensesDescription='" + expensesDescription + '\'' +
+                ", expenses=" + expenses +
                 ", location='" + location + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
