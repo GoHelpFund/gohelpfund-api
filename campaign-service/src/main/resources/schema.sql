@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS campaign_media_resources;
+DROP TABLE IF EXISTS campaign_expenses;
 DROP TABLE IF EXISTS campaign_statuses;
 DROP TABLE IF EXISTS campaigns;
 DROP TABLE IF EXISTS events;
@@ -23,8 +24,17 @@ CREATE TABLE campaign_media_resources  (
   url             TEXT NOT NULL,
   type            TEXT NOT NULL,
   format          TEXT NOT NULL,
+  avatar          BOOLEAN NOT NULL,
 
   status          VARCHAR(100)
+  );
+
+CREATE TABLE campaign_expenses  (
+  expense_id      VARCHAR(100) PRIMARY KEY NOT NULL,
+  campaign_id     VARCHAR(100) NOT NULL,
+
+  amount          INT NOT NULL,
+  description     TEXT NOT NULL
   );
 
 CREATE TABLE campaign_statuses (
@@ -49,7 +59,6 @@ CREATE TABLE campaigns (
   campaign_description       TEXT NOT NULL,
 
   amount_goal                INT NOT NULL,
-  expenses_description       TEXT NOT NULL,
 
   location                   TEXT NOT NULL,
 

@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "campaign_media_resources")
-@JsonPropertyOrder({"id", "name", "url", "type", "format", "status"})
+@JsonPropertyOrder({"id", "name", "url", "type", "format", "avatar", "status"})
 public class CampaignMediaResource implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -36,6 +36,9 @@ public class CampaignMediaResource implements Serializable {
     @Column(name = "url", nullable = false)
 //    @URL
     private String url;
+
+    @Column(name = "avatar", nullable = false)
+    private Boolean avatar;
 
     @JsonIgnore
     @Column(name = "status")
@@ -90,6 +93,14 @@ public class CampaignMediaResource implements Serializable {
         this.url = url;
     }
 
+    public Boolean getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Boolean avatar) {
+        this.avatar = avatar;
+    }
+
     public CampaignMediaResourceStatus getStatus() {
         return status;
     }
@@ -117,6 +128,7 @@ public class CampaignMediaResource implements Serializable {
                 ", type='" + type + '\'' +
                 ", format='" + format + '\'' +
                 ", url='" + url + '\'' +
+                ", avatar=" + avatar +
                 ", status=" + status +
                 '}';
     }

@@ -1,6 +1,6 @@
 -- Campaign Help wallets
 INSERT INTO help_wallet_details (help_id,  entity_id, public_key, private_key, balance)
-VALUES ('0zz0a75f-9b90-5482-a1de-108aea2567az', 'cd881764-bea1-4249-b86d-f8fb8182eec1', 'XxRUQGKNWzfVCsAE67aVDwcGyzjYnxWcw4', 'X', 0);
+VALUES ('0zz0a75f-9b90-5482-a1de-108aea2567az', 'cd881764-bea1-4249-b86d-f8fb8182eec1', 'XxRUQGKNWzfVCsAE67aVDwcGyzjYnxWcw4', 'X', 18);
 INSERT INTO help_wallet_details (help_id,  entity_id, public_key, private_key, balance)
 VALUES ('1zz0a75f-9b90-5482-a1de-108aea2567az', '970972dd-dce8-4c65-a85b-63735ada0fc9', 'XtnUkPrjrr8R9MuxpwoJ34MMVJHrR2MUXR', 'X', 0);
 INSERT INTO help_wallet_details (help_id,  entity_id, public_key, private_key, balance)
@@ -24,7 +24,7 @@ VALUES ('8zz0a75f-9b90-5482-a1de-108aea2567az', '2d0343bc-9afa-45a8-6043-e0c7792
 INSERT INTO help_wallet_details (help_id,  entity_id, public_key, private_key, balance)
 VALUES ('9zz0a75f-9b90-5482-a1de-108aea2567az', 'bal81764-bea1-4249-b86d-f8fb8182eec1', 'XnnS8BdLC6Zh65kSV17kwyR4H1FQBfT95Z', 'X', 0);
 
-/*
+
 -- Campaign Help donations
 INSERT INTO help_wallet_transactions (transaction_id, help_id, transaction_date, transaction_type, blockchain_transaction_id, amount, sender_help_id, receiver_help_id, sender_name, sender_address)
 VALUES ('0aa0a76f-0b90-0482-a0dd-008aea2567ff', '7zz0a75f-9b90-5482-a1de-108aea2567az', '2019-05-22T18:58:57Z', 'sent', 'ee70a38fb436cece5916b9e45ae7553fa4edeee0a0eabc77d208b0f002911e6f', 15, '7zz0a75f-9b90-5482-a1de-108aea2567az', '0zz0a75f-9b90-5482-a1de-108aea2567az', 'Daniel Tirzuman', 'Xtnagy4Fm8nQck9Qbx5RtDTHap4Y3okTGr');
@@ -43,7 +43,7 @@ VALUES ('0xx4a76f-0240-5782-70dd-008aea2567fz', '0zz0a75f-9b90-5482-a1de-108aea2
 INSERT INTO help_wallet_backers (backer_id,  help_id, fundraiser_id)
 VALUES ('1xx4a76f-0240-5782-70dd-008aea2567fz', '0zz0a75f-9b90-5482-a1de-108aea2567az', '1a0393bc-8aaa-45a8-9093-80c4792348c1');
 
-*/
+
 -- Fundraiser Promise wallets
 INSERT INTO promise_wallet_details (promise_id, entity_id, balance)
 VALUES ('6ff0a75f-9b90-5482-a1de-108aea2567az', '0c8250bb-f7eb-4adc-925c-2af315cc4a50', 1000000);

@@ -13,7 +13,6 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -25,220 +24,228 @@ import java.util.UUID;
 
 @Service
 public class CampaignService {
-    private static final Logger logger = LoggerFactory.getLogger(CampaignService.class);
+  private static final Logger logger = LoggerFactory.getLogger(CampaignService.class);
 
-    @Autowired
-    private CampaignRepository repository;
+  private final CampaignRepository repository;
+  private final FundraiserRestTemplateClient fundraiserClient;
+  private final CategoryRestTemplateClient categoryClient;
+  private final WalletRestTemplateClient walletClient;
+  private final CampaignMediaResourceService resources;
+  private final CampaignExpenseService expenses;
+  private final CampaignStatusService status;
 
-    @Autowired
-    FundraiserRestTemplateClient fundraiserClient;
+  public CampaignService(CampaignRepository repository,
+                         FundraiserRestTemplateClient fundraiserClient,
+                         CategoryRestTemplateClient categoryClient,
+                         WalletRestTemplateClient walletClient,
+                         CampaignMediaResourceService resources,
+                         CampaignExpenseService expenses,
+                         CampaignStatusService status) {
+    this.repository = repository;
+    this.fundraiserClient = fundraiserClient;
+    this.categoryClient = categoryClient;
+    this.walletClient = walletClient;
+    this.resources = resources;
+    this.expenses = expenses;
+    this.status = status;
+  }
 
-    @Autowired
-    CategoryRestTemplateClient categoryClient;
+  @HystrixCommand(fallbackMethod = "buildFallbackFundraiser",
+      threadPoolKey = "fundraiserByIdThreadPool",
+      threadPoolProperties =
+          {@HystrixProperty(name = "coreSize", value = "30"),
+              @HystrixProperty(name = "maxQueueSize", value = "10")},
+      commandProperties = {
+          @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+          @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "75"),
+          @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "7000"),
+          @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "15000"),
+          @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "5")}
+  )
+  private Fundraiser getFundraiser(String id) {
+    return fundraiserClient.getFundraiser(id);
+  }
 
-    @Autowired
-    WalletRestTemplateClient walletClient;
+  @HystrixCommand(fallbackMethod = "buildFallbackCategory",
+      threadPoolKey = "categoryByIdThreadPool",
+      threadPoolProperties =
+          {@HystrixProperty(name = "coreSize", value = "30"),
+              @HystrixProperty(name = "maxQueueSize", value = "10")},
+      commandProperties = {
+          @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+          @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "75"),
+          @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "7000"),
+          @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "15000"),
+          @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "5")}
+  )
+  private Category getCategory(String id) {
+    Category category = categoryClient.getCategory(id);
 
-    @Autowired
-    private CampaignMediaResourceService resources;
+    if (category != null) {
+      logger.debug("GET | /api/v1/categories/{id} | found | category id: {}", id);
+    } else {
+      logger.debug("GET | /api/v1/categories/{id} | not found | category id: {}", id);
+    }
+    return category;
+  }
 
-    @Autowired
-    private CampaignStatusService status;
+  private Wallet getWallet(String id) {
+    Wallet wallet = walletClient.getWallet(id);
 
-    @HystrixCommand(fallbackMethod = "buildFallbackFundraiser",
-            threadPoolKey = "fundraiserByIdThreadPool",
-            threadPoolProperties =
-                    {@HystrixProperty(name = "coreSize", value = "30"),
-                            @HystrixProperty(name = "maxQueueSize", value = "10")},
-            commandProperties = {
-                    @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
-                    @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "75"),
-                    @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "7000"),
-                    @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "15000"),
-                    @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "5")}
-    )
-    private Fundraiser getFundraiser(String id) {
-        return fundraiserClient.getFundraiser(id);
+    if (wallet != null) {
+      logger.debug("GET | /api/v1/wallets/{id} | found | wallet id: {}", id);
+    } else {
+      logger.debug("GET | /api/v1/wallets/{id} | not found | wallet id: {}", id);
+    }
+    return wallet;
+  }
+
+  private Wallet createWallet(String campaignId, HttpEntity httpEntity) {
+    Wallet newWallet = walletClient.createWallet(httpEntity);
+
+    if (newWallet != null) {
+      logger.debug("POST | /api/v1/wallets | created | campaign id: {} wallet id: {}", campaignId, newWallet.getId());
+    } else {
+      logger.debug("POST | /api/v1/wallets | creation failed | campaign id: {}", campaignId);
     }
 
-    @HystrixCommand(fallbackMethod = "buildFallbackCategory",
-            threadPoolKey = "categoryByIdThreadPool",
-            threadPoolProperties =
-                    {@HystrixProperty(name = "coreSize", value = "30"),
-                            @HystrixProperty(name = "maxQueueSize", value = "10")},
-            commandProperties = {
-                    @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
-                    @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "75"),
-                    @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "7000"),
-                    @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "15000"),
-                    @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "5")}
-    )
-    private Category getCategory(String id) {
-        Category category = categoryClient.getCategory(id);
+    return newWallet;
+  }
 
-        if (category != null) {
-            logger.debug("GET | /api/v1/categories/{id} | found | category id: {}", id);
-        } else {
-            logger.debug("GET | /api/v1/categories/{id} | not found | category id: {}", id);
-        }
-        return category;
+  private Wallet updateWallet(String campaignId, String walletId, HttpEntity httpEntity) {
+    Wallet newWallet = walletClient.updateWallet(walletId, httpEntity);
+
+    if (newWallet != null) {
+      logger.debug("POST | /api/v1/wallets/{}/donate | updated | campaign id: {} wallet id: {}", walletId, campaignId, newWallet.getId());
+    } else {
+      logger.debug("POST | /api/v1/wallets/{}/donate | update failed | campaign id: {}", walletId, campaignId);
     }
 
-    private Wallet getWallet(String id) {
-        Wallet wallet = walletClient.getWallet(id);
+    return newWallet;
+  }
 
-        if (wallet != null) {
-            logger.debug("GET | /api/v1/wallets/{id} | found | wallet id: {}", id);
-        } else {
-            logger.debug("GET | /api/v1/wallets/{id} | not found | wallet id: {}", id);
-        }
-        return wallet;
+  private Category buildFallbackCategory(String id) {
+    return new Category();
+  }
+
+  public List<Campaign> getCampaigns() {
+    List<Campaign> campaigns = repository.findAll();
+    if (campaigns == null) {
+      logger.debug("GET | PostgreSQL | empty | campaigns size: 0");
+    } else {
+      logger.debug("GET | PostgreSQL | found | campaigns size: {}", campaigns.size());
+      campaigns.forEach(campaign -> {
+            campaign.withMediaResources(resources.getAll(campaign.getCampaignId()))
+                .withExpenses(expenses.getAll(campaign.getCampaignId()))
+                .withFundraiser(getFundraiser(campaign.getFundraiserId()))
+                .withCategory(getCategory(campaign.getCategoryId()))
+                .withWallet(getWallet(campaign.getWalletId()));
+          }
+      );
     }
+    return campaigns;
+  }
 
-    private Wallet createWallet(String campaignId, HttpEntity httpEntity) {
-        Wallet newWallet = walletClient.createWallet(httpEntity);
+  public Campaign getCampaignById(String campaignId) {
+    Campaign campaign = repository.findByCampaignId(campaignId);
 
-        if (newWallet != null) {
-            logger.debug("POST | /api/v1/wallets | created | campaign id: {} wallet id: {}", campaignId, newWallet.getId());
-        } else {
-            logger.debug("POST | /api/v1/wallets | creation failed | campaign id: {}", campaignId);
-        }
+    if (campaign == null) {
+      logger.debug("GET | PostgreSQL | not found | campaign id: {}", campaignId);
+    } else {
+      logger.debug("GET | PostgreSQL | found | campaign id: {}", campaignId);
+      Fundraiser fundraiser = getFundraiser(campaign.getFundraiserId())
+          .withId(campaign.getFundraiserId());
+      Category category = getCategory(campaign.getCategoryId())
+          .withId(campaign.getCategoryId());
+      Wallet wallet = getWallet(campaign.getWalletId())
+          .withId(campaign.getWalletId());
 
-        return newWallet;
+      campaign
+          .withCategory(category)
+          .withMediaResources(resources.getAll(campaign.getCampaignId()))
+          .withExpenses(expenses.getAll(campaign.getCampaignId()))
+          .withFundraiser(fundraiser)
+          .withWallet(wallet);
     }
+    return campaign;
+  }
 
-    private Wallet updateWallet(String campaignId, String walletId, HttpEntity httpEntity) {
-        Wallet newWallet = walletClient.updateWallet(walletId, httpEntity);
+  public Campaign save(Campaign campaign) {
+    String id = UUID.randomUUID().toString();
 
-        if (newWallet != null) {
-            logger.debug("POST | /api/v1/wallets/{}/donate | updated | campaign id: {} wallet id: {}", walletId, campaignId, newWallet.getId());
-        } else {
-            logger.debug("POST | /api/v1/wallets/{}/donate | update failed | campaign id: {}", walletId, campaignId);
-        }
+    Fundraiser fundraiser = getFundraiser(campaign.getFundraiserId())
+        .withId(campaign.getFundraiserId());
 
-        return newWallet;
-    }
+    String categoryId = campaign.getCategory().getId();
+    Category category = getCategory(categoryId)
+        .withId(categoryId);
+    Wallet wallet = createWallet(id, getHttpEntity(id));
 
-    private Category buildFallbackCategory(String id) {
-        return new Category();
-    }
+    campaign
+        .withId(id)
+        .withStatus(status.save(id))
+        .withMediaResources(resources.saveAll(campaign.getResources(), id))
+        .withExpenses(expenses.saveAll(campaign.getExpenses(), id))
+        .withCategoryId(categoryId)
+        .withFundraiserId(fundraiser.getId())
+        .withWalletId(wallet.getId());
 
-    public List<Campaign> getCampaigns() {
-        List<Campaign> campaigns = repository.findAll();
-        if (campaigns == null) {
-            logger.debug("GET | PostgreSQL | empty | campaigns size: 0");
-        } else {
-            logger.debug("GET | PostgreSQL | found | campaigns size: {}", campaigns.size());
-            campaigns.forEach(campaign -> {
-                        campaign.withMediaResources(resources.getAll(campaign.getCampaignId()));
-                        campaign.withFundraiser(getFundraiser(campaign.getFundraiserId()));
-                        campaign.withCategory(getCategory(campaign.getCategoryId()));
-                        campaign.withWallet(getWallet(campaign.getWalletId()));
-                    }
-            );
-        }
-        return campaigns;
-    }
+    Campaign newCampaign = repository.save(campaign);
+    logger.debug("POST | PostgreSQL | created | campaign id: {} ", newCampaign.getCampaignId());
 
-    public Campaign getCampaignById(String campaignId) {
-        Campaign campaign = repository.findByCampaignId(campaignId);
+    return campaign
+        .withCategory(category)
+        .withFundraiser(fundraiser);
+  }
 
-        if (campaign == null) {
-            logger.debug("GET | PostgreSQL | not found | campaign id: {}", campaignId);
-        } else {
-            logger.debug("GET | PostgreSQL | found | campaign id: {}", campaignId);
-            Fundraiser fundraiser = getFundraiser(campaign.getFundraiserId())
-                    .withId(campaign.getFundraiserId());
-            Category category = getCategory(campaign.getCategoryId())
-                    .withId(campaign.getCategoryId());
-            Wallet wallet = getWallet(campaign.getWalletId())
-                    .withId(campaign.getWalletId());
+  public Campaign updateCampaign(Campaign campaign) {
+    Campaign newCampaign = repository.save(campaign);
+    logger.debug("PUT | PostgreSQL | updated | campaign id: {} ", newCampaign.getCampaignId());
 
-            campaign
-                    .withCategory(category)
-                    .withMediaResources(resources.getAll(campaign.getCampaignId()))
-                    .withFundraiser(fundraiser)
-                    .withWallet(wallet);
-        }
-        return campaign;
-    }
+    return newCampaign;
+  }
 
-    public Campaign save(Campaign campaign) {
-        String id = UUID.randomUUID().toString();
+  public Wallet updateCampaign(String campaignId, String walletId, String fundraiserId, Integer amount) {
 
-        Fundraiser fundraiser = getFundraiser(campaign.getFundraiserId())
-                .withId(campaign.getFundraiserId());
+    String fundraiserName = getFundraiser(fundraiserId).getName();
 
-        String categoryId = campaign.getCategory().getId();
-        Category category = getCategory(categoryId)
-                .withId(categoryId);
-        Wallet wallet = createWallet(id, getHttpEntity(id));
+    Wallet wallet = updateWallet(campaignId, walletId, getHttpEntity(fundraiserId, fundraiserName, amount));
 
-        campaign
-                .withId(id)
-                .withStatus(status.save(id))
-                .withMediaResources(resources.saveAll(campaign.getResources(), id))
-                .withCategoryId(categoryId)
-                .withFundraiserId(fundraiser.getId())
-                .withWalletId(wallet.getId());
+    logger.debug("PUT | PostgreSQL | updated | wallet id: {} ", wallet.getId());
 
-        Campaign newCampaign = repository.save(campaign);
-        logger.debug("POST | PostgreSQL | created | campaign id: {} ", newCampaign.getCampaignId());
+    return wallet;
+  }
 
-        return campaign
-                .withCategory(category)
-                .withFundraiser(fundraiser);
-    }
+  private void deleteCampaign(Campaign campaign) {
+    repository.delete(campaign);
+    logger.debug("DELETE | PostgreSQL | removed | campaign id: {} ", campaign.getCampaignId());
+  }
 
-    public Campaign updateCampaign(Campaign campaign) {
-        Campaign newCampaign = repository.save(campaign);
-        logger.debug("PUT | PostgreSQL | updated | campaign id: {} ", newCampaign.getCampaignId());
+  private HttpEntity<Map<String, String>> getHttpEntity(String campaignId) {
+    HttpHeaders headers = new HttpHeaders();
+    String token = UserContextHolder.getContext().getAuthToken();
+    headers.set("Authorization", token);
+    headers.set("Content-Type", "application/json");
 
-        return newCampaign;
-    }
+    Map<String, String> map = new HashMap<>();
+    map.put("entity_id", campaignId);
+    map.put("type", "campaign");
 
+    return new HttpEntity<>(map, headers);
+  }
 
-    public Wallet updateCampaign(String campaignId, String walletId, String fundraiserId, Integer amount) {
+  private HttpEntity<Map<String, Object>> getHttpEntity(String fundraiserId, String fundraiserName, Integer amount) {
+    HttpHeaders headers = new HttpHeaders();
+    String token = UserContextHolder.getContext().getAuthToken();
+    headers.set("Authorization", token);
+    headers.set("Content-Type", "application/json");
 
-        String fundraiserName = getFundraiser(fundraiserId).getName();
+    Map<String, Object> map = new HashMap<>();
+    map.put("entity_id", fundraiserId);
+    map.put("entity_name", fundraiserName);
+    map.put("amount", amount);
+    map.put("type", "fundraiser");
 
-        Wallet wallet = updateWallet(campaignId, walletId, getHttpEntity(fundraiserId, fundraiserName, amount));
-
-        logger.debug("PUT | PostgreSQL | updated | wallet id: {} ", wallet.getId());
-
-        return wallet;
-    }
-
-    private void deleteCampaign(Campaign campaign) {
-        repository.delete(campaign);
-        logger.debug("DELETE | PostgreSQL | removed | campaign id: {} ", campaign.getCampaignId());
-    }
-
-    private HttpEntity<Map<String, String>> getHttpEntity(String campaignId) {
-        HttpHeaders headers = new HttpHeaders();
-        String token = UserContextHolder.getContext().getAuthToken();
-        headers.set("Authorization", token);
-        headers.set("Content-Type", "application/json");
-
-        Map<String, String> map = new HashMap<>();
-        map.put("entity_id", campaignId);
-        map.put("type", "campaign");
-
-        return new HttpEntity<>(map, headers);
-    }
-
-    private HttpEntity<Map<String, Object>> getHttpEntity(String fundraiserId, String fundraiserName, Integer amount) {
-        HttpHeaders headers = new HttpHeaders();
-        String token = UserContextHolder.getContext().getAuthToken();
-        headers.set("Authorization", token);
-        headers.set("Content-Type", "application/json");
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("entity_id", fundraiserId);
-        map.put("entity_name", fundraiserName);
-        map.put("amount", amount);
-        map.put("type", "fundraiser");
-
-        return new HttpEntity<>(map, headers);
-    }
+    return new HttpEntity<>(map, headers);
+  }
 }
