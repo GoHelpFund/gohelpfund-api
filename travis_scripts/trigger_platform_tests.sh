@@ -2,7 +2,7 @@
 echo "Beginning platform tests for build $BUILD_NAME"
 travis login --org --no-interactive  --github-token $GITHUB_TOKEN
 export RESULTS=`travis token --org`
-export TARGET_URL="https://api.travis-ci.org/repo/daniel-tirzuman%2F$PLATFORM_TEST_NAME/requests"
+export TARGET_URL="https://api.travis-ci.org/repo/gohelpfund%2F$PLATFORM_TEST_NAME/requests"
 echo "Kicking off job using target url: $TARGET_URL"
 
 body="{
