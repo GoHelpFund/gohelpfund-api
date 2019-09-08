@@ -46,10 +46,11 @@ before_install:
 jobs:
   include:
     - stage: tag build
-      script: sh travis_scripts/tag_build-dev.sh
-    - stage: build services
-      script: sh travis_scripts/build_services.sh
-    - stage: deploy to docker hub
-      script: sh travis_scripts/deploy_to_docker_hub.sh
+      script:
+      - sh travis_scripts/tag_build-dev.sh
+    - stage: build services & deploy to docker hub
+      script:
+        - sh travis_scripts/build_services.sh
+        - sh travis_scripts/deploy_to_docker_hub.sh
     - stage: deploy to amazon ecs
       script: sh travis_scripts/deploy_to_amazon_ecs-dev.sh
