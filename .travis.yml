@@ -44,9 +44,9 @@ before_install:
 - export CONTAINER_IP=18.184.83.174
 - export PLATFORM_TEST_NAME="gohelpfund-platform-tests"
 script:
-  - $TRAVIS_BRANCH == "develop" && sh travis_scripts/tag_build-dev.sh
-  - $TRAVIS_BRANCH == "master" && sh travis_scripts/tag_build-prod.sh
+  - if [ "$TRAVIS_BRANCH" == "develop" ]; then sh travis_scripts/tag_build-dev.sh; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then sh travis_scripts/tag_build-prod.sh; fi
   - sh travis_scripts/build_services.sh
   - sh travis_scripts/deploy_to_docker_hub.sh
-  - $TRAVIS_BRANCH == "develop" && sh travis_scripts/deploy_to_amazon_ecs-dev.sh
-  - $TRAVIS_BRANCH == "master" && sh travis_scripts/deploy_to_amazon_ecs-prod.sh
+  - if [ "$TRAVIS_BRANCH" == "develop" ]; then && sh travis_scripts/deploy_to_amazon_ecs-dev.sh; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then sh travis_scripts/deploy_to_amazon_ecs-prod.sh; fi
