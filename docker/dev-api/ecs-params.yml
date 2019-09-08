@@ -15,7 +15,7 @@ task_definition:
       mem_limit: 1024MB
     donation-service:
       cpu_shares: 300
-      mem_limit: 1024MB
+      mem_limit: 1025MB
     campaign-service:
       cpu_shares: 400
       mem_limit: 1024MB
