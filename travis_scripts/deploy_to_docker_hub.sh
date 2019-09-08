@@ -7,5 +7,4 @@ docker push gohelpfund/ghf-config-server:$BUILD_NAME
 docker push gohelpfund/ghf-eureka-server:$BUILD_NAME
 docker push gohelpfund/ghf-fundraiser-service:$BUILD_NAME
 docker push gohelpfund/ghf-donation-service:$BUILD_NAME
-#docker push gohelpfund/ghf-zipkin-server:$BUILD_NAME
 docker push gohelpfund/ghf-zuul-server:$BUILD_NAME

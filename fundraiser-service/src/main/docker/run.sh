@@ -52,11 +52,11 @@ echo "Using ZK    Server: $ZKSERVER_URI"
 echo "USing Profile: $PROFILE"
 echo "Fundraiser service will use $AUTHSERVER_URI for URI"
 echo "********************************************************"
-java -XX:+HeapDumpOnOutOfMemoryError
-     -XX:+UseG1GC
-     -XX:+UseStringDeduplication
-     -XX:InitialRAMPercentage=60.0
-     -XX:MaxRAMPercentage=60.0
+java -XX:+HeapDumpOnOutOfMemoryError \
+     -XX:+UseG1GC \
+     -XX:+UseStringDeduplication \
+     -XX:InitialRAMPercentage=60.0 \
+     -XX:MaxRAMPercentage=60.0 \
      -Djava.security.egd=file:/dev/./urandom -Dserver.port=$SERVER_PORT   \
      -Deureka.client.serviceUrl.defaultZone=$EUREKASERVER_URI             \
      -Dspring.cloud.config.uri=$CONFIGSERVER_URI                          \
