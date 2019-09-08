@@ -43,16 +43,14 @@ before_install:
 - export BUILD_NAME=gohelpfund-$TRAVIS_BRANCH-$(date -u "+%Y%m%d%H%M%S")-$TRAVIS_BUILD_NUMBER
 - export CONTAINER_IP=18.184.83.174
 - export PLATFORM_TEST_NAME="gohelpfund-platform-tests"
-script:
-  - if [ "$TRAVIS_BRANCH" == "develop" ]; then
-    sh travis_scripts/tag_build-dev.sh;
-    sh travis_scripts/build_services.sh;
-    sh travis_scripts/deploy_to_docker_hub.sh;
-    sh travis_scripts/deploy_to_amazon_ecs-dev.sh;
-    fi
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    sh travis_scripts/tag_build-prod.sh;
-    sh travis_scripts/build_services.sh;
-    sh travis_scripts/deploy_to_docker_hub.sh;
-    sh travis_scripts/deploy_to_amazon_ecs-prod.sh;
-    fi
+deploy:
+  # deploy develop to the staging environment
+  - provider: script
+    script: sh travis_scripts/tag_build-dev.sh && travis_scripts/build_services.sh && travis_scripts/deploy_to_docker_hub.sh && travis_scripts/deploy_to_amazon_ecs-dev.sh
+    on:
+      branch: develop
+  # deploy master to production
+  - provider: script
+    script: sh travis_scripts/tag_build-prod.sh && travis_scripts/build_services.sh && travis_scripts/deploy_to_docker_hub.sh && travis_scripts/deploy_to_amazon_ecs-prod.sh
+    on:
+      branch: master
