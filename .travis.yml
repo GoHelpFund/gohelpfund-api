@@ -15,6 +15,7 @@ notifications:
 branches:
   only:
   - develop
+  - master
 env:
   global:
   # DOCKER_USERNAME
@@ -43,7 +44,15 @@ before_install:
 - export CONTAINER_IP=18.184.83.174
 - export PLATFORM_TEST_NAME="gohelpfund-platform-tests"
 script:
-- sh travis_scripts/tag_build.sh
-- sh travis_scripts/build_services.sh
-- sh travis_scripts/deploy_to_docker_hub.sh
-- sh travis_scripts/deploy_to_amazon_ecs.sh
+  - if [ "$TRAVIS_BRANCH" == "develop" ]; then
+    sh travis_scripts/tag_build-dev.sh;
+    sh travis_scripts/build_services.sh;
+    sh travis_scripts/deploy_to_docker_hub.sh;
+    sh travis_scripts/deploy_to_amazon_ecs-dev.sh;
+    fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    sh travis_scripts/tag_build-prod.sh;
+    sh travis_scripts/build_services.sh;
+    sh travis_scripts/deploy_to_docker_hub.sh;
+    sh travis_scripts/deploy_to_amazon_ecs-prod.sh;
+    fi

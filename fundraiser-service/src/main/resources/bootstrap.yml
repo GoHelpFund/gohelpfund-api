@@ -1,9 +1,6 @@
 spring:
   application:
     name: fundraiser-service
-  profiles:
-    active:
-      local-api
   cloud:
     config:
       enabled: true

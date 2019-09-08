@@ -1,9 +1,6 @@
 spring:
   application:
     name: zuul-server
-  profiles:
-    active:
-      local-api
   zipkin:
     baseUrl:  localhost:9411
   cloud:

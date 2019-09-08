@@ -10,19 +10,3 @@ spring:
           searchPaths: authentication-service, campaign-service, donation-service, fundraiser-service, zuul-server
           username: ${GIT_USERNAME}
           password: ${GIT_PASSWORD}
-
-####
-#Classpath and file-based solution
-####
-
-#server:
-#  port: 8888
-#spring:
-#  profiles:
-#    active: native
-#  cloud:
-#    config:
-#      server:
-#        native:
-#          #              searchLocations: file://gohelpfund-platform/config/src/main/resources/config/campaignservice
-#          searchLocations: classpath:config/,classpath:config/categoryservice,classpath:config/campaignservice

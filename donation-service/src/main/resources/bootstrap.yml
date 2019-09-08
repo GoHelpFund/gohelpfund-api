@@ -1,9 +1,6 @@
 spring:
   application:
     name: donation-service
-  profiles:
-    active:
-      local-api
   zipkin:
     baseUrl:  localhost:9411
   cloud:

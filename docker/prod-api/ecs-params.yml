@@ -1,0 +1,30 @@
+version: 1
+task_definition:
+  services:
+    eureka-server:
+      cpu_shares: 1023
+      mem_limit: 2GB
+    config-server:
+      cpu_shares: 1023
+      mem_limit: 2GB
+    zuul-server:
+      cpu_shares: 4096
+      mem_limit: 5GB
+    authentication-service:
+      cpu_shares: 1023
+      mem_limit: 2GB
+    donation-service:
+      cpu_shares: 3072
+      mem_limit: 6GB
+    campaign-service:
+      cpu_shares: 2048
+      mem_limit: 5GB
+    fundraiser-service:
+      cpu_shares: 2048
+      mem_limit: 4GB
+    kafka-server:
+      cpu_shares: 1023
+      mem_limit: 2GB
+    redis:
+      cpu_shares: 1023
+      mem_limit: 2GB

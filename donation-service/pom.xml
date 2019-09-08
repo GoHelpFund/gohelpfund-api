@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.gohelpfund</groupId>
-  <artifactId>donations-service</artifactId>
+  <artifactId>donation-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>donations-service</name>
+  <name>donation-service</name>
   <description>GoHelpFund Payments Service</description>
 
   <repositories>

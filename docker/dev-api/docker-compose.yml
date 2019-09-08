@@ -62,20 +62,6 @@ services:
       CONFIGSERVER_PORT:        "8762"
       CATEGORYSERVERNEW_PORT:   "9102"
 
-#  database:
-#    image: postgres:9.5
-#    ports:
-#    -                           "5432:5432"
-#    networks:
-#      default:
-#        aliases:
-#          - database
-#    environment:
-#      PROFILE:                  "dev-api"
-#      POSTGRES_USER:            "postgres_dev"
-#      POSTGRES_PASSWORD:        "p0stgr@s_dev"
-#      POSTGRES_DB:              "gohelpfund_dev"
-
   authentication-service:
     image: gohelpfund/ghf-authentication-service:${BUILD_NAME}
     ports:
@@ -83,7 +69,6 @@ services:
     links:
       - "config-server:config-server"
       - "eureka-server:eureka-server"
-#      - "database:database"
     networks:
       default:
         aliases:
@@ -108,7 +93,6 @@ services:
       - "authentication-service:authentication-service"
       - "config-server:config-server"
       - "eureka-server:eureka-server"
-#      - "database:database"
     networks:
       default:
         aliases:
@@ -138,7 +122,6 @@ services:
       - "eureka-server:eureka-server"
       - "kafka-server:kafka-server"
       - "redis:redis"
-#      - "database:database"
     networks:
       default:
         aliases:
@@ -174,7 +157,6 @@ services:
       - "config-server:config-server"
       - "eureka-server:eureka-server"
       - "kafka-server:kafka-server"
-#      - "database:database"
     networks:
       default:
         aliases:
