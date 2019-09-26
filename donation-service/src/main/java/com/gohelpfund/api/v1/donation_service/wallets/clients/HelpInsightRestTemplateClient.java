@@ -1,10 +1,12 @@
 package com.gohelpfund.api.v1.donation_service.wallets.clients;
 
-import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightHelpAddr;
-import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightHelpTx;
-import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightHelpTxResponse;
+import com.gohelpfund.api.v1.donation_service.config.ServiceConfig;
+import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightAddr;
+import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightTx;
+import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightTxResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -15,37 +17,40 @@ import org.springframework.web.client.RestTemplate;
 public class HelpInsightRestTemplateClient {
     private static final Logger logger = LoggerFactory.getLogger(HelpInsightRestTemplateClient.class);
 
-    public InsightHelpAddr getInsightHelpAddr(String id){
+    @Autowired
+    ServiceConfig config;
+
+    public InsightAddr getInsightHelpAddr(String id){
         RestTemplate template = new RestTemplate();
-        ResponseEntity<InsightHelpAddr> restExchange =
+        ResponseEntity<InsightAddr> restExchange =
                 template.exchange(
-                        "http://insight.gohelpfund.com/insight-api/addr/{id}",
+                        config.getExplorerHelp() + "/addr/{id}",
                         HttpMethod.GET,
-                        null, InsightHelpAddr.class, id);
+                        null, InsightAddr.class, id);
 
         return restExchange.getBody();
     }
 
-    public InsightHelpTx getInsightHelpTx(String id){
+    public InsightTx getInsightHelpTx(String id){
         RestTemplate template = new RestTemplate();
-        ResponseEntity<InsightHelpTx> restExchange =
+        ResponseEntity<InsightTx> restExchange =
                 template.exchange(
-                        "http://insight.gohelpfund.com/insight-api/tx/{id}",
+                        config.getExplorerHelp() + "/tx/{id}",
                         HttpMethod.GET,
-                        null, InsightHelpTx.class, id);
+                        null, InsightTx.class, id);
 
         return restExchange.getBody();
     }
 
-    public InsightHelpTxResponse setTransaction(HttpEntity requestEntity) {
+    public InsightTxResponse setTransaction(HttpEntity requestEntity) {
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<InsightHelpTxResponse> restExchange =
+        ResponseEntity<InsightTxResponse> restExchange =
                 restTemplate.exchange(
-                        "http://insight.gohelpfund.com/insight-api/tx/send",
+                        config.getExplorerHelp() + "/tx/send",
                         HttpMethod.POST,
                         requestEntity,
-                        InsightHelpTxResponse.class,
+                        InsightTxResponse.class,
                         "");
         return restExchange.getBody();
     }

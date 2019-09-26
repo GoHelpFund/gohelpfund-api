@@ -2,12 +2,12 @@ package com.gohelpfund.api.v1.donation_service.wallets.models.api.insight;
 
 import java.util.List;
 
-public class InsightHelpScriptPubKey {
+public class InsightScriptPubKey {
     private String hex;
 
     private List<String> addresses;
 
-    public InsightHelpScriptPubKey(){
+    public InsightScriptPubKey(){
 
     }
 

@@ -67,7 +67,7 @@ public class PromiseWalletDetailsService {
 
         PromiseWalletDetails promiseWalletDetails = new PromiseWalletDetails();
 
-        int balance = 0;
+        double balance = 0;
         if (type.equalsIgnoreCase("fundraiser")){
             balance = 1000000;
         }

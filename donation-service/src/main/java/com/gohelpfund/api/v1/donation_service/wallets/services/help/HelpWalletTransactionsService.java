@@ -29,7 +29,7 @@ public class HelpWalletTransactionsService {
         return transactions;
     }
 
-    public HelpWalletTransaction save(String helpId, Date date, String type, Integer amount, String senderHelpId,
+    public HelpWalletTransaction save(String helpId, Date date, String type, Double amount, String senderHelpId,
                                       String receiverHelpId, String senderName, String senderAddress, String txid) {
         HelpWalletTransaction transaction = new HelpWalletTransaction();
         transaction.withId(UUID.randomUUID().toString())

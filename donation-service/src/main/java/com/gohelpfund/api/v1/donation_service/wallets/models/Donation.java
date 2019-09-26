@@ -16,7 +16,7 @@ public class Donation implements Serializable {
     @JsonProperty("entity_name")
     private String entity_name;
 
-    private Integer amount;
+    private Double amount;
 
     private String type;
 
@@ -31,11 +31,11 @@ public class Donation implements Serializable {
         this.entity_name = entity_name;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

@@ -33,7 +33,7 @@ public class HelpWalletDetails implements Serializable {
 
     @JsonProperty("balance")
     @Column(name = "balance")
-    private Integer balance;
+    private Double balance;
 
     @JsonProperty("transactions")
     @Transient
@@ -78,11 +78,11 @@ public class HelpWalletDetails implements Serializable {
         this.privateKey = privateKey;
     }
 
-    public Integer getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 
@@ -122,14 +122,14 @@ public class HelpWalletDetails implements Serializable {
         return this;
     }
 
-    public HelpWalletDetails withBalance(Integer balance){
+    public HelpWalletDetails withBalance(Double balance){
         this.setBalance(balance);
         return this;
     }
 
     @Override
     public String toString() {
-        return "PromiseWalletDetails{" +
+        return "HelpWalletDetails{" +
                 "helpId='" + helpId + '\'' +
                 ", entityId='" + entityId + '\'' +
                 ", publicKey='" + publicKey + '\'' +

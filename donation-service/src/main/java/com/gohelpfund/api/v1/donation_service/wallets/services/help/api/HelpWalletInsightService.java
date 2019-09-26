@@ -3,10 +3,10 @@ package com.gohelpfund.api.v1.donation_service.wallets.services.help.api;
 import com.gohelpfund.api.v1.donation_service.utils.helpcore.transaction.Transaction;
 import com.gohelpfund.api.v1.donation_service.utils.helpcore.transaction.TransactionBuilder;
 import com.gohelpfund.api.v1.donation_service.wallets.clients.HelpInsightRestTemplateClient;
-import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightHelpAddr;
-import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightHelpTx;
-import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightHelpTxResponse;
-import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightHelpTxVout;
+import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightAddr;
+import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightTx;
+import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightTxResponse;
+import com.gohelpfund.api.v1.donation_service.wallets.models.api.insight.InsightTxVout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,30 +31,30 @@ public class HelpWalletInsightService {
     @Autowired
     HelpInsightRestTemplateClient helpInsightClient;
 
-    private InsightHelpAddr getInsightHelpAddr(String helpAddress) {
-        InsightHelpAddr insightHelpAddr = helpInsightClient.getInsightHelpAddr(helpAddress);
+    private InsightAddr getInsightHelpAddr(String helpAddress) {
+        InsightAddr insightAddr = helpInsightClient.getInsightHelpAddr(helpAddress);
 
-        if (insightHelpAddr != null) {
+        if (insightAddr != null) {
             logger.debug("GET | /api/v1/categories/{id} | found | category id: {}", helpAddress);
         } else {
             logger.debug("GET | /api/v1/categories/{id} | not found | category id: {}", helpAddress);
         }
-        return insightHelpAddr;
+        return insightAddr;
     }
 
-    private InsightHelpTx getInsightHelpTx(String helpTxId) {
-        InsightHelpTx insightHelpTx = helpInsightClient.getInsightHelpTx(helpTxId);
+    private InsightTx getInsightHelpTx(String helpTxId) {
+        InsightTx insightTx = helpInsightClient.getInsightHelpTx(helpTxId);
 
-        if (insightHelpTx != null) {
+        if (insightTx != null) {
             logger.debug("GET | /api/v1/categories/{id} | found | category id: {}", helpTxId);
         } else {
             logger.debug("GET | /api/v1/categories/{id} | not found | category id: {}", helpTxId);
         }
-        return insightHelpTx;
+        return insightTx;
     }
 
-    private InsightHelpTxResponse setInsightHelpTx(String rawtxid) {
-        InsightHelpTxResponse insightHelpTx = helpInsightClient.setTransaction(getHttpEntity(rawtxid));
+    private InsightTxResponse setInsightHelpTx(String rawtxid) {
+        InsightTxResponse insightHelpTx = helpInsightClient.setTransaction(getHttpEntity(rawtxid));
 
         if (insightHelpTx != null) {
             logger.debug("GET | /api/v1/categories/{id} | found | category id: {}", rawtxid);
@@ -65,12 +65,12 @@ public class HelpWalletInsightService {
     }
 
 
-    public String sendHelpCoins(String senderAddr, String senderPk, String receiverAddr, int amount) {
+    public String sendHelpCoins(String senderAddr, String senderPk, String receiverAddr, double amount) {
 
-        InsightHelpAddr insightHelpAddr = getInsightHelpAddr(senderAddr);
-        String txId = insightHelpAddr.getTransactions().get(0);
+        InsightAddr insightAddr = getInsightHelpAddr(senderAddr);
+        String txId = insightAddr.getTransactions().get(0);
 
-        InsightHelpTxVout txVout = getInsightHelpTx(txId).getVout().stream()
+        InsightTxVout txVout = getInsightHelpTx(txId).getVout().stream()
                 .filter(t -> t.getScriptPubKey().getAddresses().get(0).equals(senderAddr))
                 .findFirst()
                 .orElse(null);
@@ -79,7 +79,7 @@ public class HelpWalletInsightService {
 
 
         long receiverAmount = parseCoin(String.valueOf(amount)); // in satoshi = 1 HELP coins
-        long senderBalance = insightHelpAddr.getBalanceSat() + insightHelpAddr.getUnconfirmedBalanceSat();
+        long senderBalance = insightAddr.getBalanceSat() + insightAddr.getUnconfirmedBalanceSat();
         long fee = 10000;
         long senderChange = senderBalance - receiverAmount - fee;
 

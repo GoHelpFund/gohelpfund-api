@@ -1,9 +1,9 @@
 package com.gohelpfund.api.v1.donation_service.wallets.models.api.insight;
 
-public class InsightHelpTxResponse {
+public class InsightTxResponse {
     private String txid;
 
-    public InsightHelpTxResponse(){
+    public InsightTxResponse(){
 
     }
 
