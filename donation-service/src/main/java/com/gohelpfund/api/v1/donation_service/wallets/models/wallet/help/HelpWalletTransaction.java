@@ -40,7 +40,7 @@ public class HelpWalletTransaction implements Serializable {
 
     @JsonProperty("amount")
     @Column(name = "amount")
-    private Integer amount;
+    private Double amount;
 
     @JsonIgnore
     @Column(name = "sender_help_id")
@@ -101,11 +101,11 @@ public class HelpWalletTransaction implements Serializable {
         this.blockchainTransactionId = blockchainTransactionId;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -166,7 +166,7 @@ public class HelpWalletTransaction implements Serializable {
         return this;
     }
 
-    public HelpWalletTransaction withAmount(Integer amount){
+    public HelpWalletTransaction withAmount(Double amount){
         this.setAmount(amount);
         return this;
     }
@@ -193,7 +193,7 @@ public class HelpWalletTransaction implements Serializable {
 
     @Override
     public String toString() {
-        return "PromiseWalletTransaction{" +
+        return "HelpWalletTransaction{" +
                 "transactionId='" + transactionId + '\'' +
                 ", helpId='" + helpId + '\'' +
                 ", transactionDate=" + transactionDate +

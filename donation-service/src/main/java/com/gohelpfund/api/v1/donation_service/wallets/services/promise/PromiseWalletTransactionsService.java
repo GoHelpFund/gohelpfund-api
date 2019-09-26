@@ -29,7 +29,7 @@ public class PromiseWalletTransactionsService {
         return transactions;
     }
 
-    public PromiseWalletTransaction save(String promiseId, Date date, String type, Integer amount, String senderPromiseId,
+    public PromiseWalletTransaction save(String promiseId, Date date, String type, Double amount, String senderPromiseId,
                                       String receiverPromiseId, String senderName) {
         PromiseWalletTransaction transaction = new PromiseWalletTransaction();
         transaction.withId(UUID.randomUUID().toString())

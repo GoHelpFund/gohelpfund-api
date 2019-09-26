@@ -13,16 +13,16 @@ public class Payment implements Serializable {
     @JsonProperty("entity_id")
     private String entityId;
 
-    private Integer amount;
+    private Double amount;
 
     public Payment() {
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

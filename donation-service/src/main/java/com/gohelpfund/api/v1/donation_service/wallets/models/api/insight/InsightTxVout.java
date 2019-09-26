@@ -1,11 +1,11 @@
 package com.gohelpfund.api.v1.donation_service.wallets.models.api.insight;
 
-public class InsightHelpTxVout {
+public class InsightTxVout {
     String value;
     int n;
-    InsightHelpScriptPubKey scriptPubKey;
+    InsightScriptPubKey scriptPubKey;
 
-    public InsightHelpTxVout(){
+    public InsightTxVout(){
 
     }
 
@@ -25,11 +25,11 @@ public class InsightHelpTxVout {
         this.n = n;
     }
 
-    public InsightHelpScriptPubKey getScriptPubKey() {
+    public InsightScriptPubKey getScriptPubKey() {
         return scriptPubKey;
     }
 
-    public void setScriptPubKey(InsightHelpScriptPubKey scriptPubKey) {
+    public void setScriptPubKey(InsightScriptPubKey scriptPubKey) {
         this.scriptPubKey = scriptPubKey;
     }
 }

@@ -8,17 +8,17 @@ import java.io.Serializable;
 @JsonPropertyOrder({"total_amount_donated"})
 public class EventDonateResponse implements Serializable {
     @JsonProperty("total_amount_donated")
-    private Integer totalAmountDonated;
+    private Double totalAmountDonated;
 
     public EventDonateResponse(){
 
     }
 
-    public int getTotalAmountDonated() {
+    public Double getTotalAmountDonated() {
         return totalAmountDonated;
     }
 
-    public void setTotalAmountDonated(int totalAmountDonated) {
+    public void setTotalAmountDonated(Double totalAmountDonated) {
         this.totalAmountDonated = totalAmountDonated;
     }
 }

@@ -31,7 +31,7 @@ public class PromiseWalletTransaction implements Serializable {
     private String transactionType;
 
     @JsonProperty("amount")
-    private Integer amount;
+    private Double amount;
 
     @JsonProperty("sender_help_id")
     private String senderPromiseId;
@@ -77,11 +77,11 @@ public class PromiseWalletTransaction implements Serializable {
         this.transactionType = transactionType;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -129,7 +129,7 @@ public class PromiseWalletTransaction implements Serializable {
         return this;
     }
 
-    public PromiseWalletTransaction withAmount(Integer amount){
+    public PromiseWalletTransaction withAmount(Double amount){
         this.setAmount(amount);
         return this;
     }

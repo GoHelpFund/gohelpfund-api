@@ -18,6 +18,11 @@ public class ServiceConfig {
     @Value("${topup.help.addr}")
     private String topUpHelpAddr;
 
+    @Value("${explorer.bitcoin}")
+    private String explorerBitcoin;
+
+    @Value("${explorer.help}")
+    private String explorerHelp;
 
     public String getPlatformEnv() {
         return platformEnv;
@@ -33,5 +38,13 @@ public class ServiceConfig {
 
     public String getTopUpHelpAddr() {
         return topUpHelpAddr;
+    }
+
+    public String getExplorerBitcoin() {
+        return explorerBitcoin;
+    }
+
+    public String getExplorerHelp() {
+        return explorerHelp;
     }
 }

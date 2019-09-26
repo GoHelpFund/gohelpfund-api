@@ -22,7 +22,7 @@ public class PromiseWalletBacker implements Serializable {
     private String fundraiser_id;
 
     @JsonProperty("total_amount")
-    private Integer totalAmount;
+    private Double totalAmount;
 
     public PromiseWalletBacker(){
     }
@@ -51,11 +51,11 @@ public class PromiseWalletBacker implements Serializable {
         this.fundraiser_id = fundraiser_id;
     }
 
-    public Integer getTotalAmount() {
+    public Double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Integer totalAmount) {
+    public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
     }
 

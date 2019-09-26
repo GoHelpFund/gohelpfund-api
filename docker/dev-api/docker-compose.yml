@@ -53,6 +53,7 @@ services:
     environment:
       PROFILE:                  "dev-api"
       SERVER_PORT:              "8763"
+      ANALYTICS_KEY:            "84rYLp2FgMyG0zfFkNpFSQMLACBYmFZa"
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
       ZIPKIN_URI:               "http://zipkin-server:9411"
       CONFIGSERVER_URI:         "http://config-server:8762"
