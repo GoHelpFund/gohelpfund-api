@@ -16,7 +16,7 @@ branches:
   only:
   - master
   - staging
-  - develop
+  - dev
 env:
   global:
   # DOCKER_USERNAME
