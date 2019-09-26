@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: zuul-server
+  zipkin:
+    baseUrl:  localhost:9411
+  cloud:
+    config:
+      enabled: true

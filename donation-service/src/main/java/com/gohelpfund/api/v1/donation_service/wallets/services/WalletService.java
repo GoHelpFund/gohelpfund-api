@@ -1,12 +1,16 @@
 package com.gohelpfund.api.v1.donation_service.wallets.services;
 
 import com.gohelpfund.api.v1.donation_service.wallets.models.Donation;
+import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.bitcoin.BitcoinWalletDetails;
 import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.help.HelpWalletBacker;
 import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.help.HelpWalletDetails;
 import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.Wallet;
 import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.promise.PromiseWalletBacker;
 import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.promise.PromiseWalletDetails;
 import com.gohelpfund.api.v1.donation_service.wallets.repository.WalletRepository;
+import com.gohelpfund.api.v1.donation_service.wallets.services.bitcoin.BitcoinWalletBackersService;
+import com.gohelpfund.api.v1.donation_service.wallets.services.bitcoin.BitcoinWalletDetailsService;
+import com.gohelpfund.api.v1.donation_service.wallets.services.bitcoin.BitcoinWalletTransactionsService;
 import com.gohelpfund.api.v1.donation_service.wallets.services.help.HelpWalletBackersService;
 import com.gohelpfund.api.v1.donation_service.wallets.services.help.HelpWalletDetailsService;
 import com.gohelpfund.api.v1.donation_service.wallets.services.help.api.HelpWalletInsightService;
@@ -16,6 +20,7 @@ import com.gohelpfund.api.v1.donation_service.wallets.services.promise.PromiseWa
 import com.gohelpfund.api.v1.donation_service.wallets.services.promise.PromiseWalletTransactionsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -28,29 +33,42 @@ public class WalletService {
 
     private final WalletRepository walletRepository;
 
+    private final BitcoinWalletDetailsService bitcoinWalletDetailsService;
     private final HelpWalletDetailsService helpWalletDetailsService;
     private final PromiseWalletDetailsService promiseWalletDetailsService;
 
+    private final BitcoinWalletTransactionsService bitcoinWalletTransactionsService;
     private final HelpWalletTransactionsService helpWalletTransactionsService;
     private final PromiseWalletTransactionsService promiseWalletTransactionsService;
 
+    private final BitcoinWalletBackersService bitcoinWalletBackersService;
     private final HelpWalletBackersService helpWalletBackersService;
     private final PromiseWalletBackersService promiseWalletBackersService;
 
     private final HelpWalletInsightService helpInsight;
 
-    public WalletService(WalletRepository walletRepository, HelpWalletDetailsService helpWalletDetailsService,
+    @Autowired
+    public WalletService(WalletRepository walletRepository,
+                         BitcoinWalletDetailsService bitcoinWalletDetailsService,
+                         HelpWalletDetailsService helpWalletDetailsService,
                          PromiseWalletDetailsService promiseWalletDetailsService,
+                         BitcoinWalletTransactionsService bitcoinWalletTransactionsService,
                          HelpWalletTransactionsService helpWalletTransactionsService,
                          PromiseWalletTransactionsService promiseWalletTransactionsService,
+                         BitcoinWalletBackersService bitcoinWalletBackersService,
                          HelpWalletBackersService helpWalletBackersService,
                          PromiseWalletBackersService promiseWalletBackersService,
                          HelpWalletInsightService helpInsight) {
         this.walletRepository = walletRepository;
+        this.bitcoinWalletDetailsService = bitcoinWalletDetailsService;
         this.helpWalletDetailsService = helpWalletDetailsService;
         this.promiseWalletDetailsService = promiseWalletDetailsService;
+
+        this.bitcoinWalletTransactionsService = bitcoinWalletTransactionsService;
         this.helpWalletTransactionsService = helpWalletTransactionsService;
         this.promiseWalletTransactionsService = promiseWalletTransactionsService;
+
+        this.bitcoinWalletBackersService = bitcoinWalletBackersService;
         this.helpWalletBackersService = helpWalletBackersService;
         this.promiseWalletBackersService = promiseWalletBackersService;
         this.helpInsight = helpInsight;
@@ -62,10 +80,12 @@ public class WalletService {
             logger.debug("GET | PostgreSQL | not found | wallet id: {}", walletId);
         } else {
             logger.debug("GET | PostgreSQL | found | wallet id: {}", wallet.getId());
+            BitcoinWalletDetails bitcoin = bitcoinWalletDetailsService.getByBitcoinId(wallet.getBitcoinId());
             HelpWalletDetails help = helpWalletDetailsService.getByHelpId(wallet.getHelpId());
             PromiseWalletDetails promise = promiseWalletDetailsService.getByPromiseId(wallet.getPromiseId());
 
             wallet
+                    .withBitcoinWalletDetails(bitcoin)
                     .withHelpWalletDetails(help)
                     .withPromiseWalletDetails(promise);
         }
@@ -79,6 +99,7 @@ public class WalletService {
         } else {
             logger.debug("GET | PostgreSQL | found | entity id: {}", wallet.getEntityId());
             wallet
+                    .withBitcoinWalletDetails(bitcoinWalletDetailsService.getByBitcoinId(wallet.getBitcoinId()))
                     .withHelpWalletDetails(helpWalletDetailsService.getByHelpId(wallet.getHelpId()))
                     .withPromiseWalletDetails(promiseWalletDetailsService.getByPromiseId(wallet.getPromiseId()));
         }
@@ -100,29 +121,13 @@ public class WalletService {
                 .withPromiseWalletDetails(promise);
 
         if (source != null && !source.equals("event")) {
+            BitcoinWalletDetails bitcoin = bitcoinWalletDetailsService.saveOne(entityId, type);
             HelpWalletDetails help = helpWalletDetailsService.saveOne(entityId, type);
             wallet
+                    .withBitcoinId(bitcoin.getBitcoinId())
                     .withHelpId(help.getHelpId())
                     .withHelpWalletDetails(help);
         }
-
-        Wallet newWallet = walletRepository.save(wallet);
-        logger.debug("POST | PostgreSQL | created | wallet id: {} ", newWallet.getId());
-
-        return newWallet;
-    }
-
-    public Wallet saveWallet(Wallet wallet) {
-        String id = UUID.randomUUID().toString();
-
-        HelpWalletDetails help = helpWalletDetailsService.update(wallet.getHelpWallet());
-        PromiseWalletDetails promise = promiseWalletDetailsService.update(wallet.getPromiseWallet());
-
-        wallet
-                .withWalletId(id)
-                .withEntityId(wallet.getEntityId())
-                .withHelpWalletDetails(help)
-                .withPromiseWalletDetails(promise);
 
         Wallet newWallet = walletRepository.save(wallet);
         logger.debug("POST | PostgreSQL | created | wallet id: {} ", newWallet.getId());
@@ -142,7 +147,7 @@ public class WalletService {
             String receiverHelpId = receiverWallet.getHelpId();
             String donatorHelpId = donatorWallet.getHelpId();
 
-            Integer remaining = donatorWallet.getHelpWallet().getBalance() - donation.getAmount();
+            Double remaining = donatorWallet.getHelpWallet().getBalance() - donation.getAmount();
 
             if (remaining < 0) {
                 throw new Exception("Balance is lower than donation amount");
@@ -178,7 +183,7 @@ public class WalletService {
             String receiverPromiseId = receiverWallet.getPromiseId();
             String donatorPromiseId = donatorWallet.getPromiseId();
 
-            Integer remaining = donatorWallet.getPromiseWallet().getBalance() - donation.getAmount();
+            Double remaining = donatorWallet.getPromiseWallet().getBalance() - donation.getAmount();
 
             if (remaining < 0) {
                 throw new Exception("Balance is lower than donation amount");

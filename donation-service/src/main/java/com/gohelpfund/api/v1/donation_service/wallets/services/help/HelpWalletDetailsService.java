@@ -5,9 +5,9 @@ import com.gohelpfund.api.v1.donation_service.wallets.models.CryptoCurrencyCrede
 import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.help.HelpWalletDetails;
 import com.gohelpfund.api.v1.donation_service.wallets.repository.help.HelpWalletDetailsRepository;
 import com.gohelpfund.api.v1.donation_service.wallets.services.help.api.HelpWalletInsightService;
-import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.params.MainNetParams;
-import org.bitcoinj.wallet.Wallet;
+import org.helpj.core.NetworkParameters;
+import org.helpj.params.MainNetParams;
+import org.helpj.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +72,7 @@ public class HelpWalletDetailsService {
         HelpWalletDetails helpWalletDetails = new HelpWalletDetails();
         CryptoCurrencyCredentials credentials = generateCryptoCurrencyCredentials();
 
-        int balance = 0;
+        double balance = 0;
         if (type.equalsIgnoreCase("fundraiser")){
             balance = 10;
             String topUpAddress = config.getTopUpHelpAddr();

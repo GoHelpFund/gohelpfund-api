@@ -24,7 +24,7 @@ public class HelpWalletDetails {
     private String privateKey;
 
     @JsonProperty("balance")
-    private Integer balance;
+    private Double balance;
 
     @JsonProperty("transactions")
     @Transient
@@ -69,11 +69,11 @@ public class HelpWalletDetails {
         this.privateKey = privateKey;
     }
 
-    public Integer getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 
@@ -113,7 +113,7 @@ public class HelpWalletDetails {
         return this;
     }
 
-    public HelpWalletDetails withBalance(Integer balance){
+    public HelpWalletDetails withBalance(Double balance){
         this.setBalance(balance);
         return this;
     }

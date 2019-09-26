@@ -58,7 +58,7 @@ public class HelpWalletBacker implements Serializable {
 
     @Override
     public String toString() {
-        return "PromiseWalletBacker{" +
+        return "HelpWalletBacker{" +
                 "backerId='" + backerId + '\'' +
                 ", helpId='" + helpId + '\'' +
                 ", fundraiser_id='" + fundraiser_id + '\'' +

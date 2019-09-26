@@ -2,13 +2,13 @@ package com.gohelpfund.api.v1.donation_service.wallets.models.api.insight;
 
 import java.util.List;
 
-public class InsightHelpAddr {
+public class InsightAddr {
 
     private long balanceSat;
     private long unconfirmedBalanceSat;
     private List<String> transactions;
 
-    public InsightHelpAddr() {
+    public InsightAddr() {
 
     }
 

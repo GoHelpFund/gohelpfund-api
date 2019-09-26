@@ -3,6 +3,7 @@ package com.gohelpfund.api.v1.donation_service.wallets.models.wallet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.bitcoin.BitcoinWalletDetails;
 import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.help.HelpWalletDetails;
 import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.promise.PromiseWalletDetails;
 
@@ -12,7 +13,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "wallets")
-@JsonPropertyOrder({"id", "entity_id", "type", "help", "promise"})
+@JsonPropertyOrder({"id", "entity_id", "type", "bitcoin", "help", "promise"})
 public class Wallet implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -20,6 +21,10 @@ public class Wallet implements Serializable {
     @JsonProperty("id")
     @Column(name = "wallet_id", nullable = false)
     private String id;
+
+    @JsonIgnore
+    @Column(name = "bitcoin_id")
+    private String bitcoinId;
 
     @JsonIgnore
     @Column(name = "help_id")
@@ -39,6 +44,10 @@ public class Wallet implements Serializable {
     @NotNull
     private String type;
 
+    @JsonProperty("bitcoin")
+    @Transient
+    private BitcoinWalletDetails bitcoinWallet;
+
     @JsonProperty("help")
     @Transient
     private HelpWalletDetails helpWallet;
@@ -56,6 +65,14 @@ public class Wallet implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getBitcoinId() {
+        return bitcoinId;
+    }
+
+    public void setBitcoinId(String bitcoinId) {
+        this.bitcoinId = bitcoinId;
     }
 
     public String getHelpId() {
@@ -90,6 +107,14 @@ public class Wallet implements Serializable {
         this.type = type;
     }
 
+    public BitcoinWalletDetails getBitcoinWallet() {
+        return bitcoinWallet;
+    }
+
+    public void setBitcoinWallet(BitcoinWalletDetails bitcoinWallet) {
+        this.bitcoinWallet = bitcoinWallet;
+    }
+
     public HelpWalletDetails getHelpWallet() {
         return helpWallet;
     }
@@ -108,6 +133,11 @@ public class Wallet implements Serializable {
 
     public Wallet withWalletId(String walletId){
         this.setId(walletId);
+        return this;
+    }
+
+    public Wallet withBitcoinId(String bitcoinId){
+        this.setBitcoinId(bitcoinId);
         return this;
     }
 
@@ -131,6 +161,11 @@ public class Wallet implements Serializable {
         return this;
     }
 
+    public Wallet withBitcoinWalletDetails(BitcoinWalletDetails bitcoinWallet){
+        this.setBitcoinWallet(bitcoinWallet);
+        return this;
+    }
+
     public Wallet withHelpWalletDetails(HelpWalletDetails helpWallet){
         this.setHelpWallet(helpWallet);
         return this;
@@ -145,10 +180,12 @@ public class Wallet implements Serializable {
     public String toString() {
         return "Wallet{" +
                 "id='" + id + '\'' +
+                ", bitcoinId='" + bitcoinId + '\'' +
                 ", helpId='" + helpId + '\'' +
                 ", promiseId='" + promiseId + '\'' +
                 ", entityId='" + entityId + '\'' +
                 ", type='" + type + '\'' +
+                ", bitcoinWallet=" + bitcoinWallet +
                 ", helpWallet=" + helpWallet +
                 ", promiseWallet=" + promiseWallet +
                 '}';

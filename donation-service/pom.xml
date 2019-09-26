@@ -12,9 +12,12 @@
 
   <repositories>
     <repository>
-      <id>bintray-dash-Dashj</id>
-      <name>dash-Dashj</name>
-      <url>https://dl.bintray.com/dash/Dashj/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>bintray</name>
+      <url>https://dl.bintray.com/gohelpfund/Helpj</url>
     </repository>
   </repositories>
 
@@ -104,12 +107,19 @@
       <scope>compile</scope>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.dashj/dashj-core -->
     <dependency>
-      <groupId>org.dashj</groupId>
-      <artifactId>dashj-core</artifactId>
+      <groupId>org.helpj</groupId>
+      <artifactId>helpj-core</artifactId>
+      <version>0.16.3</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.bitcoinj/bitcoinj-core -->
+    <dependency>
+      <groupId>org.bitcoinj</groupId>
+      <artifactId>bitcoinj-core</artifactId>
       <version>0.15.3</version>
     </dependency>
+
 
 
   </dependencies>

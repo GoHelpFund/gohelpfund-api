@@ -6,3 +6,4 @@
 /docker-*.sh text eol=lf
 /sbt-dist/bin/*.bash text eol=lf
 /sbt-dist/bin/sbt text eol=lf
+*.sh text eol=lf

@@ -22,7 +22,7 @@ public class PromiseWalletDetails implements Serializable {
     private String entityId;
 
     @JsonProperty("balance")
-    private Integer balance;
+    private Double balance;
 
     @JsonProperty("transactions")
     @Transient
@@ -52,11 +52,11 @@ public class PromiseWalletDetails implements Serializable {
         this.entityId = entityId;
     }
 
-    public Integer getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 
@@ -86,7 +86,7 @@ public class PromiseWalletDetails implements Serializable {
         return this;
     }
 
-    public PromiseWalletDetails withBalance(Integer balance){
+    public PromiseWalletDetails withBalance(Double balance){
         this.setBalance(balance);
         return this;
     }

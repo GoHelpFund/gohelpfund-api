@@ -34,7 +34,7 @@ public class HelpWalletTransaction implements Serializable {
     private String blockchainTransactionId;
 
     @JsonProperty("amount")
-    private Integer amount;
+    private Double amount;
 
     @JsonProperty("sender_name")
     private String senderName;
@@ -85,11 +85,11 @@ public class HelpWalletTransaction implements Serializable {
         this.blockchainTransactionId = blockchainTransactionId;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
