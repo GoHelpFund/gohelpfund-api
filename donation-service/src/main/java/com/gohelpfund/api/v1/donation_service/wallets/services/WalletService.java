@@ -81,13 +81,13 @@ public class WalletService {
         } else {
             logger.debug("GET | PostgreSQL | found | wallet id: {}", wallet.getId());
             BitcoinWalletDetails bitcoin = bitcoinWalletDetailsService.getByBitcoinId(wallet.getBitcoinId());
-            HelpWalletDetails help = helpWalletDetailsService.getByHelpId(wallet.getHelpId());
-            PromiseWalletDetails promise = promiseWalletDetailsService.getByPromiseId(wallet.getPromiseId());
+//            HelpWalletDetails help = helpWalletDetailsService.getByHelpId(wallet.getHelpId());
+//            PromiseWalletDetails promise = promiseWalletDetailsService.getByPromiseId(wallet.getPromiseId());
 
             wallet
-                    .withBitcoinWalletDetails(bitcoin)
-                    .withHelpWalletDetails(help)
-                    .withPromiseWalletDetails(promise);
+                    .withBitcoinWalletDetails(bitcoin);
+//                    .withHelpWalletDetails(help)
+//                    .withPromiseWalletDetails(promise);
         }
         return wallet;
     }

@@ -10,10 +10,12 @@ DROP TABLE IF EXISTS oauth_approvals;
 CREATE  TABLE users (
   user_id             VARCHAR(100) NOT NULL,
   fundraiser_id       VARCHAR(100) NOT NULL,
+  fundraiser_type     VARCHAR(100) NOT NULL,
   user_name           VARCHAR(100) PRIMARY KEY NOT NULL ,
 
   email               VARCHAR(100) NOT NULL ,
   password            VARCHAR(100) NOT NULL,
+  password_changed    BOOLEAN NOT NULL,
   enabled             BOOLEAN NOT NULL
   );
 

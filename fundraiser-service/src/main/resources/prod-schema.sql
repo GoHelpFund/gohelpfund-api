@@ -43,6 +43,7 @@ CREATE TABLE fundraisers (
   wallet_id             VARCHAR(100) NOT NULL,
   status_id             VARCHAR(100) NOT NULL,
 
+  entity_type           TEXT,
   name                  TEXT,
   age                   INT,
   profile_image_url     TEXT

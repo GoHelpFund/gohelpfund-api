@@ -2,12 +2,15 @@ package com.gohelpfund.api.v1.donation_service.wallets.services.bitcoin;
 
 import com.gohelpfund.api.v1.donation_service.config.ServiceConfig;
 import com.gohelpfund.api.v1.donation_service.wallets.models.CryptoCurrencyCredentials;
+import com.gohelpfund.api.v1.donation_service.wallets.models.api.bitcore.BitcoreAddr;
 import com.gohelpfund.api.v1.donation_service.wallets.models.wallet.bitcoin.BitcoinWalletDetails;
 import com.gohelpfund.api.v1.donation_service.wallets.repository.bitcoin.BitcoinWalletDetailsRepository;
+import com.gohelpfund.api.v1.donation_service.wallets.services.bitcoin.api.BitcoinWalletBitcoreService;
 import com.gohelpfund.api.v1.donation_service.wallets.services.bitcoin.api.BitcoinWalletInsightService;
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.wallet.Wallet;
+import org.helpj.core.Coin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +22,22 @@ import java.util.UUID;
 public class BitcoinWalletDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(BitcoinWalletDetailsService.class);
 
-    @Autowired
-    private BitcoinWalletDetailsRepository repository;
+    private final BitcoinWalletDetailsRepository repository;
+    private final BitcoinWalletTransactionsService donations;
+    private final BitcoinWalletBackersService backers;
+    private final BitcoinWalletInsightService insight;
+    private final BitcoinWalletBitcoreService bitcore;
+    private final ServiceConfig config;
 
     @Autowired
-    private BitcoinWalletTransactionsService donations;
-
-    @Autowired
-    private BitcoinWalletBackersService backers;
-
-    @Autowired
-    private BitcoinWalletInsightService insight;
-
-    @Autowired
-    ServiceConfig config;
+    public BitcoinWalletDetailsService(BitcoinWalletDetailsRepository repository, BitcoinWalletTransactionsService donations, BitcoinWalletBackersService backers, BitcoinWalletInsightService insight, BitcoinWalletBitcoreService bitcore, ServiceConfig config) {
+        this.repository = repository;
+        this.donations = donations;
+        this.backers = backers;
+        this.insight = insight;
+        this.bitcore = bitcore;
+        this.config = config;
+    }
 
     public BitcoinWalletDetails getByEntityId(String entityId) {
         BitcoinWalletDetails bitcoinWalletDetails = repository.findByEntityId(entityId);
@@ -51,8 +56,14 @@ public class BitcoinWalletDetailsService {
 
         if (bitcoinWalletDetails != null) {
             logger.debug("GET | PostgreSQL | found | bitcoin_wallet_details id: {}", bitcoinWalletDetails.getBitcoinId());
-            bitcoinWalletDetails.setTransactions(donations.getAll(bitcoinId));
-            bitcoinWalletDetails.setBackers(backers.getAll(bitcoinId));
+            BitcoreAddr bitcoreAddr = bitcore.getInsightBitcoinAddr(bitcoinWalletDetails.getPublicKey());
+            long bal = bitcoreAddr.getBalance();
+            logger.debug("bal | {}", bal);
+            String valStr = Coin.valueOf(bal).toPlainString();
+            logger.debug("valStr | {}", valStr);
+            Double value = Double.valueOf(valStr);
+            logger.debug("value | {}", value);
+            bitcoinWalletDetails.setBalance(value);
         } else {
             logger.debug("GET | PostgreSQL | empty | bitcoin_wallet_details id: {}", bitcoinId);
         }

@@ -25,12 +25,10 @@ public class UserContextFilter implements Filter {
         logger.debug("****** I am entering Authentication Service with auth_token: {}", httpServletRequest.getHeader(UserContext.AUTH_TOKEN));
         logger.debug("****** correlation_id: {}", httpServletRequest.getHeader(UserContext.CORRELATION_ID));
         logger.debug("****** user_id: {}", httpServletRequest.getHeader(UserContext.USER_ID));
-        logger.debug("****** org_id: {}", httpServletRequest.getHeader(UserContext.ORG_ID));
 
         UserContextHolder.getContext().setCorrelationId(  httpServletRequest.getHeader(UserContext.CORRELATION_ID) );
         UserContextHolder.getContext().setUserId( httpServletRequest.getHeader(UserContext.USER_ID) );
         UserContextHolder.getContext().setAuthToken( httpServletRequest.getHeader(UserContext.AUTH_TOKEN) );
-        UserContextHolder.getContext().setOrgId( httpServletRequest.getHeader(UserContext.ORG_ID) );
 
         filterChain.doFilter(httpServletRequest, servletResponse);
     }

@@ -29,6 +29,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
                 .antMatchers(HttpMethod.POST, "/oauth/token").authenticated()
                 .antMatchers(HttpMethod.GET, "/user").authenticated()
+                .antMatchers(HttpMethod.POST, "/changePassword").authenticated()
                 .anyRequest().authenticated();
     }
 

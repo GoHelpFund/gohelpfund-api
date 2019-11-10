@@ -15,6 +15,9 @@ public class UserSignUp {
     @NotNull
     private String password;
 
+    @NotNull
+    private String type;
+
     private String name;
 
     public UserSignUp() {

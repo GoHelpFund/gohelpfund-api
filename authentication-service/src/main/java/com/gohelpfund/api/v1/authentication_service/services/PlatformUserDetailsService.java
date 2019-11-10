@@ -24,7 +24,11 @@ public class PlatformUserDetailsService implements UserDetailsService {
         User user = userService.getUser(username);
 
         if (user != null) {
+            logger.debug(user.toString());
             UserContextHolder.getContext().setUserId(user.getFundraiserId());
+            UserContextHolder.getContext().setUserPassChanged(String.valueOf(user.isPasswordChanged()));
+            UserContextHolder.getContext().setUserType(user.getFundraiserType());
+
             PlatformUserDetails platformUser = new PlatformUserDetails(user);
             logger.debug("GET | /api/v1/fundraisers/{id} | found | platform_user_name: {} platform_user_fundraiser id: {}", platformUser.getUsername(), platformUser.getFundraiserId());
 

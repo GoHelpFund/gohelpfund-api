@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "fundraisers")
-@JsonPropertyOrder({"id", "name", "age", "profile_image_url", "status", "social", "professional"})
+@JsonPropertyOrder({"id", "entity_type", "name", "age", "profile_image_url", "status", "social", "professional"})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Fundraiser implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -41,6 +41,9 @@ public class Fundraiser implements Serializable {
     @Column(name ="status_id", nullable = false)
     private String statusId;
 
+    @JsonProperty("entity_type")
+    @Column(name = "entity_type")
+    private String entityType;
 
     @JsonProperty("name")
     @Column(name = "name")
@@ -81,6 +84,14 @@ public class Fundraiser implements Serializable {
 
     public void setFundraiserId(String fundraiserId) {
         this.fundraiserId = fundraiserId;
+    }
+
+    public String getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(String entityType) {
+        this.entityType = entityType;
     }
 
     public String getName() {
