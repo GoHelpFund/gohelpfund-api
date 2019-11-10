@@ -51,13 +51,14 @@ public class UserService {
         return user;
     }
 
-    public User changeUserPassword(String username,
+    public User changeUserPassword(User user,
+                                   String username,
                                    String newPassword) {
-        User user = userRepository.findByUsername(username)
-                .withPassword(passwordEncoder.encode(newPassword))
+        user.withPassword(passwordEncoder.encode(newPassword))
+                .withUsername(username)
                 .withPasswordChanged(true);
 
-       return userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public User addUser(String clientToken,
@@ -131,6 +132,10 @@ public class UserService {
                 new UserRole(BACKER));
 
         return userRoleService.saveAll(username, roles);
+    }
+
+    public boolean checkIfValidOldPassword(final User user, final String oldPassword) {
+        return passwordEncoder.matches(oldPassword, user.getPassword());
     }
 
     private HttpEntity<Map<String, String>> getHttpEntity(String clientToken) {

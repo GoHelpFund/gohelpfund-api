@@ -5,6 +5,7 @@ import com.gohelpfund.api.v1.authentication_service.config.ServiceConfig;
 import com.gohelpfund.api.v1.authentication_service.model.User;
 import com.gohelpfund.api.v1.authentication_service.model.UserChangePassword;
 import com.gohelpfund.api.v1.authentication_service.model.UserSignUp;
+import com.gohelpfund.api.v1.authentication_service.security.exceptions.PasswordIncorrectException;
 import com.gohelpfund.api.v1.authentication_service.security.exceptions.UsernameAlreadyExistsException;
 import com.gohelpfund.api.v1.authentication_service.services.UserService;
 import com.gohelpfund.api.v1.authentication_service.utils.UserContextHolder;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,10 +74,17 @@ public class SignupController {
     }
 
     @PostMapping(value="/changePassword")
-    public void changePassword(@RequestBody UserChangePassword userChangePassword){
+    public void changePassword(@RequestBody @Valid UserChangePassword userChangePassword){
 
         String username = getValueFromJWTByKey("user_name");
-        signupService.changeUserPassword(username, userChangePassword.getNewPassword());
+
+        User user = signupService.getUser(username);
+
+        if (!signupService.checkIfValidOldPassword(user, userChangePassword.getOldPassword())) {
+            throw new PasswordIncorrectException("Password for " + username + " incorrect");
+        } else {
+            signupService.changeUserPassword(user, username, userChangePassword.getNewPassword());
+        }
 
     }
 

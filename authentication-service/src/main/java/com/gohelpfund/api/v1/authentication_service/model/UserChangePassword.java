@@ -7,6 +7,10 @@ import javax.validation.constraints.NotNull;
 public class UserChangePassword {
 
     @NotNull
+    @JsonProperty("old_password")
+    private String oldPassword;
+
+    @NotNull
     @JsonProperty("new_password")
     private String newPassword;
 
@@ -16,5 +20,13 @@ public class UserChangePassword {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 }

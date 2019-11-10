@@ -32,10 +32,7 @@ public class User{
     @Column(name = "enabled", columnDefinition = "boolean default true", nullable = false)
     private boolean enabled;
 
-
-    @JoinColumn(name = "user_name")
-    @OneToMany(fetch = FetchType.EAGER)
-    @ElementCollection(targetClass = UserRole.class)
+    @Transient
     private List<UserRole> roles;
 
     public User(){
