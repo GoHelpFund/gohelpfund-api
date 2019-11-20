@@ -38,6 +38,8 @@ public class User{
     public User(){
     }
 
+
+
     public User(UserSignUp signUp){
         this.username = signUp.getUsername();
         this.email = signUp.getEmail();

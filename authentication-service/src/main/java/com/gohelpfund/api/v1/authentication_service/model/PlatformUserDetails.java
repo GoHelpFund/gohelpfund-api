@@ -104,4 +104,19 @@ public class PlatformUserDetails implements UserDetails {
     public void setPasswordChanged(boolean passwordChanged) {
         this.passwordChanged = passwordChanged;
     }
+
+    @Override
+    public String toString() {
+        return "PlatformUserDetails{" +
+                "authorities=" + authorities +
+                ", password='" + "[PROTECTED]" + '\'' +
+                ", username='" + username + '\'' +
+                ", fundraiserId='" + fundraiserId + '\'' +
+                ", passwordChanged=" + passwordChanged +
+                ", accountNonExpired=" + accountNonExpired +
+                ", accountNonLocked=" + accountNonLocked +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ", enabled=" + enabled +
+                '}';
+    }
 }

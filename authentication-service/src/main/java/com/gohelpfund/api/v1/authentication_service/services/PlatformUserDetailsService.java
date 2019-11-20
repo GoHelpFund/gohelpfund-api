@@ -6,6 +6,7 @@ import com.gohelpfund.api.v1.authentication_service.utils.UserContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,6 +31,7 @@ public class PlatformUserDetailsService implements UserDetailsService {
             UserContextHolder.getContext().setUserType(user.getFundraiserType());
 
             PlatformUserDetails platformUser = new PlatformUserDetails(user);
+            logger.debug("full: {}", platformUser.toString());
             logger.debug("GET | /api/v1/fundraisers/{id} | found | platform_user_name: {} platform_user_fundraiser id: {}", platformUser.getUsername(), platformUser.getFundraiserId());
 
             return platformUser;

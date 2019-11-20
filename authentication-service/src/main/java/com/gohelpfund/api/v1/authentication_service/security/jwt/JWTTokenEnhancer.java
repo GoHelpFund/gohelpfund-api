@@ -22,7 +22,6 @@ public class JWTTokenEnhancer implements TokenEnhancer {
 
         additionalInfo.put("fundraiser_id", UserContextHolder.getContext().getUserId());
         additionalInfo.put("fundraiser_type", UserContextHolder.getContext().getUserType());
-        additionalInfo.put("password_changed", UserContextHolder.getContext().isUserPassChanged());
 
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
         return accessToken;

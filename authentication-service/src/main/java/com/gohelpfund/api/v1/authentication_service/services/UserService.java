@@ -51,17 +51,18 @@ public class UserService {
         return user;
     }
 
-    public User changeUserPassword(User user,
+    public void changeUserPassword(User user,
                                    String username,
                                    String newPassword) {
         user.withPassword(passwordEncoder.encode(newPassword))
                 .withUsername(username)
                 .withPasswordChanged(true);
+        logger.debug("UserService - changeUserPassword: {}", user);
 
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
-    public User addUser(String clientToken,
+    public void addUser(String clientToken,
                         String name,
                         String eventId,
                         String table,
@@ -87,7 +88,6 @@ public class UserService {
 
         logger.debug("POST | PostgreSQL | created | user id: {} ", newUser.getId());
 
-        return newUser;
     }
 
     private Fundraiser createFundraiser(String username, String source, HttpEntity httpEntity) {
