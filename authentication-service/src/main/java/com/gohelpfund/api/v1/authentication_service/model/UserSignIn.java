@@ -2,26 +2,27 @@ package com.gohelpfund.api.v1.authentication_service.model;
 
 import javax.validation.constraints.NotNull;
 
-public class UserSignUp {
+public class UserSignIn {
+    @NotNull
+    private String grant_type;
+
     @NotNull
     private String scope;
 
-    @NotNull
     private String username;
 
-    @NotNull
-    private String email;
-
-    @NotNull
     private String password;
 
-    @NotNull
-    private String type;
+    public UserSignIn() {
 
-    private String name;
+    }
 
-    public UserSignUp() {
+    public String getGrant_type() {
+        return grant_type;
+    }
 
+    public void setGrant_type(String grant_type) {
+        this.grant_type = grant_type;
     }
 
     public String getScope() {
@@ -40,27 +41,11 @@ public class UserSignUp {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

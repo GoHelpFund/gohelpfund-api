@@ -18,7 +18,10 @@ public class JWTTokenEnhancer implements TokenEnhancer {
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         Map<String, Object> additionalInfo = new HashMap<>();
 
+        logger.debug("enhance passChanged| {}", UserContextHolder.getContext().isUserPassChanged());
+
         additionalInfo.put("fundraiser_id", UserContextHolder.getContext().getUserId());
+        additionalInfo.put("fundraiser_type", UserContextHolder.getContext().getUserType());
 
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
         return accessToken;
