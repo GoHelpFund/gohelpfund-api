@@ -41,6 +41,7 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
                 // restricting access to authenticated users
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/signin").permitAll()
                 .anyRequest().authenticated();
     }
 

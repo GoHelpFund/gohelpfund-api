@@ -19,8 +19,19 @@ public class PlatformUserDetails implements UserDetails {
     @JsonProperty("fundraiser_id")
     private String fundraiserId;
 
-    private boolean accountNonExpired, accountNonLocked, credentialsNonExpired, enabled;
+    @JsonProperty("password_changed")
+    private boolean passwordChanged;
 
+    @JsonProperty("account_non_expired")
+    private boolean accountNonExpired;
+
+    @JsonProperty("account_non_locked")
+    private boolean accountNonLocked;
+
+    @JsonProperty("credentials_non_expired")
+    private boolean credentialsNonExpired;
+
+    private boolean enabled;
 
     public PlatformUserDetails(User user) {
         this.username = user.getUsername();
@@ -31,6 +42,7 @@ public class PlatformUserDetails implements UserDetails {
         this.accountNonLocked = true;
         this.credentialsNonExpired = true;
         this.enabled = user.isEnabled();
+        this.passwordChanged = user.isPasswordChanged();
     }
 
 
@@ -83,5 +95,28 @@ public class PlatformUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public boolean isPasswordChanged() {
+        return passwordChanged;
+    }
+
+    public void setPasswordChanged(boolean passwordChanged) {
+        this.passwordChanged = passwordChanged;
+    }
+
+    @Override
+    public String toString() {
+        return "PlatformUserDetails{" +
+                "authorities=" + authorities +
+                ", password='" + "[PROTECTED]" + '\'' +
+                ", username='" + username + '\'' +
+                ", fundraiserId='" + fundraiserId + '\'' +
+                ", passwordChanged=" + passwordChanged +
+                ", accountNonExpired=" + accountNonExpired +
+                ", accountNonLocked=" + accountNonLocked +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ", enabled=" + enabled +
+                '}';
     }
 }

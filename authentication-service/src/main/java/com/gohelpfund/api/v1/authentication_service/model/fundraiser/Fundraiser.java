@@ -9,11 +9,14 @@ import javax.persistence.Transient;
 import java.io.Serializable;
 
 
-@JsonPropertyOrder({"id", "name", "age", "profile_image_url", "status", "social", "professional"})
+@JsonPropertyOrder({"id", "entity_type", "name", "age", "profile_image_url", "status", "social", "professional"})
 public class Fundraiser implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String id;
+
+    @JsonProperty("entity_type")
+    private String entityType;
 
     private String name;
 
@@ -40,6 +43,14 @@ public class Fundraiser implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(String entityType) {
+        this.entityType = entityType;
     }
 
     public String getName() {

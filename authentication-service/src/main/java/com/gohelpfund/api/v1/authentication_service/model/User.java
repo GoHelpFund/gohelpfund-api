@@ -13,6 +13,9 @@ public class User{
     @Column(name = "fundraiser_id", nullable = false)
     private String fundraiserId;
 
+    @Column(name = "fundraiser_type", nullable = false)
+    private String fundraiserType;
+
     @Id
     @Column(name = "user_name", nullable = false, unique = true)
     private String username;
@@ -23,17 +26,19 @@ public class User{
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "password_changed", columnDefinition = "boolean default false", nullable = false)
+    private boolean passwordChanged;
+
     @Column(name = "enabled", columnDefinition = "boolean default true", nullable = false)
     private boolean enabled;
 
-
-    @JoinColumn(name = "user_name")
-    @OneToMany(fetch = FetchType.EAGER)
-    @ElementCollection(targetClass = UserRole.class)
+    @Transient
     private List<UserRole> roles;
 
     public User(){
     }
+
+
 
     public User(UserSignUp signUp){
         this.username = signUp.getUsername();
@@ -55,6 +60,14 @@ public class User{
 
     public void setFundraiserId(String fundraiserId) {
         this.fundraiserId = fundraiserId;
+    }
+
+    public String getFundraiserType() {
+        return fundraiserType;
+    }
+
+    public void setFundraiserType(String fundraiserType) {
+        this.fundraiserType = fundraiserType;
     }
 
     public void setUsername(String username) {
@@ -89,6 +102,14 @@ public class User{
         this.roles = roles;
     }
 
+    public boolean isPasswordChanged() {
+        return passwordChanged;
+    }
+
+    public void setPasswordChanged(boolean passwordChanged) {
+        this.passwordChanged = passwordChanged;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -112,6 +133,11 @@ public class User{
         return this;
     }
 
+    public User withFundraiserType(String fundraiserType) {
+        this.setFundraiserType(fundraiserType);
+        return this;
+    }
+
     public User withEmail(String email){
         this.setEmail(email);
         return this;
@@ -129,6 +155,11 @@ public class User{
         return this;
     }
 
+    public User withPasswordChanged(boolean changed){
+        this.setPasswordChanged(changed);
+        return this;
+    }
+
     public User withEnabled(boolean enabled){
         this.setEnabled(enabled);
         return this;
@@ -142,6 +173,7 @@ public class User{
                 ", email='" + email + '\'' +
                 ", password=[PROTECTED];"+
                 ", enabled=" + enabled +
+                ", passwordChanged=" + passwordChanged +
                 ", roles=" + roles +
                 '}';
     }

@@ -36,7 +36,6 @@ public class UserService {
     @Autowired
     EventRestTemplateClient eventClient;
 
-
     @Autowired
     private UserRoleService userRoleService;
 
@@ -52,7 +51,18 @@ public class UserService {
         return user;
     }
 
-    public User addUser(String clientToken,
+    public void changeUserPassword(User user,
+                                   String username,
+                                   String newPassword) {
+        user.withPassword(passwordEncoder.encode(newPassword))
+                .withUsername(username)
+                .withPasswordChanged(true);
+        logger.debug("UserService - changeUserPassword: {}", user);
+
+        userRepository.save(user);
+    }
+
+    public void addUser(String clientToken,
                         String name,
                         String eventId,
                         String table,
@@ -61,15 +71,16 @@ public class UserService {
         String id = UUID.randomUUID().toString();
         String username = user.getUsername();
         String source = eventId != null ? "event" : "default";
-        Fundraiser fundraiser = createFundraiser(username, source, getHttpEntity(name, clientToken));
+        Fundraiser fundraiser = createFundraiser(username, source, getHttpEntity(name, type, clientToken));
 
-        if(eventId != null && table!= null && type!= null){
+        if (eventId != null && table != null && type != null) {
             createAttendance(username, eventId, getHttpEntity(fundraiser.getId(), name, table, type, clientToken));
         }
 
         user.withId(id)
                 .withPassword(passwordEncoder.encode(user.getPassword()))
                 .withFundraiserId(fundraiser.getId())
+                .withFundraiserType(type)
                 .withRoles(createRoles(username))
                 .withEnabled(true);
 
@@ -77,7 +88,6 @@ public class UserService {
 
         logger.debug("POST | PostgreSQL | created | user id: {} ", newUser.getId());
 
-        return newUser;
     }
 
     private Fundraiser createFundraiser(String username, String source, HttpEntity httpEntity) {
@@ -124,6 +134,10 @@ public class UserService {
         return userRoleService.saveAll(username, roles);
     }
 
+    public boolean checkIfValidOldPassword(final User user, final String oldPassword) {
+        return passwordEncoder.matches(oldPassword, user.getPassword());
+    }
+
     private HttpEntity<Map<String, String>> getHttpEntity(String clientToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + clientToken);
@@ -131,13 +145,14 @@ public class UserService {
         return new HttpEntity<>(null, headers);
     }
 
-    private HttpEntity<Map<String, String>> getHttpEntity(String name,String clientToken) {
+    private HttpEntity<Map<String, String>> getHttpEntity(String name, String type, String clientToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + clientToken);
         headers.set("Content-Type", "application/json");
 
         Map<String, String> map = new HashMap<>();
         map.put("name", name);
+        map.put("entity_type", type);
 
         return new HttpEntity<>(map, headers);
     }
