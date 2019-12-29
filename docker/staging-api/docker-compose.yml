@@ -7,6 +7,8 @@ networks:
 services:
   eureka-server:
     image:   gohelpfund/ghf-eureka-server:${BUILD_NAME}
+    cpu_shares: 1024
+    mem_limit: 1024MB
     ports:
       - "8761:8761"
     environment:
@@ -18,6 +20,8 @@ services:
 
   config-server:
     image: gohelpfund/ghf-config-server:${BUILD_NAME}
+    cpu_shares: 1024
+    mem_limit: 1024MB
     ports:
       - "8762:8762"
     links:
@@ -38,6 +42,8 @@ services:
 
   zuul-server:
     image: gohelpfund/ghf-zuul-server:${BUILD_NAME}
+    cpu_shares: 2048
+    mem_limit: 4096MB
     ports:
       - "443:8763"
     links:
@@ -64,6 +70,8 @@ services:
 
   authentication-service:
     image: gohelpfund/ghf-authentication-service:${BUILD_NAME}
+    cpu_shares: 1024
+    mem_limit: 2048MB
     ports:
       - "8764:8764"
     links:
@@ -88,6 +96,8 @@ services:
 
   donation-service:
     image: gohelpfund/ghf-donation-service:${BUILD_NAME}
+    cpu_shares: 3072
+    mem_limit: 2048MB
     ports:
       - "9000:9000"
     links:
@@ -115,6 +125,8 @@ services:
 
   campaign-service:
     image: gohelpfund/ghf-campaign-service:${BUILD_NAME}
+    cpu_shares: 2048
+    mem_limit: 2048MB
     ports:
       - "9100:9100"
     extra_hosts:
@@ -153,6 +165,8 @@ services:
 
   fundraiser-service:
     image: gohelpfund/ghf-fundraiser-service:${BUILD_NAME}
+    cpu_shares: 2048
+    mem_limit: 2048MB
     ports:
       - "9200:9200"
     extra_hosts:
