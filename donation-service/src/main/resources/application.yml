@@ -26,4 +26,4 @@ logging:
   level:
     com.netflix: INFO
     org.springframework.web: INFO
-    com.gohelpfund.api.v1: DEBUG
+    com.gohelpfund.api.v1: INFO
