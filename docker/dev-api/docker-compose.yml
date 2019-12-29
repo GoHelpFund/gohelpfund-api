@@ -43,7 +43,7 @@ services:
   zuul-server:
     image: gohelpfund/ghf-zuul-server:${BUILD_NAME}
     cpu_shares: 448
-    mem_limit: 1024MB
+    mem_limit: 2048MB
     ports:
       - "443:8763"
     links:
@@ -97,7 +97,7 @@ services:
   donation-service:
     image: gohelpfund/ghf-donation-service:${BUILD_NAME}
     cpu_shares: 300
-    mem_limit: 1025MB
+    mem_limit: 2048MB
     ports:
       - "9000:9000"
     links:
