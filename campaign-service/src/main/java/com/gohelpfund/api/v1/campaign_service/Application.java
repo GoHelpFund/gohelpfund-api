@@ -56,10 +56,16 @@ public class Application {
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         JedisConnectionFactory jedisConnFactory = new JedisConnectionFactory();
+
         jedisConnFactory.setHostName(serviceConfig.getRedisServer());
-        jedisConnFactory.setPort(Integer.valueOf(serviceConfig.getRedisPort()));
-        jedisConnFactory.getPoolConfig().setMaxIdle(100);
-        jedisConnFactory.getPoolConfig().setMaxTotal(100);
+        jedisConnFactory.setPort(Integer.parseInt(serviceConfig.getRedisPort()));
+        jedisConnFactory.setPassword(serviceConfig.getRedisPassword());
+        jedisConnFactory.setUseSsl(Boolean.parseBoolean(serviceConfig.getRedisSecure()));
+
+        jedisConnFactory.getPoolConfig().setMaxIdle(30);
+        jedisConnFactory.getPoolConfig().setMinIdle(10);
+        jedisConnFactory.getPoolConfig().setBlockWhenExhausted(true);
+        jedisConnFactory.setUsePool(true);
         return jedisConnFactory;
     }
 
@@ -67,6 +73,7 @@ public class Application {
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
         template.setConnectionFactory(jedisConnectionFactory());
+        template.setEnableTransactionSupport(true);
         return template;
     }
 

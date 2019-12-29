@@ -9,29 +9,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 
-
 @EnableBinding(CustomChannels.class)
 public class FundraiserChangeHandler {
+    private static final Logger logger = LoggerFactory.getLogger(FundraiserChangeHandler.class);
+
+    private final FundraiserRedisRepository fundraiserRedisRepository;
 
     @Autowired
-    private FundraiserRedisRepository fundraiserRedisRepository;
-
-    private static final Logger logger = LoggerFactory.getLogger(FundraiserChangeHandler.class);
+    public FundraiserChangeHandler(FundraiserRedisRepository fundraiserRedisRepository) {
+        this.fundraiserRedisRepository = fundraiserRedisRepository;
+    }
 
     @StreamListener("inboundFundraiserChanges")
     public void loggerSink(FundraiserChangeModel fundraiserChange) {
         switch (fundraiserChange.getAction()) {
             case "GET":
-                logger.debug("SUBSCRIBE | Kafka | {} event | type: {} | fundraiser id: {} ", fundraiserChange.getAction(), fundraiserChange.getType(), fundraiserChange.getFundraiserId());
-                break;
             case "SAVE":
                 logger.debug("SUBSCRIBE | Kafka | {} event | type: {} | fundraiser id: {} ", fundraiserChange.getAction(), fundraiserChange.getType(), fundraiserChange.getFundraiserId());
                 break;
             case "UPDATE":
-                logger.debug("SUBSCRIBE | Kafka | {} event | type: {} | fundraiser id: {} ", fundraiserChange.getAction(), fundraiserChange.getType(), fundraiserChange.getFundraiserId());
-                fundraiserRedisRepository.deleteFundraiser(fundraiserChange.getFundraiserId());
-                logger.debug("DELETE | Redis | removed | fundraiser id: {} ", fundraiserChange.getFundraiserId());
-                break;
             case "DELETE":
                 logger.debug("SUBSCRIBE | Kafka | {} event | type: {} | fundraiser id: {} ", fundraiserChange.getAction(), fundraiserChange.getType(), fundraiserChange.getFundraiserId());
                 fundraiserRedisRepository.deleteFundraiser(fundraiserChange.getFundraiserId());

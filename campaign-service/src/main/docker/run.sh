@@ -9,11 +9,11 @@ echo "********************************************************"
 while ! `nc -z eureka-server  $EUREKASERVER_PORT`; do sleep 3; done
 echo "******* Eureka Server has started"
 
-#echo "********************************************************"
-#echo "Waiting for the database server to start on port $DATABASESERVER_PORT"
-#echo "********************************************************"
-#while ! `nc -z database $DATABASESERVER_PORT`; do sleep 3; done
-#echo "******** Database Server has started "
+echo "********************************************************"
+echo "Waiting for the database server to start on port $DATABASESERVER_PORT"
+echo "********************************************************"
+while ! `nc -z $DATABASESERVER_URI $DATABASESERVER_PORT`; do sleep 3; done
+echo "******** Database Server has started "
 
 echo "********************************************************"
 echo "Waiting for the configuration server to start on port $CONFIGSERVER_PORT"
@@ -30,7 +30,7 @@ echo "******* Kafka Server has started"
 echo "********************************************************"
 echo "Waiting for redis to start on port $REDIS_PORT"
 echo "********************************************************"
-while ! `nc -z redis $REDIS_PORT`; do sleep 10; done
+while ! `nc -z $REDIS_URI $REDIS_PORT`; do sleep 10; done
 echo "******* Redis has started"
 
 echo "********************************************************"

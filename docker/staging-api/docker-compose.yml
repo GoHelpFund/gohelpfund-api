@@ -8,9 +8,9 @@ services:
   eureka-server:
     image:   gohelpfund/ghf-eureka-server:${BUILD_NAME}
     ports:
-      -                           "8761:8761"
+      - "8761:8761"
     environment:
-      PROFILE:                  "staging-api"
+      PROFILE: "staging-api"
     networks:
       default:
         aliases:
@@ -19,7 +19,7 @@ services:
   config-server:
     image: gohelpfund/ghf-config-server:${BUILD_NAME}
     ports:
-      -                           "8762:8762"
+      - "8762:8762"
     links:
       - "eureka-server:eureka-server"
     networks:
@@ -28,8 +28,8 @@ services:
           - config-server
     environment:
       PROFILE:                  "staging-api"
-      SERVER_PORT:              "8762"
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
+      SERVER_PORT:              "8762"
       EUREKASERVER_PORT:        "8761"
       ENCRYPT_KEY:              $SYMMETRIC_ENCRYPTION_KEY
       GIT_URI:                  $GIT_CONFIG_REPO_URI
@@ -39,7 +39,7 @@ services:
   zuul-server:
     image: gohelpfund/ghf-zuul-server:${BUILD_NAME}
     ports:
-      -                           "443:8763"
+      - "443:8763"
     links:
       - "eureka-server:eureka-server"
       - "config-server:config-server"
@@ -52,21 +52,20 @@ services:
           - zuul-server
     environment:
       PROFILE:                  "staging-api"
-      SERVER_PORT:              "8763"
       ANALYTICS_KEY:            "84rYLp2FgMyG0zfFkNpFSQMLACBYmFZa"
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
       ZIPKIN_URI:               "http://zipkin-server:9411"
       CONFIGSERVER_URI:         "http://config-server:8762"
       ZIPKIN_PORT:              "9411"
-      EUREKASERVER_PORT:        "8761"
-      DATABASESERVER_PORT:      "5432"
-      CONFIGSERVER_PORT:        "8762"
       CATEGORYSERVERNEW_PORT:   "9102"
+      SERVER_PORT:              "8763"
+      CONFIGSERVER_PORT:        "8762"
+      EUREKASERVER_PORT:        "8761"
 
   authentication-service:
     image: gohelpfund/ghf-authentication-service:${BUILD_NAME}
     ports:
-      -                           "8764:8764"
+      - "8764:8764"
     links:
       - "config-server:config-server"
       - "eureka-server:eureka-server"
@@ -78,18 +77,19 @@ services:
       PROFILE:                  "staging-api"
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
       CONFIGSERVER_URI:         "http://config-server:8762"
+      DATABASESERVER_URI:       "private-staging-db-do-user-4043556-0.db.ondigitalocean.com"
+      DATABASESERVER_PORT:      "25060"
       CAMPAIGN_SERVICE_PORT:    "9100"
       SERVER_PORT:              "8764"
-      EUREKASERVER_PORT:        "8761"
-      CONFIGSERVER_PORT:        "8762"
       ZUULSERVER_PORT:          "8763"
-      DATABASESERVER_PORT:      "5432"
+      CONFIGSERVER_PORT:        "8762"
+      EUREKASERVER_PORT:        "8761"
       ENCRYPT_KEY:              $SYMMETRIC_ENCRYPTION_KEY
 
   donation-service:
     image: gohelpfund/ghf-donation-service:${BUILD_NAME}
     ports:
-      -                           "9000:9000"
+      - "9000:9000"
     links:
       - "authentication-service:authentication-service"
       - "config-server:config-server"
@@ -99,30 +99,31 @@ services:
         aliases:
           - donation-service
     environment:
-      SERVER_PORT:              "9000"
       PROFILE:                  "staging-api"
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
       CONFIGSERVER_URI:         "http://config-server:8762"
       AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
-      EUREKASERVER_PORT:        "8761"
-      CONFIGSERVER_PORT:        "8762"
-      ZUULSERVER_PORT:          "8763"
+      DATABASESERVER_URI:       "private-staging-db-do-user-4043556-0.db.ondigitalocean.com"
+      DATABASESERVER_PORT:      "25060"
+      SERVER_PORT:              "9000"
       AUTHSERVER_PORT:          "8764"
-      DATABASESERVER_PORT:      "5432"
+      ZUULSERVER_PORT:          "8763"
+      CONFIGSERVER_PORT:        "8762"
+      EUREKASERVER_PORT:        "8761"
       ZKSERVER_PORT:            "2181"
       ENCRYPT_KEY:              $SYMMETRIC_ENCRYPTION_KEY
 
   campaign-service:
     image: gohelpfund/ghf-campaign-service:${BUILD_NAME}
     ports:
-      -                           "9100:9100"
+      - "9100:9100"
+    extra_hosts:
+      - "kafka-server:10.135.95.151"
     links:
       - "authentication-service:authentication-service"
       - "donation-service:donation-service"
       - "config-server:config-server"
       - "eureka-server:eureka-server"
-      - "kafka-server:kafka-server"
-      - "redis:redis"
     networks:
       default:
         aliases:
@@ -132,32 +133,35 @@ services:
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
       ZIPKIN_URI:               "http://zipkin-server:9411"
       CONFIGSERVER_URI:         "http://config-server:8762"
+      AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
       KAFKASERVER_URI:          "kafka-server"
       ZKSERVER_URI:             "kafka-server"
-      AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
+      REDIS_URI:                "private-staging-redis-do-user-4043556-0.db.ondigitalocean.com"
+      DATABASESERVER_URI:       "private-staging-db-do-user-4043556-0.db.ondigitalocean.com"
+      REDIS_PORT:               "25061"
+      DATABASESERVER_PORT:      "25060"
       ZIPKIN_PORT:              "9411"
       SERVER_PORT:              "9100"
       KAFKASERVER_PORT:         "9092"
       DONATION_PORT:            "9000"
-      EUREKASERVER_PORT:        "8761"
-      CONFIGSERVER_PORT:        "8762"
-      ZUULSERVER_PORT:          "8763"
       AUTHSERVER_PORT:          "8764"
-      REDIS_PORT:               "6379"
-      DATABASESERVER_PORT:      "5432"
+      ZUULSERVER_PORT:          "8763"
+      CONFIGSERVER_PORT:        "8762"
+      EUREKASERVER_PORT:        "8761"
       ZKSERVER_PORT:            "2181"
       ENCRYPT_KEY:              $SYMMETRIC_ENCRYPTION_KEY
 
   fundraiser-service:
     image: gohelpfund/ghf-fundraiser-service:${BUILD_NAME}
     ports:
-      -                           "9200:9200"
+      - "9200:9200"
+    extra_hosts:
+      - "kafka-server:10.135.95.151"
     links:
       - "authentication-service:authentication-service"
       - "donation-service:donation-service"
       - "config-server:config-server"
       - "eureka-server:eureka-server"
-      - "kafka-server:kafka-server"
     networks:
       default:
         aliases:
@@ -167,36 +171,18 @@ services:
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
       ZIPKIN_URI:               "http://zipkin-server:9411"
       CONFIGSERVER_URI:         "http://config-server:8762"
+      AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
       KAFKASERVER_URI:          "kafka-server"
       ZKSERVER_URI:             "kafka-server"
-      AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
+      DATABASESERVER_URI:       "private-staging-db-do-user-4043556-0.db.ondigitalocean.com"
+      DATABASESERVER_PORT:      "25060"
       ZIPKIN_PORT:              "9411"
       SERVER_PORT:              "9200"
       KAFKASERVER_PORT:         "9092"
       DONATION_PORT:            "9000"
-      EUREKASERVER_PORT:        "8761"
-      CONFIGSERVER_PORT:        "8762"
-      ZUULSERVER_PORT:          "8763"
       AUTHSERVER_PORT:          "8764"
-      DATABASESERVER_PORT:      "5432"
+      ZUULSERVER_PORT:          "8763"
+      CONFIGSERVER_PORT:        "8762"
+      EUREKASERVER_PORT:        "8761"
       ZKSERVER_PORT:            "2181"
       ENCRYPT_KEY:              $SYMMETRIC_ENCRYPTION_KEY
-
-  kafka-server:
-    image: spotify/kafka
-    ports:
-      -                           "2181:2181"
-      -                           "9092:9092"
-    networks:
-      default:
-        aliases:
-          - kafka-server
-
-  redis:
-    image: redis:alpine
-    ports:
-      -                           "6379:6379"
-    networks:
-      default:
-        aliases:
-          - redis

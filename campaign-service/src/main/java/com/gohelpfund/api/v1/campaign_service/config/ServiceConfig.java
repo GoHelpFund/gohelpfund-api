@@ -30,6 +30,12 @@ public class ServiceConfig {
   @Value("${redis.port}")
   private String redisPort;
 
+  @Value("${redis.password}")
+  private String redisPassword;
+
+  @Value("${redis.secure}")
+  private String redisSecure;
+
   @Value("${platform.env}")
   private String platformEnv;
 
@@ -67,5 +73,13 @@ public class ServiceConfig {
 
   public String getRedisPort() {
     return redisPort;
+  }
+
+  public String getRedisPassword() {
+    return redisPassword;
+  }
+
+  public String getRedisSecure() {
+    return redisSecure;
   }
 }

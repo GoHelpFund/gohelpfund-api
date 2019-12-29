@@ -10,7 +10,7 @@ services:
     cpu_shares: 100
     mem_limit: 512MB
     ports:
-      -                           "8761:8761"
+      - "8761:8761"
     environment:
       PROFILE:                  "local-api"
     networks:
@@ -23,7 +23,7 @@ services:
     cpu_shares: 100
     mem_limit: 512MB
     ports:
-      -                           "8762:8762"
+      - "8762:8762"
     links:
       - "eureka-server:eureka-server"
     networks:
@@ -45,7 +45,7 @@ services:
     cpu_shares: 448
     mem_limit: 1024MB
     ports:
-      -                           "443:8763"
+      - "443:8763"
     links:
       - "eureka-server:eureka-server"
       - "config-server:config-server"
@@ -65,7 +65,6 @@ services:
       CONFIGSERVER_URI:         "http://config-server:8762"
       ZIPKIN_PORT:              "9411"
       EUREKASERVER_PORT:        "8761"
-      DATABASESERVER_PORT:      "5432"
       CONFIGSERVER_PORT:        "8762"
       CATEGORYSERVERNEW_PORT:   "9102"
 
@@ -74,10 +73,11 @@ services:
     cpu_shares: 400
     mem_limit: 1024MB
     ports:
-      -                           "8764:8764"
+      - "8764:8764"
     links:
       - "config-server:config-server"
       - "eureka-server:eureka-server"
+      - "database:database"
     networks:
       default:
         aliases:
@@ -86,6 +86,7 @@ services:
       PROFILE:                  "local-api"
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
       CONFIGSERVER_URI:         "http://config-server:8762"
+      DATABASESERVER_URI:       "database"
       CAMPAIGN_SERVICE_PORT:    "9100"
       SERVER_PORT:              "8764"
       EUREKASERVER_PORT:        "8761"
@@ -99,11 +100,12 @@ services:
     cpu_shares: 300
     mem_limit: 1025MB
     ports:
-      -                           "9000:9000"
+      - "9000:9000"
     links:
       - "authentication-service:authentication-service"
       - "config-server:config-server"
       - "eureka-server:eureka-server"
+      - "database:database"
     networks:
       default:
         aliases:
@@ -114,6 +116,7 @@ services:
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
       CONFIGSERVER_URI:         "http://config-server:8762"
       AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
+      DATABASESERVER_URI:       "database"
       EUREKASERVER_PORT:        "8761"
       CONFIGSERVER_PORT:        "8762"
       ZUULSERVER_PORT:          "8763"
@@ -127,7 +130,7 @@ services:
     cpu_shares: 400
     mem_limit: 1024MB
     ports:
-      -                           "9100:9100"
+      - "9100:9100"
     links:
       - "authentication-service:authentication-service"
       - "donation-service:donation-service"
@@ -135,6 +138,7 @@ services:
       - "eureka-server:eureka-server"
       - "kafka-server:kafka-server"
       - "redis:redis"
+      - "database:database"
     networks:
       default:
         aliases:
@@ -144,9 +148,11 @@ services:
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
       ZIPKIN_URI:               "http://zipkin-server:9411"
       CONFIGSERVER_URI:         "http://config-server:8762"
+      AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
+      DATABASESERVER_URI:       "database"
+      REDIS_URI:                "redis"
       KAFKASERVER_URI:          "kafka-server"
       ZKSERVER_URI:             "kafka-server"
-      AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
       ZIPKIN_PORT:              "9411"
       SERVER_PORT:              "9100"
       KAFKASERVER_PORT:         "9092"
@@ -165,13 +171,16 @@ services:
     mem_limit: 1024MB
     image: gohelpfund/ghf-fundraiser-service:${BUILD_NAME}
     ports:
-      -                           "9200:9200"
+      - "9200:9200"
+    extra_hosts:
+      - "kafka-server:157.230.123.31"
     links:
       - "authentication-service:authentication-service"
       - "donation-service:donation-service"
       - "config-server:config-server"
       - "eureka-server:eureka-server"
       - "kafka-server:kafka-server"
+      - "database:database"
     networks:
       default:
         aliases:
@@ -181,9 +190,10 @@ services:
       EUREKASERVER_URI:         "http://eureka-server:8761/eureka/"
       ZIPKIN_URI:               "http://zipkin-server:9411"
       CONFIGSERVER_URI:         "http://config-server:8762"
+      AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
+      DATABASESERVER_URI:       "database"
       KAFKASERVER_URI:          "kafka-server"
       ZKSERVER_URI:             "kafka-server"
-      AUTHSERVER_URI:           "http://authentication-service:8764/api/v1/auth/user"
       ZIPKIN_PORT:              "9411"
       SERVER_PORT:              "9200"
       KAFKASERVER_PORT:         "9092"
@@ -192,29 +202,44 @@ services:
       CONFIGSERVER_PORT:        "8762"
       ZUULSERVER_PORT:          "8763"
       AUTHSERVER_PORT:          "8764"
-      DATABASESERVER_PORT:      "5432"
       ZKSERVER_PORT:            "2181"
+      DATABASESERVER_PORT:      "5432"
       ENCRYPT_KEY:              $SYMMETRIC_ENCRYPTION_KEY
 
-  kafka-server:
-    image: spotify/kafka
+  database:
+    image: postgres:11
     cpu_shares: 100
     mem_limit: 1024MB
     ports:
-      -                           "2181:2181"
-      -                           "9092:9092"
+      - "5432:5432"
     networks:
       default:
         aliases:
-          - kafka-server
+          - database
+    environment:
+      PROFILE: "local-api"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: p0stgr@s
+      POSTGRES_DB: gohelpfund_local
 
   redis:
     image: redis:alpine
     cpu_shares: 100
     mem_limit: 512MB
     ports:
-      -                           "6379:6379"
+      - "6379:6379"
     networks:
       default:
         aliases:
           - redis
+  kafka-server:
+    image: spotify/kafka
+    cpu_shares: 100
+    mem_limit: 1024MB
+    ports:
+      - "2181:2181"
+      - "9092:9092"
+    networks:
+      default:
+        aliases:
+          - kafka-server

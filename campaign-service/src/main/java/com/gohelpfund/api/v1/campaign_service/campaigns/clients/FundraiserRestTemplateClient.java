@@ -13,14 +13,19 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class FundraiserRestTemplateClient {
     private static final Logger logger = LoggerFactory.getLogger(FundraiserRestTemplateClient.class);
-    @Autowired
-    RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
+    private final FundraiserRedisRepository fundraiserRedisRepo;
 
 /*    @Autowired
     Tracer tracer;*/
 
+
+
     @Autowired
-    FundraiserRedisRepository fundraiserRedisRepo;
+    public FundraiserRestTemplateClient(RestTemplate restTemplate, FundraiserRedisRepository fundraiserRedisRepo) {
+        this.restTemplate = restTemplate;
+        this.fundraiserRedisRepo = fundraiserRedisRepo;
+    }
 
     private Fundraiser checkRedisCache(String fundraiserId) {
 //        Span newSpan = tracer.createSpan("readFundraiserDataFromRedis");
